@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Dossiê Interativo: O Vértice Armamentista (Flávio Bolsonaro & Clã)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#b91c1c',
+              darkred: '#7f1d1d',
+              crimson: '#dc2626',
+              gold: '#d97706',
+              military: '#15803d',
+              board: '#070a12',
+              card: '#0f172a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #050811;
+      --bg-canvas: #070c18;
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    html.light {
+      --bg-main: #f8fafc;
+      --bg-canvas: #edf2f7;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      touch-action: pan-x pan-y;
+    }
+    body.style-noir .svg-container {
+      background: radial-gradient(circle at center, #111827 0%, #050811 100%);
+    }
+    body.style-clean .svg-container {
+      background: #ffffff;
+    }
+    html.dark body.style-clean .svg-container {
+      background: #0b1120;
+    }
+    .svg-container {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .svg-container:active {
+      cursor: grabbing;
+    }
+    .node-outer {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .node-outer:hover {
+      transform: scale(1.1);
+    }
+    body.style-noir .node-outer:hover {
+      filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.65));
+    }
+    body.style-clean .node-outer:hover {
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+    .node-center {
+      animation: pulse-center 3.6s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes pulse-center {
+      0% {
+        filter: drop-shadow(0 0 16px rgba(220, 38, 38, 0.65)) drop-shadow(0 0 32px rgba(153, 27, 27, 0.35));
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 60px rgba(220, 38, 38, 0.6));
+      }
+    }
+    .arrow-line {
+      transition: stroke 0.2s ease, stroke-width 0.2s ease, stroke-dashoffset 0.2s ease;
+    }
+    .arrow-highlight {
+      stroke: #ef4444 !important;
+      stroke-width: 3.5px !important;
+      stroke-dasharray: 6 3;
+      animation: dash 1s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+    .timeline-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1.25rem;
+      width: 2px;
+      background: #334155;
+    }
+    html.light .timeline-line {
+      background: #cbd5e1;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-700 selection:text-white style-noir">
+
+  <!-- CABEÇALHO COM CONTROLES -->
+  <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-4 py-2.5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-3">
+      
+      <!-- Identificação e Título do Vértice Armamentista -->
+      <div class="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-start">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-amber-700 to-black flex items-center justify-center shadow-lg shadow-red-950/60 border border-red-500/40 flex-shrink-0">
+            <!-- Ícone Crosshair / Mira Tática -->
+            <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" stroke-width="2"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v4m0 10v4m-9-9h4m10 0h4m-7 0a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800/40 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                Dossiê Armamentista
+              </span>
+              <span id="badge-nodes-count" class="text-xs text-amber-400 font-mono font-semibold">18 Conexões Radiais</span>
+            </div>
+            <h1 class="text-sm sm:text-base lg:text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+              O Vértice Armamentista: Decretos, Milícias & Arsenais
+            </h1>
+          </div>
+        </div>
+        
+        <!-- Botão Mobile para Abrir Ações -->
+        <button onclick="toggleMobileFilters()" class="xl:hidden p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        </button>
+      </div>
+
+      <!-- Barra de Ferramentas, Busca e Filtros Equidistantes -->
+      <div id="toolbar-actions" class="hidden xl:flex flex-wrap items-center gap-2 w-full xl:w-auto justify-end">
+        
+        <!-- Campo de Busca em Tempo Real -->
+        <div class="relative">
+          <input 
+            type="text" 
+            id="search-input" 
+            oninput="atualizarFiltroBusca(this.value)" 
+            placeholder="Buscar fuzil, CAC, milícia, decreto..." 
+            class="w-48 lg:w-56 bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500 transition font-mono"
+          />
+          <svg class="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filtros por Categoria com Cálculo Equidistante Automático -->
+        <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs font-medium overflow-x-auto no-scrollbar">
+          <button onclick="selecionarCategoria('todas')" class="filter-btn px-2.5 py-1 rounded bg-red-700 text-white font-semibold transition whitespace-nowrap" data-cat="todas">Todos (<span id="count-todas">18</span>)</button>
+          <button onclick="selecionarCategoria('decretos')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="decretos">Decretos & Clã</button>
+          <button onclick="selecionarCategoria('milicia')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="milicia">Milícias & 117 Fuzis</button>
+          <button onclick="selecionarCategoria('cacs')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="cacs">CACs & Desvios</button>
+          <button onclick="selecionarCategoria('ataques')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="ataques">Tiros & Granadas</button>
+          <button onclick="selecionarCategoria('lobby')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="lobby">Lobby Proarmas</button>
+        </div>
+
+        <!-- Seletor de Intervalo de Quantidade (Equidistante 1 a 18) -->
+        <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs" title="Ajuste a quantidade de casos bélicos em órbita 360°">
+          <span class="text-[10px] font-mono text-slate-400 uppercase">Qtd:</span>
+          <input 
+            type="range" 
+            id="slider-nodes" 
+            min="1" 
+            max="18" 
+            value="18" 
+            oninput="alterarLimiteQuantidade(this.value)" 
+            class="w-16 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-red-600"
+          />
+          <span id="slider-val" class="font-mono text-xs font-bold text-amber-400 min-w-[1.2rem] text-right">18</span>
+        </div>
+
+        <!-- Botão 1: Alternar Estilo Tático Noir vs Clean -->
+        <button id="btn-toggle-layout" onclick="alternarLayoutEstilo()" title="Alternar entre Estilo Dossiê Tático e Layout Clean" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          <span id="label-layout">Clean</span>
+        </button>
+
+        <!-- Botão 2: Alternar Dark Mode / Light Mode -->
+        <button id="btn-toggle-theme" onclick="alternarTemaCor()" title="Alternar Modo Escuro e Claro" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <span id="icon-theme">
+            <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </span>
+          <span id="label-theme">Claro</span>
+        </button>
+
+        <!-- Botão 3: Diagrama vs Grade -->
+        <button id="btn-toggle-view" onclick="alternarVisao()" title="Alternar Visão" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          <span id="label-toggle-view">Lista</span>
+        </button>
+
+        <!-- Reset Zoom e Áudio -->
+        <div class="flex items-center gap-1">
+          <button onclick="resetZoom()" title="Redefinir Enquadramento e Zoom" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </button>
+          <button id="btn-sound" onclick="toggleAudio()" title="Efeitos Sonoros Sintetizados" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 rounded-lg transition">
+            <svg id="icon-sound" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ÁREA DE APRESENTAÇÃO PRINCIPAL -->
+  <main class="flex-1 relative flex flex-col items-center justify-center p-1 sm:p-4 overflow-hidden">
+    
+    <!-- Barra de Dica Superior Adaptada para Mobile -->
+    <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none px-2 w-full max-w-xl text-center">
+      <div id="hint-badge" class="bg-slate-900/90 border border-slate-700/80 text-slate-300 text-[11px] sm:text-xs px-3.5 py-1.5 rounded-full shadow-xl flex items-center justify-center gap-2 backdrop-blur-sm transition-colors duration-300">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">Toque nos nós para ver <b>arsenais, inquéritos e o link com o Google IA</b>. Pinça para zoom.</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 1: CANVAS RADIAL 360 GRAUS (SVG ADAPTATIVO MOBILE/DESKTOP) -->
+    <div id="container-radial" class="w-full h-[82vh] min-h-[580px] relative rounded-2xl border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-300">
+      
+      <!-- Grade tática de fundo sutil -->
+      <div id="bg-grid-overlay" class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#475569_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+      <!-- SVG do Diagrama Equidistante -->
+      <svg id="svg-diagram" class="w-full h-full svg-container" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#ef4444" />
+          </marker>
+          <marker id="arrowhead-clean" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#dc2626" />
+          </marker>
+          <radialGradient id="grad-center" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ef4444"/>
+            <stop offset="45%" stop-color="#b91c1c"/>
+            <stop offset="100%" stop-color="#450a0a"/>
+          </radialGradient>
+          <radialGradient id="grad-center-clean" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#dc2626"/>
+            <stop offset="100%" stop-color="#991b1b"/>
+          </radialGradient>
+          <linearGradient id="grad-node" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="grad-node-clean-light" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f8fafc"/>
+          </linearGradient>
+        </defs>
+
+        <!-- CONTAINER UNIFICADO DO GRAFO: resolve o erro de deslocamento no zoom e pan -->
+        <g id="viewport-content">
+          <!-- Camada de Conexões (Setas dinâmicas recalculadas) -->
+          <g id="layer-arrows" class="arrow-layer opacity-75"></g>
+
+          <!-- VÉRTICE CENTRAL: Flávio Bolsonaro (Hub das Pautas Armamentistas) -->
+          <g id="center-node" class="node-center cursor-pointer" onclick="abrirModalCentro()">
+            <circle id="center-circle-main" cx="800" cy="550" r="110" fill="url(#grad-center)" stroke="#fca5a5" stroke-width="4" />
+            <circle id="center-circle-dashed" cx="800" cy="550" r="100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="6 4" />
+            <text id="center-text-title1" x="800" y="512" text-anchor="middle" fill="#fef2f2" font-size="20" font-weight="900" letter-spacing="1">FLÁVIO</text>
+            <text id="center-text-title2" x="800" y="542" text-anchor="middle" fill="#fee2e2" font-size="24" font-weight="900" letter-spacing="1.5">BOLSONARO</text>
+            <line id="center-text-line" x1="730" y1="560" x2="870" y2="560" stroke="#fca5a5" stroke-width="2" opacity="0.8" />
+            <text id="center-text-sub1" x="800" y="583" text-anchor="middle" fill="#fecaca" font-size="12" font-weight="800" letter-spacing="0.8">O VÉRTICE ARMAMENTISTA</text>
+            <text id="center-text-sub2" x="800" y="604" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'JetBrains Mono', monospace" opacity="0.9">LEIS, CACs & MILÍCIAS</text>
+          </g>
+
+          <!-- Camada dos Nós Periféricos -->
+          <g id="layer-nodes"></g>
+        </g>
+      </svg>
+
+      <!-- Controles de Zoom Flutuantes -->
+      <div id="zoom-controls-box" class="absolute bottom-4 right-4 flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-1 gap-1 shadow-2xl backdrop-blur-md">
+        <button onclick="aplicarZoomBotao(1.2)" title="Aumentar Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">+</button>
+        <button onclick="aplicarZoomBotao(0.8)" title="Diminuir Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">−</button>
+        <button onclick="resetZoom()" title="Centralizar" class="px-2 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs font-mono transition">100%</button>
+      </div>
+
+      <!-- Legenda das Categorias das Armas -->
+      <div id="legend-box" class="absolute bottom-4 left-4 hidden lg:flex flex-wrap items-center gap-3 bg-slate-900/90 border border-slate-800 px-3.5 py-2 rounded-xl text-xs backdrop-blur-md">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span> Decretos & Clã</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Milícia & Fuzis</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> CACs & Desvios</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Tiros & Granadas</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Lobby Proarmas / Indústria</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 2: GRADE DE CARDS DOS CASOS ARMAMENTISTAS -->
+    <div id="container-grid" class="hidden w-full max-w-7xl mx-auto py-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="cards-wrapper">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE DETALHAMENTO EM 4 ABAS COM GOOGLE SEARCH LINK INTEGRADO -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-6 transition-opacity opacity-0 pointer-events-none">
+    <div id="modal-panel" class="bg-slate-900 border border-slate-700/80 w-full max-w-4xl max-h-[94vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-200">
+      
+      <!-- Topo do Modal -->
+      <div class="p-4 sm:p-5 border-b border-slate-800 bg-slate-950 flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div id="modal-badge-avatar" class="w-11 h-11 rounded-xl bg-red-950 border border-red-700/60 text-red-300 font-mono font-black text-base flex items-center justify-center flex-shrink-0 shadow-inner">
+            01
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="modal-badge-cat" class="text-xs font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded border">
+                Categoria
+              </span>
+              <span id="modal-cifra-badge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded flex items-center gap-1">
+                🎯 Arsenal & Impacto
+              </span>
+            </div>
+            <h2 id="modal-nome" class="text-base sm:text-xl font-black text-white tracking-tight mt-1">Nome do Personagem</h2>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Botão Dinâmico de Pesquisa no Google Modo IA -->
+          <a 
+            id="modal-google-btn" 
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="Abrir pesquisa exata no Google com fontes e resposta do Modo IA"
+            class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-md transition"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Pesquisar no Google (IA)</span>
+          </a>
+
+          <button onclick="fecharModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Navegação das 4 Abas -->
+      <div class="flex border-b border-slate-800 bg-slate-900/90 text-xs font-semibold overflow-x-auto no-scrollbar">
+        <button id="tab-btn-conexao" onclick="trocarAbaModal('conexao')" class="px-4 py-3 border-b-2 border-red-500 text-white flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          1. Conexão Bélica & Arsenais
+        </button>
+        <button id="tab-btn-fatos" onclick="trocarAbaModal('fatos')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          2. Decretos, Inquéritos & PF
+        </button>
+        <button id="tab-btn-satira" onclick="trocarAbaModal('satira')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          3. Sátira, Codinomes & Músicas
+        </button>
+        <button id="tab-btn-fontes" onclick="trocarAbaModal('fontes')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          4. Fontes, Links & Cronologia
+        </button>
+      </div>
+
+      <!-- ABA 1: Conexão Bélica & Arsenais -->
+      <div id="modal-tab-conexao" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed">
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="text-xs uppercase font-mono tracking-wider text-red-400 font-bold">Natureza da Conexão com Flávio Bolsonaro (Vértice)</h4>
+            <span id="modal-grau-conexao" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/60 border border-amber-800/40 px-2 py-0.5 rounded">Conexão Direta</span>
+          </div>
+          <p id="modal-conexao-desc" class="text-white font-medium"></p>
+        </div>
+
+        <!-- Quadro de Arsenais, Armas e Cifras Mapeadas -->
+        <div class="bg-emerald-950/25 border border-emerald-800/40 p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold">Arsenais, Calibres e Dados de Armamento Rastreados</h4>
+          </div>
+          <div id="modal-cifras-list" class="space-y-1.5 text-xs text-slate-200 font-mono"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Papel na Engrenagem Armamentista</span>
+            <span id="modal-papel" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Vínculo Funcional / Pessoal com o Vértice</span>
+            <span id="modal-proximidade" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: Decretos, Inquéritos & PF -->
+      <div id="modal-tab-fatos" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Resumo das Investigações Oficiais (PF, TCU e MP)</h4>
+          <p id="modal-inquerito-desc"></p>
+        </div>
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-amber-400 font-bold mb-1.5">Modus Operandi Bélico & Regulamentação</h4>
+          <p id="modal-modus-operandi" class="text-slate-200"></p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Operações / Inquéritos Vinculados</span>
+            <span id="modal-operacoes" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Desfecho / Status Jurídico</span>
+            <span id="modal-status-judicial" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 3: Sátira, Codinomes & Músicas -->
+      <div id="modal-tab-satira" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div class="bg-amber-950/30 border border-amber-800/40 p-4 rounded-xl">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block mb-1">5 Codinomes Satíricos Registrados</span>
+          <div id="modal-codinomes-list" class="flex flex-wrap gap-1.5 mt-1.5"></div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Ideia de Cena Teatral / Ilusionismo Tático</h4>
+          <p id="modal-cena-desc" class="text-slate-200 italic"></p>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Sugestão de Música & Ritmo</h4>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="modal-musica-nome" class="font-bold text-white text-base"></span>
+              <span id="modal-musica-ritmo" class="text-xs font-mono bg-red-950 text-red-300 px-2.5 py-0.5 rounded border border-red-800/50"></span>
+            </div>
+            <p id="modal-musica-refrão" class="text-xs text-slate-400"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 4: Fontes, Links & Cronologia -->
+      <div id="modal-tab-fontes" class="p-5 sm:p-6 overflow-y-auto space-y-5 text-sm leading-relaxed hidden">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-xs uppercase font-mono tracking-wider text-cyan-400 font-bold">Documentos, Notícias & Acórdãos Verificados</h4>
+            <a id="modal-tab-search-btn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 underline font-mono">
+              <span>Pesquisar este caso no Google IA &rarr;</span>
+            </a>
+          </div>
+          <div id="modal-fontes-container" class="space-y-2.5"></div>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold mb-3">Linha do Tempo Cronológica do Caso Bélico</h4>
+          <div class="relative pl-6 sm:pl-8 space-y-5" id="modal-timeline-container">
+            <div class="timeline-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal com Botão Google Search Prominente no Mobile -->
+      <div class="p-3.5 sm:p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between gap-2">
+        <a 
+          id="modal-google-footer-btn" 
+          href="#" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow transition"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          </svg>
+          <span>Buscar no Google IA</span>
+        </a>
+        <span class="hidden sm:inline text-xs text-slate-500 font-mono">Dossiê Especial • O Vértice Armamentista (Flávio & Clã)</span>
+        <button onclick="fecharModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition">
+          Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500 font-mono transition-colors duration-300">
+    Template Dinâmico 360° • Vértice Armamentista • Zoom Unificado Anti-Deslocamento & Adaptação para Telas Verticais
+  </footer>
+
+  <script>
+    /* BANCO DE DADOS DOS 18 PERSONAGENS E CASOS ARMAMENTISTAS */
+    const armasData = [
+      {
+        id: 1,
+        numero: "01",
+        nome: "Jair Bolsonaro",
+        subtitulo: "Decretos de Armas / +1 milhão de Armas e Fuzis",
+        categoria: "decretos",
+        cor: "#dc2626",
+        googleQuery: "Jair Bolsonaro decretos flexibilização armas CACs aumento fuzis Exército",
+        conexaoGrau: "Conexão Direta (Pai / Mentor da Política de Armas)",
+        conexaoDesc: "Pai de Flávio. Editou mais de 40 decretos e portarias presidenciais flexibilizando a compra de armas, munições e calibres pesados para CACs, elevando de 4 para até 60 armas por atirador (incluindo 30 fuzis) e revogando portarias de rastreamento de munições do Exército.",
+        cifras: [
+          "+1 milhão de armas ativas nas mãos de civis e CACs durante o governo (aumento de mais de 300%).",
+          "Liberação de até 180 mil cartuchos por atirador/ano e autorização de fuzis semiautomáticos 5.56 e 7.62 para civis.",
+          "Mais de 40 decretos e atos normativos contestados e depois barrados pelo STF por desvio de finalidade."
+        ],
+        papel: "Patriarca, formulador da política armamentista e autor do lema 'povo armado jamais será escravizado'.",
+        proximidade: "Núcleo familiar direto (Pai de Flávio).",
+        inqueritoDesc: "Investigado pelo STF nas ADIs das Armas (sob relatoria de Rosa Weber e Edson Fachin); inquérito civil no MPF por desmonte do controle de arsenais do Exército.",
+        modusOperandi: "Uso de decretos presidenciais infralegais para burlar o Estatuto do Desarmamento sem passar pelo Congresso Nacional.",
+        operacoes: "ADIs 6.119, 6.139 e 6.466 no STF; CPI das Armas; auditorias do TCU.",
+        statusJudicial: "Decretos de liberação declarados inconstitucionais pelo plenário do STF.",
+        codinomes: ["O General do Chumbo Grosso", "O Patriarca dos Decretos Bélicos", "O Mascate da Pólvora", "Capitão Fuzil", "O Inimigo do Rastreamento"],
+        cena: "Um presidente estendendo as duas mãos fazendo arminha em comício enquanto assina decretos liberando fuzis de assalto para colecionadores estocarem em garagens residenciais.",
+        musicaNome: "A Marcha dos Decretos de Chumbo",
+        musicaRitmo: "Marcha Militar Satírica",
+        musicaRefrão: "Caneta na mão, decreto assinado, o fuzil tá liberado e o controle desmantelado!",
+        fontes: [
+          { veiculo: "G1 / STF", titulo: "STF forma maioria para suspender decretos de Bolsonaro que facilitavam compra de armas", data: "05/09/2022", linkTexto: "G1 - Decisão STF Armas", url: "https://g1.globo.com/politica/noticia/2022/09/05/fachin-suspende-trechos-de-decretos-de-bolsonaro-sobre-armas.ghtml" },
+          { veiculo: "Folha de S.Paulo", titulo: "Acervo de armas de CACs sob Bolsonaro supera o de policiais militares de todo o país", data: "24/07/2022", linkTexto: "Folha - Levantamento Bélico", url: "https://www1.folha.uol.com.br/cotidiano/2022/07/acervo-de-armas-de-cacs-supera-o-de-policiais-militares-em-todo-o-pais.shtml" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Assina os Decretos 9.845, 9.846 e 9.847 permitindo a compra de fuzis e aumento de munições." },
+          { ano: "Abr/2020", texto: "Manda o Exército revogar 3 portarias que criavam o rastreamento nacional de munições." },
+          { ano: "2022-2023", texto: "STF confirma inconstitucionalidade dos decretos e derruba normas pró-armamento." }
+        ]
+      },
+      {
+        id: 2,
+        numero: "02",
+        nome: "Eduardo Bolsonaro",
+        subtitulo: "O Embaixador do Proarmas / Feiras nos EUA",
+        categoria: "lobby",
+        cor: "#0284c7",
+        googleQuery: "Eduardo Bolsonaro lobby armas Proarmas Shot Show feiras EUA",
+        conexaoGrau: "Conexão Direta (Irmão / Líder do Lobby Armamentista)",
+        conexaoDesc: "Irmão de Flávio. Principal articulador político do movimento pró-armas no Congresso Nacional. Participante assíduo da feira Shot Show em Las Vegas, organizador das marchas do Proarmas e defensor da instalação de clubes de tiro em escolas e cidades.",
+        cifras: [
+          "Centenas de milhares de reais investidos em missões e viagens a estandes de tiro na Flórida e Nevada.",
+          "Autor de projetos para autorizar o porte irrestrito de armas a instrutores de tiro e atiradores esportivos."
+        ],
+        papel: "Chanceler informal do lobby armamentista, defensor da NRA norte-americana e agitador de estandes.",
+        proximidade: "Núcleo familiar direto (Irmão de Flávio).",
+        inqueritoDesc: "Alvo de representações no Conselho de Ética e investigado por declarações armadas em comícios ('não há mais espaço para quem não quer arma').",
+        modusOperandi: "Guerra cultural armada em podcasts e estandes de tiro com camisetas camufladas e armas AR-15.",
+        operacoes: "Representações na PGR e CPI dos Atos Golpistas.",
+        statusJudicial: "Deputado federal sob inquéritos no STF.",
+        codinomes: ["Bananinha da Pistola", "O Garoto do Estande", "O Embaixador do Proarmas", "Dudu do Calibre Doze", "O Caubói de Las Vegas"],
+        cena: "O deputado com chapéu texano gravando vídeos em estandes de tiro na Flórida com óculos escuros e disparando fuzil enquanto discursa que todo cidadão de bem precisa de um cano no coldre.",
+        musicaNome: "O Caubói do Estande",
+        musicaRitmo: "Country Paródia / Ska Acelerado",
+        musicaRefrão: "Fuzil importado, óculos espelhado, atira na areia com o bolso bancado!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Eduardo Bolsonaro discursa em marcha do Proarmas e compara professores a traficantes", data: "10/07/2023", linkTexto: "The Intercept - Marcha Proarmas", url: "https://theintercept.com/2023/07/10/eduardo-bolsonaro-compara-professores-a-traficantes-em-marcha-do-proarmas/" }
+        ],
+        timeline: [
+          { ano: "2019-2022", texto: "Participa das feiras da indústria bélica em Las Vegas e estreita laços com a Taurus e Proarmas." },
+          { ano: "2023", texto: "Compara professores a traficantes em ato armamentista na Esplanada dos Ministérios." }
+        ]
+      },
+      {
+        id: 3,
+        numero: "03",
+        nome: "Ronnie Lessa",
+        subtitulo: "O Vizinho da Barra / 117 Fuzis M16",
+        categoria: "milicia",
+        cor: "#16a34a",
+        googleQuery: "Ronnie Lessa 117 fuzis M16 Vivendas da Barra Marielle",
+        conexaoGrau: "Conexão Direta (Vizinho de Condomínio e Mercenário)",
+        conexaoDesc: "Sargento reformado da PM e assassino confesso de Marielle Franco e Anderson Gomes. Morava no condomínio Vivendas da Barra (mesmo condomínio de Jair e Carlos). Em março de 2019, a polícia apreendeu 117 fuzis M16 incompletos escondidos por Lessa na casa de um comparsa.",
+        cifras: [
+          "117 fuzis de assalto M16 apreendidos desmontados (maior apreensão de fuzis da história do Rio).",
+          "R$ 100 mil recebidos por execuções de aluguel e controle de pontos de bingo e milícia na Zona Oeste.",
+          "Milhões de reais movimentados em propriedades de luxo em Angra e Barra da Tijuca."
+        ],
+        papel: "Pistoleiro de elite, armeiro clandestino de facções e executor mercenário da milícia.",
+        proximidade: "Vizinho de muro do clã Bolsonaro no Vivendas da Barra; filha namorou Jair Renan.",
+        inqueritoDesc: "Preso pela Delegacia de Homicídios e PF na Operação Lume; firmou acordo de delação premiada homologado pelo STF apontando os mandantes do crime.",
+        modusOperandi: "Importação clandestina de peças de fuzis dos EUA via Miami, montagem no Rio e utilização em emboscadas com submetralhadoras MP5.",
+        operacoes: "Operação Lume (PCERJ / MPRJ), Inquérito Marielle Franco (STF / PF).",
+        statusJudicial: "Condenado a quase 80 anos de prisão; preso em presídio federal de segurança máxima.",
+        codinomes: ["O Atirador do Vivendas", "O Vizinho dos 117 Fuzis", "O Carrasco da MP5", "Ronnie da Barra", "O Armeiro de Bento Ribeiro"],
+        cena: "Caixas de papelão sendo abertas pela polícia no quarto de um subúrbio carioca revelando mais de cem canos e mecanismos de fuzil novinhos em folha pertencentes ao vizinho do presidente.",
+        musicaNome: "Cento e Dezessete Fuzis no Guarda-Roupa",
+        musicaRitmo: "Samba-Enredo Pesado / Rap Sarcástico",
+        musicaRefrão: "O vizinho dava bom dia na portaria, e guardava cem fuzis pra fazer a carnificina do dia!",
+        fontes: [
+          { veiculo: "G1 Rio", titulo: "Polícia apreende 117 fuzis M16 na casa de amigo de suspeito de matar Marielle", data: "12/03/2019", linkTexto: "G1 - Apreensão dos 117 Fuzis", url: "https://g1.globo.com/rj/rio-de-janeiro/noticia/2019/03/12/policia-encontra-dezenas-de-fuzis-na-casa-de-amigo-do-suspeito-de-atirar-em-marielle.ghtml" }
+        ],
+        timeline: [
+          { ano: "Mar/2018", texto: "Executa Marielle Franco e Anderson Gomes utilizando munições UZZ desviadas da PF." },
+          { ano: "Mar/2019", texto: "É preso no Vivendas da Barra; polícia apreende 117 fuzis M16 em endereço vinculado a ele." },
+          { ano: "2024", texto: "Fecha delação premiada na PF e detalha a trama armada e política do assassinato." }
+        ]
+      },
+      {
+        id: 4,
+        numero: "04",
+        nome: "Adriano da Nóbrega",
+        subtitulo: "Escritório do Crime / Condecorado na Cadeia",
+        categoria: "milicia",
+        cor: "#16a34a",
+        googleQuery: "Adriano da Nobrega Flavio Bolsonaro Medalha Tiradentes Escritorio do Crime fuzis",
+        conexaoGrau: "Conexão Direta (Homenageado por Flávio / Chefe da Milícia)",
+        conexaoDesc: "Ex-capitão do BOPE, atirador de precisão e líder do consórcio de pistoleiros 'Escritório do Crime'. Recebeu de Flávio na ALERJ a Medalha Tiradentes preso por homicídio; teve a mãe e a ex-esposa empregadas no gabinete de Flávio abastecendo o caixa de Queiroz.",
+        cifras: [
+          "Pistolas Glock austríacas com kit rajada, fuzis e espingardas apreendidas em sua posse.",
+          "Centenas de milhares de reais pagos em salários públicos aos seus parentes pelo gabinete de Flávio.",
+          "Milhões em terras griladas e cobrança armada em Rio das Pedras e Muzema."
+        ],
+        papel: "Comandante do grupo de extermínio mais temido do Rio e articulador paramilitar.",
+        proximidade: "Condecorado pessoalmente por Flávio com a mais alta honraria da ALERJ dentro do presídio.",
+        inqueritoDesc: "Alvo da Operação Os Intocáveis do MPRJ; permaneceu foragido até ser cercado e morto pela polícia em um sítio na Bahia em fevereiro de 2020.",
+        modusOperandi: "Treinamento tático de operações especiais aplicado a execuções sumárias por encomenda e cobrança armada de taxas territoriais.",
+        operacoes: "Operação Os Intocáveis (MPRJ / GAECC), Operação Girasol (BA).",
+        statusJudicial: "Morto em confronto com policiais militares na Bahia em fevereiro de 2020.",
+        codinomes: ["O Capitão do Escritório", "O Padrinho Condecorado", "A Caveira de Ouro", "Adriano da Medalha", "O Fantasma de Esplanada"],
+        cena: "Um parlamentar na tribuna da assembleia discursando loas à bravura de um capitão preso por assassinato, pregando uma medalha de ouro reluzente enquanto o homenageado carrega o fuzil na cela.",
+        musicaNome: "A Medalha Tiradentes do Matador",
+        musicaRitmo: "Moda de Viola Macabra",
+        musicaRefrão: "A comenda reluz no camburão do coronel, o gabinete assina o ponto e o atirador cumpre o papel!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Flávio Bolsonaro homenageou chefe do Escritório do Crime preso por homicídio", data: "22/01/2019", linkTexto: "The Intercept - Adriano Nóbrega", url: "https://theintercept.com/2019/01/22/flavio-bolsonaro-adriano-nobrega-milicia/" }
+        ],
+        timeline: [
+          { ano: "2003-2005", texto: "Flávio concede Moção de Louvor e Medalha Tiradentes a Adriano preso no BEP." },
+          { ano: "2007-2018", texto: "Mãe e ex-mulher de Adriano recebem salários da ALERJ e repassam a Queiroz." },
+          { ano: "Fev/2020", texto: "Adriano é morto em cerco policial na Bahia após longa fuga." }
+        ]
+      },
+      {
+        id: 5,
+        numero: "05",
+        nome: "Carla Zambelli",
+        subtitulo: "A Pistoleira dos Jardins / Tiro na Véspera",
+        categoria: "ataques",
+        cor: "#e11d48",
+        googleQuery: "Carla Zambelli pistola Jardins perseguicao Luan Araujo tiro",
+        conexaoGrau: "Conexão Direta (Aliada de Flávio / Porte Suspenso pelo STF)",
+        conexaoDesc: "Deputada federal bolsonarista. Na véspera do segundo turno de 2022, sacou uma pistola Taurus 9mm em punho e perseguiu um homem desarmado (Luan Araújo) pelas calçadas de São Paulo após discussão política, com disparo efetuado em frente a um restaurante.",
+        cifras: [
+          "Pistola Taurus calibre 9mm apreendida pela Polícia Federal.",
+          "Porte de arma de fogo cassado formalmente por decisão unânime do STF.",
+          "Mais de R$ 300 mil em multas e fianças fixadas pelo Poder Judiciário."
+        ],
+        papel: "Tropa de choque do clã no Congresso e símbolo da intimidação armada nas ruas.",
+        proximidade: "Madrinha de atos políticos e aliada de primeira hora de Flávio e Jair Bolsonaro.",
+        inqueritoDesc: "Ré no STF (Inquérito 4.924) por porte ilegal de arma e constrangimento ilegal com emprego de arma de fogo; armas apreendidas pela PF.",
+        modusOperandi: "Uso ostensivo de armamento civil para constranger desafetos em via pública e disseminação de versões falsas de agressão física.",
+        operacoes: "Inquérito 4.924 / STF (Relatoria Ministro Gilmar Mendes).",
+        statusJudicial: "Ré perante o STF com parecer da PGR recomendando condenação penal.",
+        codinomes: ["A Pistoleira dos Jardins", "A Espanhola Armada", "A Dama do Salto Alto e Gatilho", "Carlinha do Canote", "A Perguidora da Alameda"],
+        cena: "Uma deputada federal correndo de salto alto e calça social tropeçando nas lajotas da calçada de um bairro nobre com uma pistola preta apontada para a nuca de um pedestre apavorado.",
+        musicaNome: "Corre Que a Deputada Tá Armada!",
+        musicaRitmo: "Frevo Acelerado / Marchinha Alucinada",
+        musicaRefrão: "Tropeçou no salto alto com a pistola na mão, deu tiro na calçada e fugiu da eleição!",
+        fontes: [
+          { veiculo: "G1", titulo: "Vídeo mostra Carla Zambelli com arma em punho perseguindo homem em SP", data: "29/10/2022", linkTexto: "G1 - Perseguição Armada", url: "https://g1.globo.com/sp/sao-paulo/noticia/2022/10/29/video-mostra-carla-zambelli-com-arma-em-punho-em-sp.ghtml" }
+        ],
+        timeline: [
+          { ano: "Out/2022", texto: "Persegue homem de arma em punho em SP a menos de 24 horas da votação presidencial." },
+          { ano: "Dez/2022", texto: "STF determina busca e apreensão de todas as suas armas e cassa o porte." },
+          { ano: "2023", texto: "Torna-se ré no STF com abertura de ação penal." }
+        ]
+      },
+      {
+        id: 6,
+        numero: "06",
+        nome: "Roberto Jefferson",
+        subtitulo: "O Arsenal de Granadas / 50 Tiros na PF",
+        categoria: "ataques",
+        cor: "#e11d48",
+        googleQuery: "Roberto Jefferson tiros granadas Policia Federal Levy Gasparian arsenal",
+        conexaoGrau: "Conexão Direta (Aliado Histórico / Reação Armada à PF)",
+        conexaoDesc: "Ex-deputado e presidente de honra do PTB, partido onde Flávio iniciou sua trajetória parlamentar. Em outubro de 2022, resistiu à ordem de prisão do STF disparando mais de 50 tiros de fuzil Colt M4 5.56 e arremessando 3 granadas adulteradas contra viaturas da Polícia Federal.",
+        cifras: [
+          "Fuzil Colt M4 calibre 5.56 e mais de 8.000 munições de guerra estocadas na residência.",
+          "3 granadas com efeito adulterado (com pregos e pedaços de ferro) arremessadas contra agentes federais.",
+          "Dois policiais federais feridos por estilhaços e tiros durante o cumprimento do mandado."
+        ],
+        papel: "Agitador radical armado, mentor de milícias civis e linha de frente do confronto armado contra o STF.",
+        proximidade: "Aliado íntimo de Jair e Flávio; mentor político do início da carreira de Flávio no PTB.",
+        inqueritoDesc: "Réu na Justiça Federal por quatro tentativas de homicídio qualificado contra os policiais federais, posse de artefatos explosivos e posse de armas ilegais.",
+        modusOperandi: "Estocagem domiciliar de arsenal de guerra sob certificado suspenso de CAC e confronto armado com forças policiais do Estado.",
+        operacoes: "Cumprimento de Mandado da PF em Levy Gasparian (RJ) / Inquérito 4.874 STF.",
+        statusJudicial: "Preso preventivamente no Complexo Penitenciário de Gericinó; réu em tribunal do júri.",
+        codinomes: ["O Granadeiro do Planalto", "O Atirador de Levy Gasparian", "Bob Jeff da Colt 5.56", "O Fuzileiro de Pijama", "O Guardião do Paiol"],
+        cena: "O ex-deputado de colete tático e cabelos brancos postando vídeos no WhatsApp enquanto dispara rajadas de fuzil e arremessa granadas caseiras no para-brisa da viatura da Polícia Federal.",
+        musicaNome: "Cinquenta Tiros e Três Granadas",
+        musicaRitmo: "Rock Pesado / Punk-Brega",
+        musicaRefrão: "Recebeu a polícia com tiro de fuzil, a granada explodiu e o aliado fugiu!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Roberto Jefferson atira contra policiais federais e arremessa granada durante prisão", data: "23/10/2022", linkTexto: "O Globo - Ataque à PF", url: "https://oglobo.globo.com/politica/noticia/2022/10/roberto-jefferson-atira-contra-policiais-federais-que-foram-cumprir-mandado-de-prisao.ghtml" }
+        ],
+        timeline: [
+          { ano: "1999-2002", texto: "Flávio Bolsonaro atua como secretário comissionado no gabinete de Jefferson na Câmara." },
+          { ano: "23/Out/2022", texto: "Dispara fuzis e granadas contra policiais federais deixando agentes feridos." },
+          { ano: "2023", texto: "Justiça Federal pronuncia Roberto Jefferson para ir a júri popular por tentativa de homicídio." }
+        ]
+      },
+      {
+        id: 7,
+        numero: "07",
+        nome: "Bruno Dias Delaroli",
+        subtitulo: "O Fuzil do Caso Ana Clara / Defendido por Flávio",
+        categoria: "milicia",
+        cor: "#16a34a",
+        googleQuery: "Bruno Dias Delaroli Flavio Bolsonaro defesa PM caso menina Ana Clara Niteroi",
+        conexaoGrau: "Conexão Direta (Flávio Foi Seu Advogado Formal no STJ/STF)",
+        conexaoDesc: "Cabo da PM do RJ réu pelo homicídio qualificado da menina Ana Clara (5 anos), morta com tiro de fuzil em Niterói (2021). A perícia descartou tiroteio. Flávio Bolsonaro ingressou como seu advogado formal nos tribunais superiores, apresentando recursos para tentar anular a ida do PM a júri popular por mais de 5 anos.",
+        cifras: [
+          "Disparo de fuzil 5.56 da Polícia Militar que ceifou a vida de criança de 5 anos.",
+          "Mais de 5 anos de recursos judiciais travando a realização do Tribunal do Júri popular.",
+          "Zero impacto de balas na viatura policial, desmentindo a versão de confronto armado."
+        ],
+        papel: "Policial réu por tiro fatal defendido formalmente pela banca de advocacia do senador Flávio Bolsonaro.",
+        proximidade: "Cliente direto de Flávio Bolsonaro nos processos criminais perante o STJ e STF.",
+        inqueritoDesc: "Pronunciado pela 3ª Vara Criminal de Niterói por homicídio qualificado; recursos da banca de Flávio levaram o caso a cortes superiores para evitar o júri.",
+        modusOperandi: "Disparos de armamento pesado em comunidade habitada sem confirmação de alvo legítimo e posterior defesa institucional por parlamentar.",
+        operacoes: "Processo Criminal nº 0004544-77.2021.8.19.0002 (TJRJ / STJ / STF).",
+        statusJudicial: "Réu com júri popular suspenso por recursos da defesa de Flávio Bolsonaro.",
+        codinomes: ["O Fuzil de Niterói", "O Cliente do Senador", "O Réu de Ana Clara", "O Cabo da Banca Nobre", "O Atirador do Monan Pequeno"],
+        cena: "A mãe de uma menina de 5 anos chorando no tribunal enquanto o filho do ex-presidente protocola petições carimbadas com toga de luxo para livrar o policial que disparou o tiro fatal.",
+        musicaNome: "O Tiro Que Não Teve Júri",
+        musicaRitmo: "MPB Dramática / R&B Fúnebre",
+        musicaRefrão: "Defende a família no cartaz da eleição, mas livra quem atirou no peito do coração!",
+        fontes: [
+          { veiculo: "Revista Fórum / ICL", titulo: "Caso Ana Clara: Mãe desabafa sobre Flávio Bolsonaro defender PM acusado de matar criança", data: "30/09/2026", linkTexto: "Fórum - Caso Ana Clara", url: "https://revistaforum.com.br/blogs/blog-do-rovai/ana-clara-mae-flavio-bolsonaro-defendeu-policial/" }
+        ],
+        timeline: [
+          { ano: "Fev/2021", texto: "Ana Clara (5 anos) é assassinada na porta de casa por disparo de fuzil em Niterói." },
+          { ano: "2021", texto: "Perícia confirma que disparo saiu da arma de Delaroli e Justiça decide por júri popular." },
+          { ano: "2022-2026", texto: "Flávio Bolsonaro assume a defesa e trava a tramitação do processo em Brasília." }
+        ]
+      },
+      {
+        id: 8,
+        numero: "08",
+        nome: "Marcos Pollon",
+        subtitulo: "Presidente do Proarmas / Bancada da Bala",
+        categoria: "lobby",
+        cor: "#0284c7",
+        googleQuery: "Marcos Pollon Proarmas deputado PL lobby armamentista armas",
+        conexaoGrau: "Conexão Direta (Articulador Político do Proarmas no PL)",
+        conexaoDesc: "Advogado, líder e fundador do Proarmas, a maior entidade de lobby armamentista da América Latina. Eleito deputado federal pelo PL com votação recorde apoiado por Eduardo e Flávio Bolsonaro, atuando como o principal lobista dos clubes de tiro no Congresso.",
+        cifras: [
+          "Milhões de reais arrecadados em mensalidades e patrocínios de lojas de armas e estandes de tiro.",
+          "Mais de 800 mil CACs mobilizados como base eleitoral orgânica da família Bolsonaro."
+        ],
+        papel: "Líder corporativo do setor armamentista, articulador de leis de proteção a atiradores e deputado do PL.",
+        proximidade: "Amigo pessoal de Eduardo e Flávio Bolsonaro, palestrante dos eventos do clã.",
+        inqueritoDesc: "Investigado pelo Ministério Público Federal por incentivo à proliferação armamentista desregulamentada e lobby contra normas de segurança pública.",
+        modusOperandi: "Pressão corporativa permanente sobre deputados e senadores para derrubar vetos e manter privilégios fiscais e de circulação a portadores de armas.",
+        operacoes: "Inquéritos Civis Públicos MPF; representações no Conselho de Ética da Câmara.",
+        statusJudicial: "Deputado federal em pleno exercício do mandato legislativo.",
+        codinomes: ["O Caixeiro do Chumbo", "O Bispo do Proarmas", "O Lobista da Bala", "Pollon do Calibre Aberto", "O Procurador dos Estandes"],
+        cena: "Um advogado engravatado subindo ao carro de som em Brasília com um microfone dourado gritando que ter um fuzil em casa é um direito divino superior à Constituição.",
+        musicaNome: "O Caixeiro do Chumbo",
+        musicaRitmo: "Forró Eletrônico Satírico / Piseiro",
+        musicaRefrão: "Vende o curso, vende o tiro, bota o fuzil no salão, a comissão do Proarmas enche o bolso do patrão!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Líder do Proarmas, Marcos Pollon é o deputado federal mais votado de MS com apoio de Bolsonaro", data: "03/10/2022", linkTexto: "O Globo - Eleição Pollon", url: "https://oglobo.globo.com/politica/eleicoes-2022/noticia/2022/10/lider-do-proarmas-marcos-pollon-e-o-deputado-federal-mais-votado-de-ms.ghtml" }
+        ],
+        timeline: [
+          { ano: "2020", texto: "Funda a Associação Nacional Proarmas e expande núcleos em todos os estados." },
+          { ano: "2022", texto: "Elege-se deputado federal mais votado do Mato Grosso do Sul pela legenda do PL." }
+        ]
+      },
+      {
+        id: 9,
+        numero: "09",
+        nome: "Alexandre Motta de Souza",
+        subtitulo: "O Armeiro do Guarda-Roupa / Escondeu os 117 M16",
+        categoria: "milicia",
+        cor: "#16a34a",
+        googleQuery: "Alexandre Motta de Souza 117 fuzis Ronnie Lessa armeiro",
+        conexaoGrau: "Conexão Indireta (Compadre e Guardião das Armas de Lessa)",
+        conexaoDesc: "Amigo de infância de Ronnie Lessa. Foi preso em flagrante pela polícia do Rio em março de 2019 ao ser flagrado guardando no guarda-roupa de sua casa no Méier/Bento Ribeiro as 117 caixas de fuzis M16 desmontados pertencentes ao vizinho de Bolsonaro.",
+        cifras: [
+          "117 fuzis M16 novos avaliados em mais de R$ 4 milhões no mercado clandestino.",
+          "Peças importadas clandestinamente dos Estados Unidos com peças plásticas e canos de precisão."
+        ],
+        papel: "Guardião de armamento pesado da milícia e elo logístico de Ronnie Lessa.",
+        proximidade: "Amigo de infância e operador do armamento do assassino de Marielle.",
+        inqueritoDesc: "Preso em flagrante e condenado pela Justiça do Rio por posse ilegal de armas de fogo de uso restrito em grande escala.",
+        modusOperandi: "Guarda clandestina em imóvel residencial discreto para evitar a localização do arsenal pela polícia.",
+        operacoes: "Operação Lume (Polícia Civil do Rio de Janeiro).",
+        statusJudicial: "Condenado pela Justiça Criminal do Rio de Janeiro.",
+        codinomes: ["O Fiel do Guarda-Roupa", "O Amigo do M16", "Motta do Méier", "O Baú de Lessa", "O Armeiro da Gaveta"],
+        cena: "A polícia abrindo a porta de um armário empoeirado e encontrando centenas de fuzis novinhos embrulhados como se fossem camisas de futebol.",
+        musicaNome: "O Armário de Bento Ribeiro",
+        musicaRitmo: "Samba de Breque Sarcástico",
+        musicaRefrão: "Abriu a gaveta pra pegar o paletó, caiu cento e dezessete fuzis de dar dó!",
+        fontes: [
+          { veiculo: "Folha de S.Paulo", titulo: "Amigo de suspeito de matar Marielle guardava 117 fuzis em caixas lacradas", data: "13/03/2019", linkTexto: "Folha - Apreensão Motta", url: "https://www1.folha.uol.com.br/cotidiano/2019/03/amigo-de-suspeito-de-matar-marielle-guardava-117-fuzis-em-caixas-lacradas.shtml" }
+        ],
+        timeline: [
+          { ano: "Mar/2019", texto: "É preso em flagrante com as 117 armas desmontadas recebidas de Ronnie Lessa." },
+          { ano: "2020", texto: "É condenado por tráfico e posse ilegal de armamento restrito." }
+        ]
+      },
+      {
+        id: 10,
+        numero: "10",
+        nome: "Fiscalização do Exército (DFPC)",
+        subtitulo: "Apagão nos CACs / Armas para Condenados",
+        categoria: "cacs",
+        cor: "#d97706",
+        googleQuery: "TCU auditoria Exercito CACs condenados fiscalizacao armas Bolsonaro",
+        conexaoGrau: "Conexão Direta (Órgão Militar que Liberou Arsenais sob Decretos)",
+        conexaoDesc: "Diretoria de Fiscalização de Produtos Controlados do Exército. Auditoria do Tribunal de Contas da União (TCU) comprovou que, sob os decretos de Bolsonaro, o Exército concedeu licenças de CAC a 5.235 condenados pela Justiça (inclusive por tráfico de drogas e roubo a banco) sem checar certidões.",
+        cifras: [
+          "5.235 condenados criminais com certificados de CAC emitidos pelo Exército.",
+          "Mais de 1 milhão de armas cadastradas no Sigma com dados incompletos ou sumiço de numeração.",
+          "Auditoria do TCU confirmou descalabro e falta de fiscalização presencial em 98% dos registros."
+        ],
+        papel: "Estrutura burocrática militar que chancelou a farra do armamento descontrolado.",
+        proximidade: "Subordinada ao Ministério da Defesa e ao comando direto de Jair Bolsonaro.",
+        inqueritoDesc: "Alvo de processo de controle externo e auditoria do TCU (Acórdão 1.543/2023) por falha grave de gestão e ausência de verificação de antecedentes criminais.",
+        modusOperandi: "Automatização de concessões de certificados sem fiscalização presencial de residências ou estandes.",
+        operacoes: "Auditoria TCU 018.995/2022-2; Inquérito Civil Público MPF.",
+        statusJudicial: "Determinações do TCU para revisão de todos os registros e suspensão de novas concessões irregulares.",
+        codinomes: ["O Cartório do Exército", "O Carimbador dos Condenados", "O Apagão dos Quartéis", "A Portaria da Frouxidão", "O Fiscal dos Papéis Furados"],
+        cena: "Militares carimbando formulários de atiradores desportivos em série sem ler os nomes, enquanto assaltantes de banco pegam suas carteirinhas oficiais de atirador no guichê.",
+        musicaNome: "O Carimbo da Caserna",
+        musicaRitmo: "Marchinha de Fanfarra Satírica",
+        musicaRefrão: "Não checa o papel, não checa o passado, carimba o registro pro ficha-suja armado!",
+        fontes: [
+          { veiculo: "O Estado de S. Paulo", titulo: "Exército liberou armas para mais de 5 mil condenados pela Justiça sob Bolsonaro, diz TCU", data: "04/03/2024", linkTexto: "Estadão - Auditoria TCU", url: "https://www.estadao.com.br/politica/exercito-liberou-armas-para-mais-de-5-mil-condenados-pela-justica-sob-bolsonaro-diz-tcu/" }
+        ],
+        timeline: [
+          { ano: "2019-2022", texto: "DFPC emite recorde de registros de CAC sem exigência de checagens criminais rigorosas." },
+          { ano: "2023-2024", texto: "TCU divulga relatório arrasador apontando concessão de armas a milhares de criminosos." }
+        ]
+      },
+      {
+        id: 11,
+        numero: "11",
+        nome: "CACs das Facções (PCC e CV)",
+        subtitulo: "Desvios de Fuzis / Operação Dakovo da PF",
+        categoria: "cacs",
+        cor: "#d97706",
+        googleQuery: "CACs desvio armas PCC Comando Vermelho Operacao Dakovo Policia Federal",
+        conexaoGrau: "Conexão Indireta (Efeito Prático da Política Armamentista)",
+        conexaoDesc: "Operações da Polícia Federal (como a Op. Dakovo e Op. Fim da Linha) comprovaram que a flexibilização para CACs serviu como canal de abastecimento de fuzis novos e pistolas para o PCC e o Comando Vermelho, com criminosos usando laranjas registrados como atiradores esportivos.",
+        cifras: [
+          "R$ 70 mil a R$ 100 mil cobrados pela venda de um fuzil legalizado desviado para o tráfico.",
+          "Milhares de armas compradas com notas fiscais legais apreendidas em favelas e pontos de narcotráfico.",
+          "Operação Dakovo desmantelou rede que movimentou mais de 43 mil armas vindas da Europa e EUA."
+        ],
+        papel: "Duto clandestino que transformou o registro de atirador civil em fornecedor do crime organizado.",
+        proximidade: "Consequência direta das brechas legais criadas pelos decretos presidenciais de Bolsonaro.",
+        inqueritoDesc: "Inquéritos da PF comprovaram que atiradores compravam arsenais permitidos pelos decretos e simulavam roubos para desviar armas para o crime organizado.",
+        modusOperandi: "Registro de pessoas sem antecedentes para comprar até 30 fuzis por CPF e revenda clandestina para o crime com queima da numeração.",
+        operacoes: "Operação Dakovo (PF), Operação Fim da Linha, Operação Gun Express.",
+        statusJudicial: "Dezenas de CACs e lojistas presos e condenados por tráfico internacional de armas.",
+        codinomes: ["O Atirador do Narcotráfico", "O CAC do Crime", "O Laranja do Fuzil", "O Colecionador da Facção", "O Revendedor da Fita"],
+        cena: "Um jovem de classe média comprando fuzis legalmente na loja do shopping e entregando a mala de armas na caçamba de uma picape em um posto de gasolina para traficantes encapuzados.",
+        musicaNome: "O CAC Virou Traficante",
+        musicaRitmo: "Trap Pesado / Funk Consciente",
+        musicaRefrão: "Comprou na loja com documento na mão, passou pro tráfico e abasteceu a facção!",
+        fontes: [
+          { veiculo: "G1", titulo: "PF deflagra Operação Dakovo contra esquema de tráfico internacional de 43 mil armas para facções", data: "05/12/2023", linkTexto: "G1 - Operação Dakovo", url: "https://g1.globo.com/politica/noticia/2023/12/05/pf-deflagra-operacao-contra-trafico-internacional-de-armas.ghtml" }
+        ],
+        timeline: [
+          { ano: "2020-2022", texto: "Facções criminosas passam a financiar registros de CACs para adquirir fuzis novos no mercado legal." },
+          { ano: "2023", texto: "Polícia Federal deflagra operações conjuntas desarticulando redes de desvio bélico." }
+        ]
+      },
+      {
+        id: 12,
+        numero: "12",
+        nome: "Indústria Bélica (Taurus e CBC)",
+        subtitulo: "Lucros Recordes / Ações Disparadas na B3",
+        categoria: "lobby",
+        cor: "#0284c7",
+        googleQuery: "Taurus CBC lobby armas faturamento governo Bolsonaro acoes",
+        conexaoGrau: "Conexão Direta (Grandes Financiadoras e Beneficiárias)",
+        conexaoDesc: "Principais fabricantes de armas e munições do Brasil. Com os decretos do clã Bolsonaro, as ações da Taurus (TASA4) valorizaram centenas por cento na Bolsa de Valores. A indústria patrocinou congressos de tiro, financiou candidatos e se reuniu com a cúpula do governo federal.",
+        cifras: [
+          "Faturamento bilionário histórico registrado pela Taurus e CBC entre 2019 e 2022.",
+          "Aumento de centenas de milhões de cartuchos de munições vendidos no mercado nacional.",
+          "Milhões de reais gastos em lobbies e bancadas corporativas no Congresso Nacional."
+        ],
+        papel: "Setor econômico beneficiário direto da explosão de vendas de armas e munições.",
+        proximidade: "Relação institucional estreita com ministros, Eduardo e Flávio Bolsonaro.",
+        inqueritoDesc: "Representações perante o CADE e órgãos de fiscalização financeira sobre monopólio e pressão regulatória sobre o Exército.",
+        modusOperandi: "Atuação direta em comissões parlamentares para barrar concorrência estrangeira e manter benefícios fiscais para armamentos.",
+        operacoes: "Processos no CADE e representações de entidades de direitos civis.",
+        statusJudicial: "Empresas com capital aberto sob novas regulações de controle de armas.",
+        codinomes: ["Os Barões da Pólvora", "A Fábrica dos Bilhões", "O Monopólio do Gatilho", "A Municiadora Nacional", "Os Reis da TASA4"],
+        cena: "Executivos engravatados brindando com champanhe na sede da Bolsa de Valores enquanto os gráficos de venda de revólveres e pistolas disparam rumo ao teto da sala.",
+        musicaNome: "A Valsa da Taurus",
+        musicaRitmo: "Valsa de Cabaré / Tango Sarcástico",
+        musicaRefrão: "Mais tiro na rua, mais lucro na ação, a bolsa aplaude o disparo do canhão!",
+        fontes: [
+          { veiculo: "UOL Economia", titulo: "Com decretos de Bolsonaro, lucro da fabricante de armas Taurus bate recordes históricos", data: "16/03/2022", linkTexto: "UOL - Lucros Taurus", url: "https://economia.uol.com.br/noticias/redacao/2022/03/16/lucro-da-taurus-em-2021.htm" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Decretos de Bolsonaro ampliam compras de armas e ações da Taurus disparam." },
+          { ano: "2021", texto: "Empresas registram os maiores lucros operacionais de sua história no Brasil." }
+        ]
+      },
+      {
+        id: 13,
+        numero: "13",
+        nome: "Silvinei Vasques (PRF Bélica)",
+        subtitulo: "Caveirões e Câmaras de Gás / Aparelhamento",
+        categoria: "ataques",
+        cor: "#e11d48",
+        googleQuery: "Silvinei Vasques PRF armamento blindados Genivaldo camara de gas Sergipe",
+        conexaoGrau: "Conexão Direta (Operador da PRF Aparelhada pelo Clã)",
+        conexaoDesc: "Ex-diretor-geral da Polícia Rodoviária Federal no governo Bolsonaro. Conduziu o aparelhamento bélico da corporação, adquirindo fuzis de assalto pesados e blindados ('caveirões'), criando comandos de choque que resultaram no assassinato de Genivaldo em viatura asfixiada por gás em Sergipe.",
+        cifras: [
+          "Dezenas de milhões de reais em compras de fuzis de assalto e blindados de choque para a PRF.",
+          "Genivaldo de Jesus Santos asfixiado em câmara de gás improvisada na mala de viatura em Sergipe.",
+          "Mais de 500 bloqueios rodoviários ilegais no Nordeste no segundo turno de 2022."
+        ],
+        papel: "Comandante da transformação da PRF em milícia armada governamental ostensiva.",
+        proximidade: "Subordinado e aliado político direto de Jair e Flávio Bolsonaro.",
+        inqueritoDesc: "Preso preventivamente pela PF na Operação Constituição Cidadã por uso da PRF para interferência violenta no processo eleitoral; responde a ações civis públicas.",
+        modusOperandi: "Desvio funcional das atribuições de trânsito rodoviário para operações bélicas letais em periferias e favelas.",
+        operacoes: "Operação Constituição Cidadã (PF); inquérito do homicídio de Genivaldo (MPF).",
+        statusJudicial: "Preso preventivamente por meses; réu criminal perante o STF.",
+        codinomes: ["O Tranca-Rua Bélico", "O Diretor do Caveirão", "O Marechal das Cancelas", "Silvinei do Gás", "O Comandante da Parada"],
+        cena: "Viaturas policiais brancas e azuis pintadas de preto com torres de blindados cruzando rodovias rurais armadas como tanques de guerra para reprimir a população local.",
+        musicaNome: "O Caveirão da Rodovia",
+        musicaRitmo: "Baião Dramático / Xaxado Pesado",
+        musicaRefrão: "A cancela fechou, a farda virou terror, mas o povo a pé derrotou o opressor!",
+        fontes: [
+          { veiculo: "G1", titulo: "Morte de Genivaldo: laudo da PF confirma que homem asfixiado em porta-malas da PRF morreu de asfixia", data: "28/05/2022", linkTexto: "G1 - Caso Genivaldo", url: "https://g1.globo.com/se/sergipe/noticia/2022/05/28/morte-de-genivaldo-laudo-do-iml-aponta-asfixia-mecanica.ghtml" }
+        ],
+        timeline: [
+          { ano: "2021-2022", texto: "Promove aquisições de blindados pesados e criação de tropas de elite desregulamentadas na PRF." },
+          { ano: "Mai/2022", texto: "Genivaldo de Jesus é assassinado com gás lacrimogêneo dentro de viatura em Umbaúba (SE)." },
+          { ano: "2023", texto: "Silvinei é preso pela PF por crimes eleitorais no segundo turno." }
+        ]
+      },
+      {
+        id: 14,
+        numero: "14",
+        nome: "Daniel Silveira",
+        subtitulo: "A Marreta na Placa / Vídeos com Arsenal",
+        categoria: "ataques",
+        cor: "#e11d48",
+        googleQuery: "Daniel Silveira armas fuzil quebra placa Marielle ameacas STF indulto",
+        conexaoGrau: "Conexão Direta (Ex-PM, Deputado Aliado e Beneficiário de Indulto)",
+        conexaoDesc: "Ex-policial militar e deputado bolsonarista. Ficou famoso ao quebrar a placa de Marielle Franco; gravou vídeos ostentando armas e incitando agressões físicas armadas contra ministros do STF. Teve indulto presidencial assinado por Bolsonaro (depois anulado pelo STF).",
+        cifras: [
+          "Armas de fogo apreendidas pela PF após decisão do Supremo Tribunal Federal.",
+          "Condenação a 8 anos e 9 meses de prisão por tentar impedir o livre exercício dos poderes.",
+          "Centenas de milhares de reais em multas por violação contínua da tornozeleira eletrônica."
+        ],
+        papel: "Militante armado no plenário, propagandista da violência física contra o Judiciário.",
+        proximidade: "Aliado íntimo dos filhos de Bolsonaro; recebeu perdão presidencial direto no Alvorada.",
+        inqueritoDesc: "Condenado pelo plenário do STF na Ação Penal 1.044 por coação no curso do processo e tentativa de abolição violenta do Estado Democrático de Direito.",
+        modusOperandi: "Gravação de vídeos exaltando a ditadura militar, o AI-5 e exibindo armamento para coagir magistrados.",
+        operacoes: "Ação Penal 1.044 / STF (Relatoria Ministro Alexandre de Moraes).",
+        statusJudicial: "Condenado a regime fechado e preso em penitenciária de segurança do Rio.",
+        codinomes: ["O Marreteiro de Placas", "O Bombado da Pistola", "O Deputado do AI-5", "O Indultado do Planalto", "Silveira do Berro"],
+        cena: "Um homem musculoso segurando uma placa de rua partida ao meio com um fuzil na mão sorrindo para a câmera enquanto promete bater de frente com a Constituição.",
+        musicaNome: "A Marreta e o Fuzil",
+        musicaRitmo: "Hardcore / Punk Furioso Satírico",
+        musicaRefrão: "Quebrou a placa, gravou o vídeo, perdeu o mandato e foi pro presídio!",
+        fontes: [
+          { veiculo: "G1", titulo: "STF condena Daniel Silveira a 8 anos e 9 meses de prisão por ataques à democracia", data: "20/04/2022", linkTexto: "G1 - Julgamento Daniel Silveira", url: "https://g1.globo.com/politica/noticia/2022/04/20/stf-julga-daniel-silveira.ghtml" }
+        ],
+        timeline: [
+          { ano: "2018", texto: "Destrói a placa em homenagem a Marielle Franco em comício ao lado de Witzel." },
+          { ano: "2021", texto: "É preso após gravar vídeo ameaçando ministros do STF de agressão física armada." },
+          { ano: "2022", texto: "É condenado a 8 anos de prisão; Bolsonaro edita indulto, que o STF julga nulo." }
+        ]
+      },
+      {
+        id: 15,
+        numero: "15",
+        nome: "Clubes de Tiro & Escolas",
+        subtitulo: "A Proliferação Urbana / 2.000 Novos Clubes",
+        categoria: "cacs",
+        cor: "#d97706",
+        googleQuery: "clubes de tiro proximos escolas creches decretos Bolsonaro Cacs proliferacao",
+        conexaoGrau: "Conexão Direta (Fomento por Decretos Governamentais)",
+        conexaoDesc: "A política do clã Bolsonaro aboliu o limite de distância mínima que exigia que clubes de tiro ficassem longe de creches e escolas. Isso levou à proliferação de mais de 2.000 novos clubes de tiro em bairros residenciais e centros urbanos com queixas de barulho de tiros e insegurança.",
+        cifras: [
+          "Mais de 2.000 novos clubes de tiro abertos durante o mandato de Jair Bolsonaro.",
+          "Clubes autorizados a operar a menos de 50 metros de portões de escolas de ensino fundamental.",
+          "Estoque de milhões de balas e armas sem vistorias periódicas de blindagem e acústica."
+        ],
+        papel: "Estrutura comunitária do bolsonarismo usada como comitê político armado e formação de atiradores.",
+        proximidade: "Visitados assiduamente pela família Bolsonaro em campanhas eleitorais.",
+        inqueritoDesc: "Inquéritos no MPF e ações no STF que revogaram o dispositivo e restabeleceram o distanciamento mínimo de segurança.",
+        modusOperandi: "Enquadramento de clubes de tiro como 'atividades esportivas essenciais' para burlar restrições urbanísticas.",
+        operacoes: "Ações Diretas de Inconstitucionalidade no STF; decretos revogados em 2023.",
+        statusJudicial: "Decreto nº 11.615/2023 restabeleceu a proibição de clubes a menos de 1 km de escolas.",
+        codinomes: ["O Estande da Escola", "O Alvo do Recreio", "O Clube da Vizinha", "O Tiroteio do Bairro", "O Paiol da Esquina"],
+        cena: "Crianças brincando no parquinho da creche enquanto do outro lado do muro alto ouve-se o barulho estridente de rajadas consecutivas de fuzil em um clube de tiro recém-inaugurado.",
+        musicaNome: "O Estande ao Lado da Escola",
+        musicaRitmo: "Xote Litorâneo / Toada Triste",
+        musicaRefrão: "A criança canta a cantiga na sala, do outro lado do muro ecoa o som da bala!",
+        fontes: [
+          { veiculo: "Folha de S.Paulo", titulo: "Com regras de Bolsonaro, clubes de tiro abrem perto de escolas e creches pelo país", data: "22/05/2022", linkTexto: "Folha - Clubes e Escolas", url: "https://www1.folha.uol.com.br/cotidiano/2022/05/com-regras-de-bolsonaro-clubes-de-tiro-abrem-perto-de-escolas-e-creches.shtml" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Decretos de Bolsonaro revogam exigência de distância de escolas para clubes de tiro." },
+          { ano: "2023", texto: "Novo decreto federal restabelece distância de 1 km e fecha dezenas de estandes irregulares." }
+        ]
+      },
+      {
+        id: 16,
+        numero: "16",
+        nome: "General Augusto Heleno (GSI)",
+        subtitulo: "Revogou Rastreamento / Blindagem da Munição",
+        categoria: "decretos",
+        cor: "#dc2626",
+        googleQuery: "Bolsonaro revoga portarias rastreamento armas municoes Exercito Celso de Mello Heleno",
+        conexaoGrau: "Conexão Direta (Articulador Militar / Revogou o Rastreamento)",
+        conexaoDesc: "Ministro-chefe do Gabinete de Segurança Institucional. Participou diretamente da pressão sobre o Exército que levou à revogação das três portarias do Colog (1.244, 1.246 e 1.249) que criavam a marcação a laser e o rastreamento nacional de munições e armas de fogo.",
+        cifras: [
+          "Três portarias técnicas prontas do Exército anuladas por ordem presidencial em menos de 24 horas.",
+          "Milhões de cartuchos vendidos sem código indelével de rastreamento para investigações policiais.",
+          "Mensagens apreendidas pela PF comemorando a anulação do rastreio a pedido de fabricantes."
+        ],
+        papel: "Fiador fardado da blindagem do comércio de armas e do apagamento de rastros periciais.",
+        proximidade: "Ministro de máxima confiança de Jair e Flávio Bolsonaro no Planalto.",
+        inqueritoDesc: "Investigado no Inquérito da Interferência no Exército e na PF; alvo de inquérito no STF por tentativa de golpe de Estado.",
+        modusOperandi: "Uso do poder político militar para anular regras técnicas que facilitavam a investigação de homicídios no país.",
+        operacoes: "Inquérito das Portarias do Colog (STF); Operação Tempus Veritatis (PF).",
+        statusJudicial: "Investigado pelo STF em inquéritos conclusivos sobre golpe e aparelhamento.",
+        codinomes: ["O General do Sigilo Bélico", "O Apagador de Cápsulas", "O Vovô da Pólvora Oculta", "Heleno do GSI", "O Inimigo do Rastreio"],
+        cena: "Um ministro do Exército assinando uma ordem para desligar o laser que marcava o número de série nas balas para que a polícia nunca descubra quem puxou o gatilho na favela.",
+        musicaNome: "Apaga o Rastreio da Bala",
+        musicaRitmo: "Moda Militar Tragicômica",
+        musicaRefrão: "A bala matou o inocente no chão, e o general apagou a numeração!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Bolsonaro revoga portarias do Exército que aprimoravam rastreamento de armas e munições", data: "18/04/2020", linkTexto: "O Globo - Portarias Colog", url: "https://oglobo.globo.com/politica/bolsonaro-revoga-portarias-do-exercito-que-aprimoravam-rastreamento-de-armas-municoes-24380065" }
+        ],
+        timeline: [
+          { ano: "Abr/2020", texto: "Bolsonaro e generais ordenam revogação imediata do sistema de rastreamento do Exército." },
+          { ano: "2021", texto: "STF julga inconstitucional a revogação e exige restabelecimento de regras de perícia." }
+        ]
+      },
+      {
+        id: 17,
+        numero: "17",
+        nome: "Glaidson Acácio (Faraó do Bitcoin)",
+        subtitulo: "Segurança com Pistoleiros / Defesa por Flávio",
+        categoria: "milicia",
+        cor: "#16a34a",
+        googleQuery: "Farao do Bitcoin Glaidson pistoleiros assassinatos armas Operacao Kryptos Flavio Bolsonaro",
+        conexaoGrau: "Conexão Direta (Escritório de Flávio Atuou para Seus Sócios)",
+        conexaoDesc: "Dono da pirâmide financeira bilionária GAS Consultoria em Cabo Frio. Montou uma força armada de pistoleiros mercenários e ex-policiais para monitorar, emboscar e assassinar concorrentes do ramo de criptoativos; ex-sócios de sua quadrilha contrataram o escritório de advocacia de Flávio Bolsonaro.",
+        cifras: [
+          "R$ 38 bilhões movimentados ilegalmente em pirâmides com suporte armado na Região dos Lagos.",
+          "Dezenas de fuzis, pistolas e carros blindados apreendidos na Operação Kryptos.",
+          "Assassinatos de corretores e atentados a tiros ordenados contra concorrentes."
+        ],
+        papel: "Financiador de milícias armadas de aluguel e operador de capitais clandestinos.",
+        proximidade: "Seus ex-sócios e operadores contrataram o escritório de advocacia de Flávio Bolsonaro no RJ.",
+        inqueritoDesc: "Preso na Operação Kryptos da PF por crimes contra o sistema financeiro, lavagem de capitais e mandante de homicídios qualificados.",
+        modusOperandi: "Uso de lucros de golpes financeiros para equipar milícias privadas com armas pesadas para eliminar rivais.",
+        operacoes: "Operação Kryptos (Polícia Federal); GAECO / MPRJ.",
+        statusJudicial: "Preso em presídio federal de segurança máxima; réu por múltiplos homicídios qualificados.",
+        codinomes: ["O Faraó da Bala", "O Banqueiro da Emboscada", "O Pastor das Criptomoedas", "Glaidson do Gatilho", "O Pirâmideiro Armado"],
+        cena: "Reuniões em mansões à beira da lagoa em Cabo Frio onde moedas virtuais e maços de dinheiro vivo se misturam a pistolas Glock com silenciador e contratos de advocacia de Brasília.",
+        musicaNome: "O Faraó e a Glock",
+        musicaRitmo: "Trap Satírico / Pop Ostentação Macabro",
+        musicaRefrão: "Prometeu dez por cento, comprou o fuzil, contratou o doutor e o concorrente sumiu!",
+        fontes: [
+          { veiculo: "G1", titulo: "Operação da PF aponta que Faraó do Bitcoin chefiava grupo de extermínio contra concorrentes", data: "11/05/2022", linkTexto: "G1 - Grupo de Extermínio GAS", url: "https://g1.globo.com/rj/rio-de-janeiro/noticia/2022/05/11/pf-e-mp-cumprem-mandados-contra-grupo-de-exterminio-ligado-ao-farao-dos-bitcoins.ghtml" }
+        ],
+        timeline: [
+          { ano: "2021", texto: "PF deflagra Operação Kryptos e descobre braço armado com fuzis na GAS Consultoria." },
+          { ano: "2022", texto: "MPRJ indicia Glaidson como mandante de homicídios com pistoleiros no Rio." }
+        ]
+      },
+      {
+        id: 18,
+        numero: "18",
+        nome: "Bancada da Bala do RJ",
+        subtitulo: "Excludente de Ilicitude / Medalhas e Chacinas",
+        categoria: "lobby",
+        cor: "#0284c7",
+        googleQuery: "Flavio Bolsonaro excludente de ilicitude bancada da bala homenagens policiais",
+        conexaoGrau: "Conexão Direta (Flávio Foi Líder Político na ALERJ)",
+        conexaoDesc: "Grupo de parlamentares fluminenses liderados historicamente por Flávio Bolsonaro. Atuaram pela concessão sistemática de medalhas a policiais réus por chacinas, patrocinaram o projeto do 'excludente de ilicitude' (licença para matar sem punição) e defenderam o fim da fiscalização de armas de milícias.",
+        cifras: [
+          "Dezenas de projetos de lei para conceder imunidade processual a disparos letais em operações.",
+          "Centenas de moções de aplauso na ALERJ concedidas a agentes investigados por execuções sumárias."
+        ],
+        papel: "Escudo político e legislativo de grupos de extermínio e milícias no parlamento fluminense.",
+        proximidade: "Base política primordial onde Flávio Bolsonaro exerceu quatro mandatos consecutivos.",
+        inqueritoDesc: "Relatórios de direitos humanos da ONU e CPI das Milícias apontaram a blindagem parlamentar como estimuladora do aumento da letalidade policial e do domínio armado.",
+        modusOperandi: "Apresentação sistemática de emendas e discursos na tribuna para justificar mortes de civis e afastar investigações de corregedorias.",
+        operacoes: "CPI das Milícias (ALERJ); Relatórios de Direitos Humanos da OEA e Anistia Internacional.",
+        statusJudicial: "Projetos de excludente amplo barrados no Congresso Nacional.",
+        codinomes: ["Os Escudeiros do Gatilho", "A Bancada da Pólvora", "Os Condecoradores da Chacina", "Os Anistiadores da Morte", "Os Cruzados do Excludente"],
+        cena: "Parlamentares na tribuna da assembleia votando moções de louvor e distribuindo placas douradas a policiais que acabaram de voltar de uma operação com dez corpos caídos no chão.",
+        musicaNome: "A Moção de Louvor do Excludente",
+        musicaRitmo: "Samba de Breque Sarcástico / Marcha",
+        musicaRefrão: "Atirou primeiro, perguntou depois, ganhou a medalha do deputado Zero Dois!",
+        fontes: [
+          { veiculo: "Agência Pública", titulo: "Em 16 anos na Alerj, Flávio Bolsonaro priorizou condecorações a policiais envolvidos em mortes", data: "26/02/2019", linkTexto: "Agência Pública - Levantamento ALERJ", url: "https://apublica.org/2019/02/em-16-anos-na-alerj-flavio-bolsonaro-condecorou-ao-menos-30-pms-presos-ou-investigados/" }
+        ],
+        timeline: [
+          { ano: "2003-2018", texto: "Flávio homenageia dezenas de policiais investigados por homicídios na ALERJ." },
+          { ano: "2019-2024", texto: "Atua no Senado pela aprovação do excludente de ilicitude irrestrito para forças de segurança." }
+        ]
+      }
+    ];
+
+    /* VARIÁVEIS GLOBAIS DE ESTADO E GEOMETRIA DO CANVAS */
+    const svgEl = document.getElementById('svg-diagram');
+    const viewportContent = document.getElementById('viewport-content');
+    const layerArrows = document.getElementById('layer-arrows');
+    const layerNodes = document.getElementById('layer-nodes');
+    const centerNode = document.getElementById('center-node');
+    const cardsWrapper = document.getElementById('cards-wrapper');
+
+    // Geometria adaptativa (calculada dinamicamente)
+    let CX = 800;
+    let CY = 550;
+    let RX = 620;
+    let RY = 410;
+    let isPortraitMode = false;
+    const NODE_W = 126;
+    const NODE_H = 64;
+
+    // Estado do Zoom e Pan
+    let currentScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    // Estado do Touch Pinch-to-Zoom
+    let initialPinchDistance = 0;
+    let initialPinchScale = 1;
+    let isTouchInteracting = false;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+
+    let isSoundOn = true;
+    let audioCtx = null;
+    let currentLayout = 'noir'; // 'noir' ou 'clean'
+    let currentTheme = 'dark'; // 'dark' ou 'light'
+    let currentView = 'radial'; // 'radial' ou 'grid'
+
+    // Parâmetros de Filtro
+    let currentCategory = 'todas';
+    let currentSearch = '';
+    let currentLimit = 18;
+
+    /* RECALCULAR GEOMETRIA ADAPTATIVA (MOBILE VERTICAL VS DESKTOP) */
+    function atualizarGeometriaResponsiva() {
+      const container = document.getElementById('container-radial');
+      const rect = container.getBoundingClientRect();
+      const isPortrait = rect.width < 768 || rect.height > rect.width;
+
+      if (isPortrait) {
+        // Layout Vertical para Smartphones (Elipse alta)
+        isPortraitMode = true;
+        svgEl.setAttribute('viewBox', '0 0 1100 1600');
+        CX = 550;
+        CY = 800;
+        RX = 390;
+        RY = 640;
+      } else {
+        // Layout Panorâmico Widescreen (Elipse larga)
+        isPortraitMode = false;
+        svgEl.setAttribute('viewBox', '0 0 1600 1100');
+        CX = 800;
+        CY = 550;
+        RX = 620;
+        RY = 410;
+      }
+
+      // Reposiciona o nó central
+      atualizarPosicaoCentro();
+    }
+
+    function atualizarPosicaoCentro() {
+      const centerCircleMain = document.getElementById('center-circle-main');
+      const centerCircleDashed = document.getElementById('center-circle-dashed');
+      const t1 = document.getElementById('center-text-title1');
+      const t2 = document.getElementById('center-text-title2');
+      const line = document.getElementById('center-text-line');
+      const s1 = document.getElementById('center-text-sub1');
+      const s2 = document.getElementById('center-text-sub2');
+
+      if (centerCircleMain) {
+        centerCircleMain.setAttribute('cx', CX);
+        centerCircleMain.setAttribute('cy', CY);
+      }
+      if (centerCircleDashed) {
+        centerCircleDashed.setAttribute('cx', CX);
+        centerCircleDashed.setAttribute('cy', CY);
+      }
+      if (t1) { t1.setAttribute('x', CX); t1.setAttribute('y', CY - 38); }
+      if (t2) { t2.setAttribute('x', CX); t2.setAttribute('y', CY - 8); }
+      if (line) {
+        line.setAttribute('x1', CX - 70);
+        line.setAttribute('y1', CY + 10);
+        line.setAttribute('x2', CX + 70);
+        line.setAttribute('y2', CY + 10);
+      }
+      if (s1) { s1.setAttribute('x', CX); s1.setAttribute('y', CY + 33); }
+      if (s2) { s2.setAttribute('x', CX); s2.setAttribute('y', CY + 54); }
+    }
+
+    /* MOTOR DINÂMICO DE FILTRAGEM E DISTRIBUIÇÃO EQUIDISTANTE */
+    function getActiveCharacters() {
+      let filtered = armasData.filter(char => {
+        const matchCat = (currentCategory === 'todas' || char.categoria === currentCategory);
+        const matchSearch = currentSearch === '' || 
+          char.nome.toLowerCase().includes(currentSearch) ||
+          char.subtitulo.toLowerCase().includes(currentSearch) ||
+          char.papel.toLowerCase().includes(currentSearch);
+        return matchCat && matchSearch;
+      });
+
+      return filtered.slice(0, currentLimit);
+    }
+
+    function renderDynamicDiagram() {
+      atualizarGeometriaResponsiva();
+
+      layerArrows.innerHTML = '';
+      layerNodes.innerHTML = '';
+      cardsWrapper.innerHTML = '';
+
+      const isClean = (currentLayout === 'clean');
+      const isLight = (currentTheme === 'light');
+
+      const activeNodes = getActiveCharacters();
+      const count = activeNodes.length;
+
+      document.getElementById('badge-nodes-count').textContent = `${count} Conexões Bélicas`;
+      document.getElementById('slider-val').textContent = currentLimit;
+
+      if (count === 0) {
+        const textEmpty = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textEmpty.setAttribute('x', CX);
+        textEmpty.setAttribute('y', CY + 180);
+        textEmpty.setAttribute('text-anchor', 'middle');
+        textEmpty.setAttribute('fill', '#ef4444');
+        textEmpty.setAttribute('font-size', '15');
+        textEmpty.setAttribute('font-family', "'JetBrains Mono', monospace");
+        textEmpty.textContent = "Nenhum caso ou operador localizado com este filtro bélico.";
+        layerNodes.appendChild(textEmpty);
+        return;
+      }
+
+      /* DISTRIBUIÇÃO EQUIDISTANTE EM 360 GRAUS */
+      activeNodes.forEach((char, i) => {
+        const angle = -Math.PI / 2 + (i * 2 * Math.PI / count);
+        const x = CX + RX * Math.cos(angle);
+        const y = CY + RY * Math.sin(angle);
+
+        // Geometria das Setas apontando para o Vértice Central
+        const centerRadius = 110;
+        const outerNodeRadius = 36;
+        
+        const dx = CX - x;
+        const dy = CY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const xStart = x + (dx / dist) * outerNodeRadius;
+        const yStart = y + (dy / dist) * outerNodeRadius;
+        const xEnd = CX - (dx / dist) * centerRadius;
+        const yEnd = CY - (dy / dist) * centerRadius;
+
+        // 1. Linha com Marcador de Flecha apontada para o Vértice Central
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', xStart);
+        line.setAttribute('y1', yStart);
+        line.setAttribute('x2', xEnd);
+        line.setAttribute('y2', yEnd);
+        
+        const strokeColor = isClean 
+          ? (isLight ? '#94a3b8' : '#475569') 
+          : (isLight ? '#64748b' : '#64748b');
+        
+        line.setAttribute('stroke', strokeColor);
+        line.setAttribute('stroke-width', isClean ? '1.5' : '1.8');
+        line.setAttribute('marker-end', isClean ? 'url(#arrowhead-clean)' : 'url(#arrowhead)');
+        line.setAttribute('class', 'arrow-line');
+        line.setAttribute('id', `arrow-${char.id}`);
+        line.setAttribute('data-target', char.id);
+        layerArrows.appendChild(line);
+
+        // 2. Grupo SVG do Nó Periférico
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'node-outer cursor-pointer');
+        g.setAttribute('id', `node-${char.id}`);
+        g.setAttribute('onclick', `abrirModalPersonagem(${char.id})`);
+        g.setAttribute('onmouseenter', `destacarConexao(${char.id}, true)`);
+        g.setAttribute('onmouseleave', `destacarConexao(${char.id}, false)`);
+
+        if (isClean) {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', x - NODE_W / 2);
+          rect.setAttribute('y', y - NODE_H / 2);
+          rect.setAttribute('width', NODE_W);
+          rect.setAttribute('height', NODE_H);
+          rect.setAttribute('rx', '12');
+          rect.setAttribute('ry', '12');
+          rect.setAttribute('fill', isLight ? '#ffffff' : '#1e293b');
+          rect.setAttribute('stroke', char.cor);
+          rect.setAttribute('stroke-width', '2');
+          g.appendChild(rect);
+        } else {
+          const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+          ellipse.setAttribute('cx', x);
+          ellipse.setAttribute('cy', y);
+          ellipse.setAttribute('rx', NODE_W / 2);
+          ellipse.setAttribute('ry', NODE_H / 2);
+          ellipse.setAttribute('fill', isLight ? 'url(#grad-node-clean-light)' : 'url(#grad-node)');
+          ellipse.setAttribute('stroke', char.cor);
+          ellipse.setAttribute('stroke-width', '2');
+          g.appendChild(ellipse);
+        }
+
+        // Badge com Número do Personagem
+        const badgeBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        badgeBg.setAttribute('cx', x - NODE_W / 2 + 13);
+        badgeBg.setAttribute('cy', y - NODE_H / 2 + 13);
+        badgeBg.setAttribute('r', '9.5');
+        badgeBg.setAttribute('fill', isClean ? (isLight ? '#f1f5f9' : '#0f172a') : '#070a12');
+        badgeBg.setAttribute('stroke', char.cor);
+        badgeBg.setAttribute('stroke-width', '1.5');
+        g.appendChild(badgeBg);
+
+        const badgeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        badgeText.setAttribute('x', x - NODE_W / 2 + 13);
+        badgeText.setAttribute('y', y - NODE_H / 2 + 16.5);
+        badgeText.setAttribute('text-anchor', 'middle');
+        badgeText.setAttribute('fill', char.cor);
+        badgeText.setAttribute('font-size', '8.5');
+        badgeText.setAttribute('font-weight', 'bold');
+        badgeText.setAttribute('font-family', "'JetBrains Mono', monospace");
+        badgeText.textContent = char.numero;
+        g.appendChild(badgeText);
+
+        // Nome do Personagem
+        const textTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textTitle.setAttribute('x', x);
+        textTitle.setAttribute('y', y - 3);
+        textTitle.setAttribute('text-anchor', 'middle');
+        textTitle.setAttribute('fill', isLight ? '#0f172a' : '#ffffff');
+        textTitle.setAttribute('font-size', '10.5');
+        textTitle.setAttribute('font-weight', '800');
+        textTitle.textContent = formatarNomeSvg(char.nome);
+        g.appendChild(textTitle);
+
+        // Subtítulo
+        const textSub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textSub.setAttribute('x', x);
+        textSub.setAttribute('y', y + 13);
+        textSub.setAttribute('text-anchor', 'middle');
+        textSub.setAttribute('fill', isLight ? '#64748b' : '#94a3b8');
+        textSub.setAttribute('font-size', '7.8');
+        textSub.setAttribute('font-weight', '500');
+        textSub.textContent = formatarSubtitulo(char.subtitulo);
+        g.appendChild(textSub);
+
+        layerNodes.appendChild(g);
+
+        // Renderizar Cartão para a Visão em Grade
+        renderCard(char);
+      });
+
+      atualizarAparenciaCentro();
+      atualizarTransformViewport();
+    }
+
+    function formatarNomeSvg(str) {
+      return (str.length > 18) ? str.substring(0, 16) + '..' : str;
+    }
+
+    function formatarSubtitulo(str) {
+      return (str.length > 22) ? str.substring(0, 20) + '...' : str;
+    }
+
+    function renderCard(char) {
+      const isLight = (currentTheme === 'light');
+      const googleLink = `https://www.google.com/search?q=${encodeURIComponent(char.googleQuery)}`;
+      const card = document.createElement('div');
+      card.className = `${isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-800 text-white'} border hover:border-red-600/60 p-4 rounded-xl cursor-pointer transition transform hover:-translate-y-1 shadow-lg flex flex-col justify-between`;
+      
+      card.innerHTML = `
+        <div onclick="abrirModalPersonagem(${char.id})">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded ${isLight ? 'bg-slate-100 text-red-600 border-slate-300' : 'bg-slate-950 text-red-400 border-slate-800'} border">#${char.numero}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-mono uppercase font-bold text-slate-400">${char.categoria}</span>
+              <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${char.cor}"></span>
+            </div>
+          </div>
+          <h3 class="font-bold text-sm mb-1 ${isLight ? 'text-slate-900' : 'text-white'}">${char.nome}</h3>
+          <p class="text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'} leading-relaxed line-clamp-2">${char.subtitulo}</p>
+        </div>
+        <div class="mt-4 pt-3 border-t ${isLight ? 'border-slate-100 text-slate-400' : 'border-slate-800/80 text-slate-500'} flex items-center justify-between text-xs font-mono">
+          <a href="${googleLink}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1">
+            <span>Google IA</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <span onclick="abrirModalPersonagem(${char.id})" class="text-red-500 font-semibold flex items-center gap-1">Dossiê 4 Abas &rarr;</span>
+        </div>
+      `;
+      cardsWrapper.appendChild(card);
+    }
+
+    function atualizarAparenciaCentro() {
+      const isClean = (currentLayout === 'clean');
+      const centerCircleMain = document.getElementById('center-circle-main');
+      const centerCircleDashed = document.getElementById('center-circle-dashed');
+
+      if (centerCircleMain) {
+        centerCircleMain.setAttribute('fill', isClean ? 'url(#grad-center-clean)' : 'url(#grad-center)');
+        centerCircleMain.setAttribute('stroke', isClean ? '#fee2e2' : '#fca5a5');
+      }
+      if (centerCircleDashed) {
+        centerCircleDashed.style.display = isClean ? 'none' : 'block';
+      }
+    }
+
+    /* SISTEMA DE ZOOM UNIFICADO E TOUCH PINCH/PAN ANTI-DESLOCAMENTO */
+    function atualizarTransformViewport() {
+      if (viewportContent) {
+        viewportContent.setAttribute('transform', `translate(${panX}, ${panY}) scale(${currentScale})`);
+      }
+    }
+
+    function aplicarZoomBotao(fator) {
+      const novoScale = Math.min(Math.max(currentScale * fator, 0.45), 3.2);
+      // Zoom focado no centro geométrico (CX, CY)
+      panX = CX * (1 - novoScale);
+      panY = CY * (1 - novoScale);
+      currentScale = novoScale;
+      atualizarTransformViewport();
+      playBeep(420, 'sine', 0.04);
+    }
+
+    function resetZoom() {
+      currentScale = 1;
+      panX = 0;
+      panY = 0;
+      atualizarTransformViewport();
+      playBeep(450, 'sine', 0.05);
+    }
+
+    // Eventos de Mouse Drag e Wheel
+    svgEl.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.node-outer') || e.target.closest('.node-center')) return;
+      isDragging = true;
+      dragStartX = e.clientX - panX;
+      dragStartY = e.clientY - panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      panX = e.clientX - dragStartX;
+      panY = e.clientY - dragStartY;
+      atualizarTransformViewport();
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    svgEl.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      const novoScale = Math.min(Math.max(currentScale * delta, 0.45), 3.2);
+      
+      // Ponto focal do cursor do mouse
+      const rect = svgEl.getBoundingClientRect();
+      const mouseSvgX = (e.clientX - rect.left) * (isPortraitMode ? 1100 : 1600) / rect.width;
+      const mouseSvgY = (e.clientY - rect.top) * (isPortraitMode ? 1600 : 1100) / rect.height;
+
+      panX = mouseSvgX - (mouseSvgX - panX) * (novoScale / currentScale);
+      panY = mouseSvgY - (mouseSvgY - panY) * (novoScale / currentScale);
+      currentScale = novoScale;
+      atualizarTransformViewport();
+    }, { passive: false });
+
+    // Eventos de Touch: Pan com 1 dedo e Pinch-to-Zoom com 2 dedos
+    svgEl.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isTouchInteracting = true;
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+      } else if (e.touches.length === 2) {
+        isTouchInteracting = false; // modo pinça
+        initialPinchDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialPinchScale = currentScale;
+      }
+    }, { passive: false });
+
+    svgEl.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1 && isTouchInteracting) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - lastTouchX;
+        const dy = e.touches[0].clientY - lastTouchY;
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+        panX += dx;
+        panY += dy;
+        atualizarTransformViewport();
+      } else if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        if (initialPinchDistance > 0) {
+          const factor = dist / initialPinchDistance;
+          const novoScale = Math.min(Math.max(initialPinchScale * factor, 0.45), 3.2);
+          
+          panX = CX * (1 - novoScale);
+          panY = CY * (1 - novoScale);
+          currentScale = novoScale;
+          atualizarTransformViewport();
+        }
+      }
+    }, { passive: false });
+
+    svgEl.addEventListener('touchend', () => {
+      isTouchInteracting = false;
+    });
+
+    /* SISTEMA DE ÁUDIO SINTETIZADO */
+    function playBeep(freq = 440, type = 'sine', duration = 0.08) {
+      if (!isSoundOn) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      isSoundOn = !isSoundOn;
+      const btn = document.getElementById('btn-sound');
+      if (isSoundOn) {
+        btn.classList.replace('text-slate-500', 'text-emerald-400');
+        playBeep(659, 'sine', 0.1);
+      } else {
+        btn.classList.replace('text-emerald-400', 'text-slate-500');
+      }
+    }
+
+    function destacarConexao(id, ativar) {
+      const arrow = document.getElementById(`arrow-${id}`);
+      if (!arrow) return;
+      if (ativar) {
+        arrow.classList.add('arrow-highlight');
+        playBeep(290 + id * 14, 'sine', 0.04);
+      } else {
+        arrow.classList.remove('arrow-highlight');
+      }
+    }
+
+    /* FILTRAGEM DINÂMICA EQUIDISTANTE */
+    function selecionarCategoria(cat) {
+      currentCategory = cat;
+      playBeep(540, 'triangle', 0.08);
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = "filter-btn px-2.5 py-1 rounded bg-red-700 text-white font-semibold transition whitespace-nowrap";
+        } else {
+          btn.className = "filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap";
+        }
+      });
+
+      renderDynamicDiagram();
+    }
+
+    function atualizarFiltroBusca(termo) {
+      currentSearch = termo.trim().toLowerCase();
+      renderDynamicDiagram();
+    }
+
+    function alterarLimiteQuantidade(val) {
+      currentLimit = parseInt(val, 10);
+      playBeep(420 + currentLimit * 10, 'sine', 0.03);
+      renderDynamicDiagram();
+    }
+
+    /* MODAL DE DETALHAMENTO EM 4 ABAS COM GOOGLE SEARCH LINK */
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalPanel = document.getElementById('modal-panel');
+
+    function abrirModalPersonagem(id) {
+      const char = armasData.find(c => c.id === id);
+      if (!char) return;
+
+      playBeep(520, 'triangle', 0.12);
+
+      // Topo
+      document.getElementById('modal-badge-avatar').textContent = char.numero;
+      document.getElementById('modal-badge-avatar').style.borderColor = char.cor;
+      document.getElementById('modal-badge-cat').textContent = char.categoria;
+      document.getElementById('modal-badge-cat').style.color = char.cor;
+      document.getElementById('modal-badge-cat').style.borderColor = char.cor + '60';
+      document.getElementById('modal-nome').textContent = `${char.numero}. ${char.nome}`;
+
+      // Configurar links de busca no Google IA
+      const googleLink = `https://www.google.com/search?q=${encodeURIComponent(char.googleQuery)}`;
+      document.getElementById('modal-google-btn').href = googleLink;
+      document.getElementById('modal-google-footer-btn').href = googleLink;
+      document.getElementById('modal-tab-search-btn').href = googleLink;
+
+      // ABA 1: Conexão Bélica & Cifras
+      document.getElementById('modal-grau-conexao').textContent = char.conexaoGrau;
+      document.getElementById('modal-conexao-desc').textContent = char.conexaoDesc;
+      document.getElementById('modal-papel').textContent = char.papel;
+      document.getElementById('modal-proximidade').textContent = char.proximidade;
+
+      const cifrasList = document.getElementById('modal-cifras-list');
+      cifrasList.innerHTML = '';
+      if (char.cifras && char.cifras.length > 0) {
+        char.cifras.forEach(item => {
+          const li = document.createElement('div');
+          li.className = "flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30";
+          li.innerHTML = `<span class="text-emerald-400 font-bold">🎯</span><span>${item}</span>`;
+          cifrasList.appendChild(li);
+        });
+      }
+
+      // ABA 2: Fatos Forenses & Inquéritos
+      document.getElementById('modal-inquerito-desc').textContent = char.inqueritoDesc;
+      document.getElementById('modal-modus-operandi').textContent = char.modusOperandi;
+      document.getElementById('modal-operacoes').textContent = char.operacoes;
+      document.getElementById('modal-status-judicial').textContent = char.statusJudicial;
+
+      // ABA 3: Sátira & Músicas
+      const codinomesList = document.getElementById('modal-codinomes-list');
+      codinomesList.innerHTML = '';
+      if (char.codinomes && char.codinomes.length > 0) {
+        char.codinomes.forEach(cod => {
+          const sp = document.createElement('span');
+          sp.className = "text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded";
+          sp.textContent = `"${cod}"`;
+          codinomesList.appendChild(sp);
+        });
+      }
+      document.getElementById('modal-cena-desc').textContent = `"${char.cena}"`;
+      document.getElementById('modal-musica-nome').textContent = char.musicaNome;
+      document.getElementById('modal-musica-ritmo').textContent = char.musicaRitmo;
+      document.getElementById('modal-musica-refrão').textContent = char.musicaRefrão;
+
+      // ABA 4: Fontes & Cronologia
+      const fontesCont = document.getElementById('modal-fontes-container');
+      fontesCont.innerHTML = '';
+      if (char.fontes && char.fontes.length > 0) {
+        char.fontes.forEach(f => {
+          const div = document.createElement('div');
+          div.className = "bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-1.5";
+          
+          let linkHtml = '';
+          if (f.url && f.url.trim() !== '') {
+            linkHtml = `
+              <a href="${f.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 font-semibold underline underline-offset-2 transition">
+                <span>Acessar Reportagem Verificada</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            `;
+          } else {
+            linkHtml = `<span class="text-xs text-slate-500 italic">Registro oficial arquivado</span>`;
+          }
+
+          div.innerHTML = `
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40">${f.veiculo}</span>
+              <span class="text-slate-500">${f.data}</span>
+            </div>
+            <h5 class="text-sm font-bold text-white">${f.titulo}</h5>
+            <div class="pt-1 flex items-center justify-between flex-wrap gap-2">
+              <span class="text-xs text-slate-400 font-mono">${f.linkTexto}</span>
+              ${linkHtml}
+            </div>
+          `;
+          fontesCont.appendChild(div);
+        });
+      }
+
+      const timelineCont = document.getElementById('modal-timeline-container');
+      timelineCont.innerHTML = '<div class="timeline-line"></div>';
+      if (char.timeline && char.timeline.length > 0) {
+        char.timeline.forEach(t => {
+          const div = document.createElement('div');
+          div.className = "relative flex items-start gap-3 text-xs";
+          div.innerHTML = `
+            <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+            <div>
+              <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">${t.ano}</span>
+              <p class="text-slate-300 leading-relaxed">${t.texto}</p>
+            </div>
+          `;
+          timelineCont.appendChild(div);
+        });
+      }
+
+      trocarAbaModal('conexao');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    /* MODAL DO VÉRTICE CENTRAL: FLÁVIO BOLSONARO ARMAMENTISTA */
+    function abrirModalCentro() {
+      playBeep(220, 'sawtooth', 0.2);
+
+      document.getElementById('modal-badge-avatar').textContent = "★";
+      document.getElementById('modal-badge-avatar').style.borderColor = '#ef4444';
+      document.getElementById('modal-badge-cat').textContent = "Vértice Armamentista";
+      document.getElementById('modal-badge-cat').style.color = '#ef4444';
+      document.getElementById('modal-badge-cat').style.borderColor = '#ef444460';
+      document.getElementById('modal-nome').textContent = "FLÁVIO BOLSONARO (O Vértice Armamentista)";
+
+      const googleQueryCentro = "Flavio Bolsonaro lobby armas CACs bancada da bala projetos excludente ilicitude";
+      const googleLink = `https://www.google.com/search?q=${encodeURIComponent(googleQueryCentro)}`;
+      document.getElementById('modal-google-btn').href = googleLink;
+      document.getElementById('modal-google-footer-btn').href = googleLink;
+      document.getElementById('modal-tab-search-btn').href = googleLink;
+
+      // Aba 1
+      document.getElementById('modal-grau-conexao').textContent = "Vértice Central de Convergência da Bancada da Bala";
+      document.getElementById('modal-conexao-desc').textContent = "Filho '01' do clã. Articulador político de projetos de ampliação do porte de armas no Senado, patrono de medalhas a policiais do Escritório do Crime, advogado formal de PM réu por tiro de fuzil em criança de 5 anos e defensor intransigente dos clubes de tiro.";
+      document.getElementById('modal-papel').textContent = "Líder parlamentar e escudo legislativo do ecossistema armamentista fluminense e nacional.";
+      document.getElementById('modal-proximidade').textContent = "O Vértice Central de Blindagem e Legislação Bélica.";
+
+      const cifrasList = document.getElementById('modal-cifras-list');
+      cifrasList.innerHTML = `
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">🎯</span>
+          <span>Mais de R$ 300 milhões em emendas parlamentares federais destinadas a redutos ligados a grupos armados e postos sob suspeita na Baixada.</span>
+        </div>
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">🎯</span>
+          <span>Atuação forense direta para travar o Tribunal do Júri popular por mais de 5 anos no homicídio da menina Ana Clara em Niterói.</span>
+        </div>
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">🎯</span>
+          <span>Concessão de Moção de Louvor e Medalha Tiradentes na ALERJ a Adriano da Nóbrega quando este estava preso por assassinato.</span>
+        </div>
+      `;
+
+      // Aba 2
+      document.getElementById('modal-inquerito-desc').textContent = "Apurações de vínculos de seu gabinete com lideranças do Escritório do Crime de Rio das Pedras, apoio a postos de milícias com Márcio Canella e representação jurídica contenciosa a ex-sócios de pirâmides com braços armados.";
+      document.getElementById('modal-modus-operandi').textContent = "Uso da tribuna e prerrogativas parlamentares para condecorar acusados de homicídio, apresentação de emendas de excludente de ilicitude e manobras recursais em tribunais superiores.";
+      document.getElementById('modal-operacoes').textContent = "Operação Os Intocáveis, Operação Unha e Carne, CPI das Armas e Milícias.";
+      document.getElementById('modal-status-judicial').textContent = "Senador da República em exercício; processos de aliados com manobras em cortes superiores.";
+
+      // Aba 3
+      const codinomesList = document.getElementById('modal-codinomes-list');
+      codinomesList.innerHTML = `
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"Doutor Balas Perdidas"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Patrono do Escritório do Crime"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Escudeiro do Fuzil"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Senador do Calibre Ilimitado"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Vértice do Chumbo Fino"</span>
+      `;
+      document.getElementById('modal-cena-desc').textContent = `"O senador cercado de medalhas da ALERJ e projéteis de fuzil, explicando na tribuna que condecorar atiradores condenados e defender executores de crianças é a forma mais pura de defender a família brasileira."`;
+      document.getElementById('modal-musica-nome').textContent = "A Balada do Vértice Bélico";
+      document.getElementById('modal-musica-ritmo').textContent = "Samba-Enredo Pesado / Rap de Denúncia";
+      document.getElementById('modal-musica-refrão').textContent = "Todas as setas de chumbo apontam pro centro, quem livra o atirador e ignora o lamento!";
+
+      // Aba 4
+      const fontesCont = document.getElementById('modal-fontes-container');
+      fontesCont.innerHTML = `
+        <div class="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40">Acervo Oficial</span>
+            <span class="text-slate-500">2003 - 2026</span>
+          </div>
+          <h5 class="text-sm font-bold text-white">Registros de Votações, Moções e Atos Judiciais</h5>
+          <p class="text-xs text-slate-400">Anais da Assembleia Legislativa do Rio de Janeiro (ALERJ), Senado Federal e peças recursais assinadas perante o STJ e STF.</p>
+          <div class="pt-1">
+            <a href="https://apublica.org/2019/02/em-16-anos-na-alerj-flavio-bolsonaro-condecorou-ao-menos-30-pms-presos-ou-investigados/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 font-semibold underline underline-offset-2 transition">
+              <span>Levantamento: Homenagens de Flávio a PMs réus (Agência Pública)</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        </div>
+      `;
+
+      const timelineCont = document.getElementById('modal-timeline-container');
+      timelineCont.innerHTML = `
+        <div class="timeline-line"></div>
+        <div class="relative flex items-start gap-3 text-xs">
+          <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+          <div>
+            <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">2003 - 2018</span>
+            <p class="text-slate-300">Condecora mais de 30 PMs presos ou investigados por homicídio na ALERJ, incluindo Adriano da Nóbrega.</p>
+          </div>
+        </div>
+        <div class="relative flex items-start gap-3 text-xs">
+          <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+          <div>
+            <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">2021 - 2026</span>
+            <p class="text-slate-300">Assume a defesa judicial do PM acusado de matar a criança Ana Clara e articula a bancada pró-armas no Senado.</p>
+          </div>
+        </div>
+      `;
+
+      trocarAbaModal('conexao');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    function fecharModal() {
+      playBeep(350, 'sine', 0.05);
+      modalBackdrop.classList.replace('opacity-100', 'opacity-0');
+      modalPanel.classList.replace('scale-100', 'scale-95');
+      setTimeout(() => {
+        modalBackdrop.classList.add('hidden', 'pointer-events-none');
+      }, 200);
+    }
+
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) fecharModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') fecharModal();
+    });
+
+    function trocarAbaModal(aba) {
+      playBeep(480, 'sine', 0.04);
+      
+      const abas = ['conexao', 'fatos', 'satira', 'fontes'];
+      const cores = {
+        conexao: 'border-emerald-500 text-white',
+        fatos: 'border-red-500 text-white',
+        satira: 'border-amber-500 text-white',
+        fontes: 'border-cyan-500 text-white'
+      };
+
+      abas.forEach(nome => {
+        const conteudo = document.getElementById(`modal-tab-${nome}`);
+        const botao = document.getElementById(`tab-btn-${nome}`);
+        
+        if (nome === aba) {
+          conteudo.classList.remove('hidden');
+          botao.className = `px-4 py-3 border-b-2 ${cores[nome]} flex items-center gap-1.5 whitespace-nowrap transition`;
+        } else {
+          conteudo.classList.add('hidden');
+          botao.className = "px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition";
+        }
+      });
+    }
+
+    /* CONTROLE DE LAYOUT (NOIR VS CLEAN) */
+    function alternarLayoutEstilo() {
+      playBeep(640, 'triangle', 0.08);
+      const body = document.body;
+      const label = document.getElementById('label-layout');
+
+      if (currentLayout === 'noir') {
+        currentLayout = 'clean';
+        body.classList.replace('style-noir', 'style-clean');
+        label.textContent = "Dossiê";
+      } else {
+        currentLayout = 'noir';
+        body.classList.replace('style-clean', 'style-noir');
+        label.textContent = "Clean";
+      }
+
+      renderDynamicDiagram();
+    }
+
+    /* CONTROLE DE TEMA (DARK VS LIGHT) */
+    function alternarTemaCor() {
+      playBeep(500, 'sine', 0.06);
+      const html = document.documentElement;
+      const icon = document.getElementById('icon-theme');
+      const label = document.getElementById('label-theme');
+
+      if (currentTheme === 'dark') {
+        currentTheme = 'light';
+        html.classList.remove('dark');
+        html.classList.add('light');
+        label.textContent = "Escuro";
+        icon.innerHTML = `<svg class="w-3.5 h-3.5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+      } else {
+        currentTheme = 'dark';
+        html.classList.remove('light');
+        html.classList.add('dark');
+        label.textContent = "Claro";
+        icon.innerHTML = `<svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+      }
+
+      renderDynamicDiagram();
+    }
+
+    /* CONTROLE DE VISÃO (RADIAL 360° VS GRADE DE CARDS) */
+    function alternarVisao() {
+      const containerRadial = document.getElementById('container-radial');
+      const containerGrid = document.getElementById('container-grid');
+      const label = document.getElementById('label-toggle-view');
+
+      playBeep(420, 'sine', 0.06);
+
+      if (currentView === 'radial') {
+        currentView = 'grid';
+        containerRadial.classList.add('hidden');
+        containerGrid.classList.remove('hidden');
+        label.textContent = "Diagrama 360°";
+      } else {
+        currentView = 'radial';
+        containerRadial.classList.remove('hidden');
+        containerGrid.classList.add('hidden');
+        label.textContent = "Lista";
+      }
+    }
+
+    function toggleMobileFilters() {
+      const tb = document.getElementById('toolbar-actions');
+      tb.classList.toggle('hidden');
+      tb.classList.toggle('flex');
+    }
+
+    // Redimensionamento e Reorientação de Tela
+    window.addEventListener('resize', () => {
+      renderDynamicDiagram();
+    });
+
+    /* INICIALIZAÇÃO NA CARGA DA PÁGINA */
+    window.onload = function() {
+      renderDynamicDiagram();
+    };
+  </script>
+</body>
+</html>
