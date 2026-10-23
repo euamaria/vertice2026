@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossiê Interativo: A Teia de Flávio Bolsonaro - 32 Personagens e Cifras</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#b91c1c',
+              darkred: '#7f1d1d',
+              crimson: '#dc2626',
+              gold: '#d97706',
+              board: '#070b12',
+              card: '#0f172a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #050811;
+      --bg-canvas: #080d18;
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    html.light {
+      --bg-main: #f8fafc;
+      --bg-canvas: #edf2f7;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.style-noir .svg-container {
+      background: radial-gradient(circle at center, #0f172a 0%, #050811 100%);
+    }
+    body.style-clean .svg-container {
+      background: #ffffff;
+    }
+    html.dark body.style-clean .svg-container {
+      background: #0b1120;
+    }
+    .svg-container {
+      cursor: grab;
+      touch-action: none;
+    }
+    .svg-container:active {
+      cursor: grabbing;
+    }
+    .node-outer {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .node-outer:hover {
+      transform: scale(1.12);
+    }
+    body.style-noir .node-outer:hover {
+      filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.55));
+    }
+    body.style-clean .node-outer:hover {
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+    .node-center {
+      animation: pulse-center 3.6s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes pulse-center {
+      0% {
+        filter: drop-shadow(0 0 15px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 35px rgba(153, 27, 27, 0.3));
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 60px rgba(220, 38, 38, 0.55));
+      }
+    }
+    .arrow-line {
+      transition: stroke 0.2s ease, stroke-width 0.2s ease, stroke-dashoffset 0.2s ease;
+    }
+    .arrow-highlight {
+      stroke: #ef4444 !important;
+      stroke-width: 3.5px !important;
+      stroke-dasharray: 6 3;
+      animation: dash 1s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+    .timeline-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1.25rem;
+      width: 2px;
+      background: #334155;
+    }
+    html.light .timeline-line {
+      background: #cbd5e1;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-700 selection:text-white style-noir">
+
+  <header class="border-b border-slate-800 bg-slate-950/85 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-4 py-2.5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-3">
+      
+      <!-- Logo, Título e Contador -->
+      <div class="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-start">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-950 flex items-center justify-center shadow-lg shadow-red-950/50 border border-red-500/30 flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 0 1 10 10M12 12l5-5m-5 5H2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800/40">Dossiê 360° Expandido</span>
+              <span id="badge-style-info" class="text-xs text-slate-400 font-mono">32 Conexões Mapeadas</span>
+            </div>
+            <h1 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+              A Teia de Flávio: 32 Personagens, Cifras e Inquéritos
+            </h1>
+          </div>
+        </div>
+        
+        <!-- Botão Mobile para Ferramentas -->
+        <button onclick="toggleMobileFilters()" class="xl:hidden p-2 rounded-lg bg-slate-800 text-slate-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        </button>
+      </div>
+
+      <!-- Barra de Ferramentas, Busca e Filtros -->
+      <div id="toolbar-actions" class="hidden xl:flex flex-wrap items-center gap-2 w-full xl:w-auto justify-end">
+        
+        <!-- Campo de Busca em Tempo Real -->
+        <div class="relative">
+          <input 
+            type="text" 
+            id="search-input" 
+            oninput="pesquisarPersonagem(this.value)" 
+            placeholder="Buscar personagem, operador ou cifra..." 
+            class="w-52 lg:w-64 bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500 transition"
+          />
+          <svg class="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filtros por Categoria com Cores Destaque -->
+        <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs font-medium overflow-x-auto no-scrollbar">
+          <button onclick="filtrarCategoria('todas')" class="filter-btn px-2 py-1 rounded bg-red-700 text-white font-semibold transition whitespace-nowrap" data-cat="todas">Todos (32)</button>
+          <button onclick="filtrarCategoria('familia')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="familia">Família</button>
+          <button onclick="filtrarCategoria('operadores')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="operadores">Operadores</button>
+          <button onclick="filtrarCategoria('bancos')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="bancos">Bancos & Luxo</button>
+          <button onclick="filtrarCategoria('milicia')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="milicia">Milícia & Submundo</button>
+          <button onclick="filtrarCategoria('estado')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="estado">Estado & Golpe</button>
+          <button onclick="filtrarCategoria('ideologia')" class="filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap" data-cat="ideologia">Fé & Lobbies</button>
+        </div>
+
+        <!-- Botão 1: Alternar Estilo Noir vs Clean -->
+        <button id="btn-toggle-layout" onclick="alternarLayoutEstilo()" title="Alternar entre Estilo Dossiê e Layout Clean" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          <span id="label-layout">Clean</span>
+        </button>
+
+        <!-- Botão 2: Alternar Dark Mode / Light Mode -->
+        <button id="btn-toggle-theme" onclick="alternarTemaCor()" title="Alternar Modo Escuro e Claro" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <span id="icon-theme">
+            <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </span>
+          <span id="label-theme">Claro</span>
+        </button>
+
+        <!-- Botão 3: Visão 360° vs Grade de Cards -->
+        <button id="btn-toggle-view" onclick="alternarVisao()" title="Alternar Visão" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          <span id="label-toggle-view">Lista</span>
+        </button>
+
+        <!-- Reset Zoom e Áudio -->
+        <div class="flex items-center gap-1">
+          <button onclick="resetZoom()" title="Redefinir Enquadramento" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </button>
+          <button id="btn-sound" onclick="toggleAudio()" title="Efeitos Sonoros Sintetizados" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 rounded-lg transition">
+            <svg id="icon-sound" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 relative flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
+    
+    <!-- Barra de Dica Superior -->
+    <div class="absolute top-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+      <div id="hint-badge" class="bg-slate-900/90 border border-slate-700/80 text-slate-300 text-xs px-3.5 py-1.5 rounded-full shadow-xl flex items-center gap-2 backdrop-blur-sm transition-colors duration-300">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        <span>Clique em qualquer personagem para abrir o <b>dossiê completo em 4 abas, cifras ($$$), fontes e cronologia</b>.</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 1: CANVAS RADIAL 360 GRAUS (SVG) -->
+    <div id="container-radial" class="w-full h-[80vh] min-h-[600px] relative rounded-2xl border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-300">
+      
+      <!-- Grade de fundo sutil -->
+      <div id="bg-grid-overlay" class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#64748b_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+      <!-- SVG dos 32 Personagens e Setas -->
+      <svg id="svg-diagram" class="w-full h-full svg-container" viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#ef4444" />
+          </marker>
+          <marker id="arrowhead-clean" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#dc2626" />
+          </marker>
+          <radialGradient id="grad-center" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ef4444"/>
+            <stop offset="45%" stop-color="#b91c1c"/>
+            <stop offset="100%" stop-color="#450a0a"/>
+          </radialGradient>
+          <radialGradient id="grad-center-clean" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#dc2626"/>
+            <stop offset="100%" stop-color="#991b1b"/>
+          </radialGradient>
+          <linearGradient id="grad-node" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="grad-node-clean-light" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f8fafc"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Camada de Conexões (Setas dinâmicas) -->
+        <g id="layer-arrows" class="arrow-layer opacity-75"></g>
+
+        <!-- Nó Central: Flávio Bolsonaro (O Vértice) -->
+        <g id="center-node" class="node-center cursor-pointer" onclick="abrirModalCentro()">
+          <circle id="center-circle-main" cx="800" cy="550" r="105" fill="url(#grad-center)" stroke="#fca5a5" stroke-width="4" />
+          <circle id="center-circle-dashed" cx="800" cy="550" r="95" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="6 4" />
+          <text id="center-text-title1" x="800" y="515" text-anchor="middle" fill="#fef2f2" font-size="20" font-weight="900" letter-spacing="1">FLÁVIO</text>
+          <text id="center-text-title2" x="800" y="545" text-anchor="middle" fill="#fee2e2" font-size="24" font-weight="900" letter-spacing="1.5">BOLSONARO</text>
+          <line id="center-text-line" x1="740" y1="562" x2="860" y2="562" stroke="#fca5a5" stroke-width="2" opacity="0.8" />
+          <text id="center-text-sub1" x="800" y="585" text-anchor="middle" fill="#fecaca" font-size="13" font-weight="700" letter-spacing="0.5">O VÉRTICE CENTRAL</text>
+          <text id="center-text-sub2" x="800" y="604" text-anchor="middle" fill="#cbd5e1" font-size="10.5" font-family="'JetBrains Mono', monospace" opacity="0.85">PONTO DE CONVERGÊNCIA</text>
+        </g>
+
+        <!-- Camada dos 32 Nós Periféricos -->
+        <g id="layer-nodes"></g>
+      </svg>
+
+      <!-- Controles de Zoom Flutuantes -->
+      <div id="zoom-controls-box" class="absolute bottom-4 right-4 flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-1 gap-1 shadow-2xl backdrop-blur-md">
+        <button onclick="aplicarZoom(1.15)" title="Aumentar Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">+</button>
+        <button onclick="aplicarZoom(0.85)" title="Diminuir Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">−</button>
+        <button onclick="resetZoom()" title="Centralizar" class="px-2 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs font-mono transition">100%</button>
+      </div>
+
+      <!-- Legenda de Cores das 6 Categorias Perfeitamente Distintas -->
+      <div id="legend-box" class="absolute bottom-4 left-4 hidden lg:flex flex-wrap items-center gap-3.5 bg-slate-900/90 border border-slate-800 px-3.5 py-2 rounded-xl text-xs backdrop-blur-md">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span> Família</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Operadores & Caixa</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Bancos & Luxo</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Milícia & Submundo</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-violet-500"></span> Estado & Golpe</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-fuchsia-500"></span> Fé & Lobbies</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 2: GRADE DE CARDS DOS PERSONAGENS (RESPONSIVA) -->
+    <div id="container-grid" class="hidden w-full max-w-7xl mx-auto py-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="cards-wrapper">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6 transition-opacity opacity-0 pointer-events-none">
+    <div id="modal-panel" class="bg-slate-900 border border-slate-700/80 w-full max-w-4xl max-h-[92vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-200">
+      
+      <!-- Topo do Modal -->
+      <div class="p-4 sm:p-5 border-b border-slate-800 bg-slate-950 flex items-start justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div id="modal-badge-avatar" class="w-11 h-11 rounded-xl bg-red-950 border border-red-700/60 text-red-300 font-mono font-black text-base flex items-center justify-center flex-shrink-0 shadow-inner">
+            01
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="modal-badge-cat" class="text-xs font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded border">
+                Categoria
+              </span>
+              <span id="modal-cifra-badge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded flex items-center gap-1">
+                $$$ Cifras Envolvidas
+              </span>
+            </div>
+            <h2 id="modal-nome" class="text-lg sm:text-xl font-black text-white tracking-tight mt-1">Nome do Personagem</h2>
+          </div>
+        </div>
+        <button onclick="fecharModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Barra de Navegação das 4 Abas -->
+      <div class="flex border-b border-slate-800 bg-slate-900/90 text-xs font-semibold overflow-x-auto no-scrollbar">
+        <button id="tab-btn-conexao" onclick="trocarAbaModal('conexao')" class="px-4 py-3 border-b-2 border-red-500 text-white flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          1. Conexão com Flávio & Cifras ($$$)
+        </button>
+        <button id="tab-btn-fatos" onclick="trocarAbaModal('fatos')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          2. Fatos Forenses & Inquéritos
+        </button>
+        <button id="tab-btn-satira" onclick="trocarAbaModal('satira')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          3. Sátira, Codinomes & Músicas
+        </button>
+        <button id="tab-btn-fontes" onclick="trocarAbaModal('fontes')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          4. Fontes Oficiais & Cronologia
+        </button>
+      </div>
+
+      <!-- ABA 1: Conexão Direta/Indireta & Cifras Financeiras -->
+      <div id="modal-tab-conexao" class="p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed">
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="text-xs uppercase font-mono tracking-wider text-red-400 font-bold">Natureza da Conexão com Flávio Bolsonaro</h4>
+            <span id="modal-grau-conexao" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/60 border border-amber-800/40 px-2 py-0.5 rounded">Conexão Direta</span>
+          </div>
+          <p id="modal-conexao-desc" class="text-white font-medium"></p>
+        </div>
+
+        <!-- Quadro de Cifras e Valores Financeiros Movimentados -->
+        <div class="bg-emerald-950/25 border border-emerald-800/40 p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold">Cifras e Valores Financeiros Mapeados</h4>
+          </div>
+          <div id="modal-cifras-list" class="space-y-1.5 text-xs text-slate-200 font-mono">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Papel na Engrenagem</span>
+            <span id="modal-papel" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Grau de Proximidade Familiar / Operacional</span>
+            <span id="modal-proximidade" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: Fatos Forenses & Inquéritos -->
+      <div id="modal-tab-fatos" class="p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Resumo das Investigações e Inquéritos Policiais</h4>
+          <p id="modal-inquerito-desc"></p>
+        </div>
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-amber-400 font-bold mb-1.5">Modus Operandi & Provas Colhidas</h4>
+          <p id="modal-modus-operandi" class="text-slate-200"></p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Operações Policiais / CPIs</span>
+            <span id="modal-operacoes" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Status / Desfecho Judicial</span>
+            <span id="modal-status-judicial" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 3: Sátira, Codinomes & Músicas -->
+      <div id="modal-tab-satira" class="p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div class="bg-amber-950/30 border border-amber-800/40 p-4 rounded-xl">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block mb-1">5 Codinomes Satíricos Mapeados</span>
+          <div id="modal-codinomes-list" class="flex flex-wrap gap-1.5 mt-1.5">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Ideia de Esquete / Cena Teatral / Ilusionismo</h4>
+          <p id="modal-cena-desc" class="text-slate-200 italic"></p>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Sugestão de Música & Ritmo Satírico</h4>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="modal-musica-nome" class="font-bold text-white text-base"></span>
+              <span id="modal-musica-ritmo" class="text-xs font-mono bg-red-950 text-red-300 px-2.5 py-0.5 rounded border border-red-800/50"></span>
+            </div>
+            <p id="modal-musica-refrão" class="text-xs text-slate-400"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 4: Fontes Oficiais & Linha do Tempo -->
+      <div id="modal-tab-fontes" class="p-6 overflow-y-auto space-y-5 text-sm leading-relaxed hidden">
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-cyan-400 font-bold mb-2">Fontes Oficiais, Notícias e Inquéritos</h4>
+          <div id="modal-fontes-container" class="space-y-2.5">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold mb-3">Linha do Tempo Cronológica do Personagem</h4>
+          <div class="relative pl-6 sm:pl-8 space-y-5" id="modal-timeline-container">
+            <div class="timeline-line"></div>
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+        <span class="text-xs text-slate-500 font-mono">Dossiê Investigativo Completo • Flávio Bolsonaro e as 32 Conexões</span>
+        <button onclick="fecharModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition">
+          Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500 font-mono transition-colors duration-300">
+    Dossiê Especial 360° • 32 Personagens Conectados ao Vértice Central de Flávio Bolsonaro • Cifras, Fontes e Sátiras Artísticas
+  </footer>
+
+  <script>
+    /* BANCO DE DADOS DETALHADO DOS 32 PERSONAGENS CONECTADOS A FLÁVIO BOLSONARO */
+    const charactersData = [
+      {
+        id: 1,
+        numero: "01",
+        nome: "Jair Bolsonaro",
+        subtitulo: "O Pai / Patriarca e Mentor Político",
+        categoria: "familia",
+        cor: "#dc2626", // Vermelho Carmesim
+        conexaoGrau: "Conexão Direta (Pai / Chefe Político)",
+        conexaoDesc: "Mentor absoluto da dinastia política. Interveio expressamente na Polícia Federal na Reunião Ministerial de 22/04/2020 para impedir investigações contra os filhos ('não vou esperar f... minha família'). Beneficiário de rachadinhas históricas e avalista dos acordos do Senado.",
+        cifras: [
+          "R$ 25,6 milhões em dinheiro vivo (mais de R$ 40 milhões corrigidos) na compra de 51 dos 107 imóveis negociados pela família.",
+          "R$ 89.000,00 recebidos pela esposa Michelle em 21 cheques de Queiroz e sua mulher.",
+          "R$ 27 milhões gastos no cartão corporativo secreto da Presidência (incluindo R$ 362 mil na mesma padaria).",
+          "R$ 25 milhões em estojos de joias e relógios de diamantes sonegados da alfândega e desviados para venda nos EUA."
+        ],
+        papel: "Patriarca, articulador da blindagem de Estado e criador da máquina eleitoral.",
+        proximidade: "Núcleo familiar direto (Pai de Flávio).",
+        inqueritoDesc: "Alvo do Inquérito das Joias Sauditas (PF), da CPMI do Golpe de 8 de Janeiro, da falsificação de cartões de vacina e indiciado em 9 tipos penais pela CPI da Pandemia da COVID-19. Condenado pelo TSE a 8 anos de inelegibilidade por abuso de poder político e eleitoral.",
+        modusOperandi: "Uso de dinheiro vivo sem rastreio bancário em compras patrimoniais, interferência política em órgãos de fiscalização (PF, COAF, Receita) e mobilização contínua de desinformação em redes sociais.",
+        operacoes: "Operação Furna da Onça, Operação Tempus Veritatis, CPI da COVID, Inquérito das Joias (PF).",
+        statusJudicial: "Inelegível até 2030 pelo TSE; indiciado criminalmente em múltiplos inquéritos no STF.",
+        codinomes: ["O Capitão do Cercadinho", "O Barão das 51 Escrituras", "Capitão Cloroquina", "O Freguês dos Dez Mil Pães", "O Mascate do Planalto"],
+        cena: "O presidente na mesa de jantar comendo pão com leite condensado em copo plástico para a live do Facebook, enquanto abre a gaveta de meias abarrotada de relógios Rolex de ouro e escrituras carimbadas em dinheiro vivo.",
+        musicaNome: "A Marcha dos Dez Mil Pães",
+        musicaRitmo: "Marchinha Carnavalesca Tradicional",
+        musicaRefrão: "Come pão com manteiga pra enganar a multidão, mas compra cinquenta casas com nota viva na mão!",
+        fontes: [
+          { veiculo: "UOL Notícias", titulo: "Metade do patrimônio da família Bolsonaro foi comprada em dinheiro vivo", data: "30/08/2022", link: "UOL Investigativo" },
+          { veiculo: "G1 / STF", titulo: "Vídeo da reunião ministerial de 22 de abril mostra ameaça de troca na PF para salvar família", data: "22/05/2020", link: "G1 - Reunião Ministerial" },
+          { veiculo: "TSE", titulo: "Tribunal Superior Eleitoral condena Jair Bolsonaro a 8 anos de inelegibilidade", data: "30/06/2023", link: "Acórdão TSE" }
+        ],
+        timeline: [
+          { ano: "1991-2018", texto: "Sete mandatos na Câmara; compra de dezenas de imóveis com registros de moeda corrente em cartório." },
+          { ano: "2020", texto: "Reunião ministerial com ameaça aberta de interferência na Polícia Federal para blindar Flávio." },
+          { ano: "2023", texto: "TSE forma maioria e declara Bolsonaro inelegível por reuniões golpistas contra as urnas." }
+        ]
+      },
+      {
+        id: 2,
+        numero: "02",
+        nome: "Fabrício Queiroz",
+        subtitulo: "O Operador da ALERJ / Amigo de 30 Anos",
+        categoria: "operadores",
+        cor: "#d97706", // Âmbar Ouro
+        conexaoGrau: "Conexão Direta (Operador Financeiro Central)",
+        conexaoDesc: "Motorista e assessor comissionado de Flávio por mais de uma década. Recolhia compulsòriamente salários de dezenas de funcionários na ALERJ e efetuava depósitos fracionados na conta pessoal de Flávio e cheques para Michelle Bolsonaro.",
+        cifras: [
+          "R$ 1,2 milhão movimentado de forma atípica no banco Santander detectado pelo COAF.",
+          "48 depósitos em cédulas na boca do caixa direcionados à conta de Flávio Bolsonaro.",
+          "R$ 89.000,00 repassados em 21 cheques para a primeira-dama Michelle Bolsonaro.",
+          "Custeadas faturas de planos de saúde e colégios das filhas de Flávio Bolsonaro com dinheiro em espécie."
+        ],
+        papel: "Operador de campo da rachadinha, arrecadador de envelopes e pagador de contas domésticas.",
+        proximidade: "Amigo íntimo familiar de três décadas de Jair e Flávio.",
+        inqueritoDesc: "Denunciado pelo MPRJ na Operação Furna da Onça por peculato, lavagem de capitais e organização criminosa. Preso preventivamente em junho de 2020 escondido na casa de Atibaia de Frederick Wassef.",
+        modusOperandi: "Saques imediatos de salários pelos assessores comissionados nos caixas da ALERJ e repasse físico em envelopes pardos para as contas e despesas da família de Flávio.",
+        operacoes: "Operação Furna da Onça (PF/MPRJ), Procedimento Investigatório Criminal do GAECC.",
+        statusJudicial: "Denúncia criminal trancada e provas anuladas pelo STJ/STF por quebra de sigilo irregular do COAF.",
+        codinomes: ["Dom Queiroz das Sombras", "O Mago do Caixa Eletrônico", "O Pescador de Envelopes", "O Faz-Tudo de Atibaia", "O Amigo do Peito da Folha"],
+        cena: "Um assessor suando frio no subsolo da ALERJ colocando dezenas de envelopes pardos no caixa automático com cronômetro apitando, antes de sumir num sítio em Atibaia cercado de bonecos de heróis.",
+        musicaNome: "A Fila do Caixa Eletrônico",
+        musicaRitmo: "Samba Sincopado Carioca",
+        musicaRefrão: "Deposita de dois em dois mil, o salário do povo virou envelope e sumiu!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Queiroz movimentou R$ 1,2 milhão de forma atípica em um ano, aponta Coaf", data: "06/12/2018", link: "O Globo - Relatório Coaf" },
+          { veiculo: "Folha de S.Paulo", titulo: "Fabrício Queiroz é preso em Atibaia em imóvel de advogado de Flávio Bolsonaro", data: "18/06/2020", link: "Folha - Prisão de Queiroz" }
+        ],
+        timeline: [
+          { ano: "2007", texto: "Nomeado assessor de Flávio na ALERJ, assumindo o controle da folha de pagamento." },
+          { ano: "2018", texto: "Operação Furna da Onça expõe relatório do COAF com movimentações de R$ 1,2 mi." },
+          { ano: "2020", texto: "Preso pela Polícia Civil escondido na chácara de Wassef em Atibaia (SP)." }
+        ]
+      },
+      {
+        id: 3,
+        numero: "03",
+        nome: "Willer Tomaz",
+        subtitulo: "Advogado Íntimo / Offshore do Jatinho",
+        categoria: "bancos",
+        cor: "#0284c7", // Azul Turquesa
+        conexaoGrau: "Conexão Direta (Amigo Íntimo e Parceiro de Bens)",
+        conexaoDesc: "Advogado de máxima confiança de Flávio. Dividia a gestão e as contas do jatinho Legacy 650 (onde Flávio era 'usuário master' no Santander); utilizou a mansão disputada em Angra dos Reis para festas de Flávio e usou laranjas em empresas de bets.",
+        cifras: [
+          "R$ 10 milhões (valor estimado da mansão da Ilha Comprida em Angra disputada com Richarlison).",
+          "R$ 5 bilhões movimentados em plataformas de apostas online (bets) em 2025.",
+          "US$ 236 mil sacados em notas vivas dentro de um cassino nos EUA.",
+          "R$ 163 milhões perdidos em apostas de bets e cobrados judicialmente."
+        ],
+        papel: "Articulador jurídico de bastidores, dono de offshores e intermediador patrimonial de luxo.",
+        proximidade: "Amigo de viagens, festas e litígios de Flávio Bolsonaro.",
+        inqueritoDesc: "Investigado pela PF por fraudes no INSS e descontos associativos ilegais em aposentadorias; apontado em relatório da PF como titular da offshore Alcazar que compartilhava conta bancária internacional com Flávio.",
+        modusOperandi: "Uso de empresas de fachada em nome de trabalhadoras domésticas (Lídia Mazelli) e blindagem patrimonial com holdings no exterior.",
+        operacoes: "Operação Carbono Oculto, Inquérito do Legacy 650 (PF/STF).",
+        statusJudicial: "Alvo de mandados de busca e investigações financeiras ativas no STF.",
+        codinomes: ["O Tomador da Ilha", "O Colecionador de Laranjas", "O Banqueiro das Bets", "O Doutor dos Bastidores", "O Dono do Jatinho"],
+        cena: "Um advogado descendo de um jatinho de 40 milhões em Angra dos Reis com pastas cheias de ações judiciais para expulsar jogadores de futebol, enquanto assina papéis de cassino nos EUA no nome da faxineira.",
+        musicaNome: "A Faxineira Bilionária",
+        musicaRitmo: "Forró Humorístico / Embolada",
+        musicaRefrão: "Dona Lídia limpa o chão de manhã bem cedinho, de tarde é dona da ilha, das bets e do jatinho!",
+        fontes: [
+          { veiculo: "O Globo (Coluna Malu Gaspar)", titulo: "PF descobre Flávio Bolsonaro como usuário master de offshore dona de jatinho", data: "08/10/2026", link: "O Globo - Malu Gaspar" },
+          { veiculo: "Metrópoles", titulo: "Richarlison cobra Willer Tomaz publicamente após matéria sobre mansão de Angra", data: "12/09/2026", link: "Metrópoles - Mansão Richarlison" }
+        ],
+        timeline: [
+          { ano: "2020", texto: "Inicia litígio de reintegração de posse da mansão de Angra contra a empresa de Richarlison." },
+          { ano: "2025", texto: "Secretária de Willer pede formalmente ao Santander a exclusão do acesso master de Flávio da conta da offshore." },
+          { ano: "2026", texto: "PF revela e-mails e triangulações bancárias com Daniel Vorcaro e Flávio." }
+        ]
+      },
+      {
+        id: 4,
+        numero: "04",
+        nome: "Daniel Vorcaro",
+        subtitulo: "Banqueiro do Banco Master / Dark Horse",
+        categoria: "bancos",
+        cor: "#0284c7",
+        conexaoGrau: "Conexão Direta (Financiador de Filme e Logística)",
+        conexaoDesc: "Banqueiro e controlador do Banco Master. Negociou R$ 134 milhões para o filme pró-Bolsonaro 'Dark Horse' cobrado por Flávio no WhatsApp; promovia festas exclusivas com autoridades no seu tríplex e compartilhava a estrutura do jato Legacy 650.",
+        cifras: [
+          "US$ 24 milhões (cerca de R$ 134 milhões) orçados e cobrados por Flávio para o longa-metragem Dark Horse.",
+          "R$ 62 mil gastos em uma única noite de festa no seu tríplex para autoridades.",
+          "R$ 10.000,00 cobrados via Pix para garota de programa citando magistrados em relatório da PF.",
+          "R$ 1,2 bilhão de aportes e rombo financeiro do Banco Master sob escrutínio do Banco Central."
+        ],
+        papel: "Mecenas financeiro da extrema-direita, banqueiro das operações corporativas e anfitrião VIP.",
+        proximidade: "Interlocutor frequente de Flávio via WhatsApp e sócio compartilhado de aeronave.",
+        inqueritoDesc: "Investigado no STF (sob relatoria do ministro Flávio Dino) e na Polícia Federal por evasão de divisas, lavagem de capitais e corrupção ativa via fundos Havengate e Go Up Entertainment nos EUA.",
+        modusOperandi: "Remessas ilegais para fundos no exterior simulando investimentos em produções culturais para mascarar transferências políticas.",
+        operacoes: "Operação Carbono Oculto, Inquérito do Dark Horse (STF).",
+        statusJudicial: "Celulares apreendidos pela PF; inquéritos criminais em andamento na Suprema Corte.",
+        codinomes: ["O Banqueiro do Faroeste", "O Produtor do Dark Horse", "O Mago do Master", "O Anfitrião do Tríplex", "Daniel das Telonas"],
+        cena: "Um set em Hollywood com atores de faroeste parados esperando almoço enquanto o senador manda mensagens de áudio desesperadas para o banqueiro mandar mais milhões de dólares.",
+        musicaNome: "Tô no Terceiro Dia de Gravação!",
+        musicaRitmo: "Tango Cômico / Western Paródia",
+        musicaRefrão: "Me dá uma luz, manda mais dólar pro faroeste da família brilhar no cinema!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Áudio: Flávio negociou com Vorcaro milhões para filme sobre Bolsonaro nos EUA", data: "13/05/2026", link: "The Intercept - Áudios Vorcaro" },
+          { veiculo: "Revista Piauí", titulo: "As festas no tríplex de Vorcaro: 125 mensagens extraídas do celular do banqueiro", data: "05/10/2026", link: "Piauí - Mensagens Vorcaro" }
+        ],
+        timeline: [
+          { ano: "2023", texto: "Inicia tratativas com Flávio para financiar o filme Dark Horse nos EUA orçado em US$ 24 mi." },
+          { ano: "2024", texto: "Flávio cobra repasses pelo WhatsApp: 'Estamos no limite da gravação'." },
+          { ano: "2026", texto: "PF apreende celular de Vorcaro e revela mensagens do tríplex e offshores." }
+        ]
+      },
+      {
+        id: 5,
+        numero: "05",
+        nome: "Mauro Cid",
+        subtitulo: "Tenente-Coronel / Ajudante de Todas as Ordens",
+        categoria: "operadores",
+        cor: "#d97706",
+        conexaoGrau: "Conexão Direta (Operador Executivo do Clã)",
+        conexaoDesc: "Ajudante de ordens de Jair Bolsonaro e elo de confiança com Flávio. Vendeu relógios de luxo da Presidência nos EUA, falsificou cartões de vacina e guardou os registros das reuniões ministeriais de planejamento golpista.",
+        cifras: [
+          "US$ 68.000,00 recebidos pela venda de relógio Rolex e joias em lojas de penhores na Pensilvânia e Miami.",
+          "R$ 25 milhões em joias e estojos de diamantes transportados clandestinamente.",
+          "Dezenas de milhares de reais pagos em envelopes para contas familiares em dinheiro vivo."
+        ],
+        papel: "Braço executivo das ordens ilegais, despachante confidencial e pagador de contas domésticas.",
+        proximidade: "Acesso irrestrito ao gabinete presidencial e ao núcleo dos filhos.",
+        inqueritoDesc: "Preso na Operação Venire pela fraude nos cartões de vacinação do SUS; réu por corrupção, tentativa de golpe de Estado e peculato. Firmou acordo de colaboração premiada homologado pelo STF.",
+        modusOperandi: "Cumprimento de ordens fora do protocolo oficial com intermediação em dinheiro vivo, uso de militares do Exército e arquivo digital involuntário de provas.",
+        operacoes: "Operação Venire, Operação Lucas 12:2, Operação Tempus Veritatis.",
+        statusJudicial: "Colaborador premiado da Polícia Federal no STF sob medidas cautelares.",
+        codinomes: ["O Caixeiro-Viajante do Rolex", "O Hacker de Duque de Caxias", "O Mascate de Farda", "O Garçom das Faturas", "O Ajudante de Ordens"],
+        cena: "Um coronel condecorado negociando relógios de ouro no balcão de uma loja de penhor de beira de estrada na Flórida para enfiar maços de dólares na mala oficial.",
+        musicaNome: "O Penhor da Pensilvânia",
+        musicaRitmo: "Country-Blues Satírico",
+        musicaRefrão: "Vende o Rolex, apaga a agulha, corre pro caixa antes que o Supremo descubra!",
+        fontes: [
+          { veiculo: "G1 / TV Globo", titulo: "PF indicia Jair Bolsonaro e Mauro Cid por venda e recompra de joias sauditas", data: "04/07/2024", link: "G1 - Indiciamento Joias" },
+          { veiculo: "Folha de S.Paulo", titulo: "Mauro Cid confessa que vendeu joias a mando de Bolsonaro e entregou dinheiro em mãos", data: "18/08/2023", link: "Folha - Confissão Cid" }
+        ],
+        timeline: [
+          { ano: "2019-2022", texto: "Atua como ajudante de ordens da Presidência, pagando despesas e guardando mensagens." },
+          { ano: "Dez/2022", texto: "Viaja com os estojos de joias no avião presidencial para venda nos EUA." },
+          { ano: "2023", texto: "É preso na Operação Venire e fecha acordo de delação premiada com a PF." }
+        ]
+      },
+      {
+        id: 6,
+        numero: "06",
+        nome: "Frederick Wassef",
+        subtitulo: "O Anjo de Atibaia / Recomprador do Rolex",
+        categoria: "operadores",
+        cor: "#d97706",
+        conexaoGrau: "Conexão Direta (Advogado Pessoal de Flávio e Jair)",
+        conexaoDesc: "Advogado que abrigou Fabrício Queiroz foragido em sua chácara em Atibaia por mais de um ano. Correu aos EUA para recomprar com dinheiro vivo o relógio Rolex vendido por Cid para devolvê-lo ao TCU.",
+        cifras: [
+          "US$ 49.000,00 pagos em dinheiro vivo na recompra emergencial do relógio Rolex em um shopping na Pensilvânia.",
+          "Milhões de reais recebidos em contratos de advocacia por empresas investigadas."
+        ],
+        papel: "Advogado de contenção de crises, guardião de foragidos e operador de resgates financeiros.",
+        proximidade: "Intimidade absoluta com a família Bolsonaro, chamava-se de 'o Anjo'.",
+        inqueritoDesc: "Investigado no Inquérito das Joias (PF) por lavagem e obstrução de Justiça; alvo de buscas com celulares apreendidos em churrascaria em SP.",
+        modusOperandi: "Negação pública categórica em entrevistas jornalísticas seguida de atuação direta no resgate de provas e acolhimento de alvos da polícia.",
+        operacoes: "Operação Furna da Onça, Operação Lucas 12:2 (PF).",
+        statusJudicial: "Indiciado pela Polícia Federal no escândalo do desvio de presentes de Estado.",
+        codinomes: ["O Anjo de Atibaia", "O Recomprador da Pensilvânia", "O Homem da Sacola de Espécie", "O Advogado do Oculto", "Fred da Chácara"],
+        cena: "Um advogado afirmando veementemente ao vivo na televisão que nunca viu Queiroz na vida, enquanto o foragido toma banho de piscina no seu quintal em Atibaia.",
+        musicaNome: "Quem É Esse Homem na Minha Piscina?",
+        musicaRitmo: "Samba-Enredo Burlesco",
+        musicaRefrão: "Nunca vi esse Queiroz, ele brotou no meu jardim, comprou um Rolex à vista e voltou correndo pra mim!",
+        fontes: [
+          { veiculo: "UOL Notícias", titulo: "Wassef admite que recomprou Rolex nos EUA com dinheiro vivo a pedido de Cid", data: "15/08/2023", link: "UOL - Recompra Rolex" },
+          { veiculo: "G1", titulo: "Queiroz é preso em casa de advogado de Flávio Bolsonaro em Atibaia", data: "18/06/2020", link: "G1 - Prisão em Atibaia" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Acolhe Fabrício Queiroz em sua chácara em Atibaia com codinome 'Anjo'." },
+          { ano: "Jun/2020", texto: "Polícia prende Queiroz no local; Wassef deixa formalmente a defesa de Flávio." },
+          { ano: "Mar/2023", texto: "Viaja à Pensilvânia para recomprar o Rolex com US$ 49 mil em espécie." }
+        ]
+      },
+      {
+        id: 7,
+        numero: "07",
+        nome: "Alexandre Ramagem",
+        subtitulo: "Abin Paralela / Espião do FirstMile",
+        categoria: "estado",
+        cor: "#8b5cf6", // Roxo / Violeta
+        conexaoGrau: "Conexão Direta (Aparelhamento de Inteligência para Flávio)",
+        conexaoDesc: "Ex-diretor da ABIN. Confeccionou relatórios apócrifos de inteligência desenhados sob medida para as advogadas de Flávio Bolsonaro tentarem anular o processo das rachadinhas da ALERJ, além de espionar ilegalmente desafetos com o FirstMile.",
+        cifras: [
+          "R$ 5,7 milhões gastos em contratos do software espião israelense FirstMile pela ABIN sem licitação regular.",
+          "Mais de 60 mil consultas e rastreamentos ilegais de geolocalização de celulares sem ordem judicial."
+        ],
+        papel: "Araponga de Estado, fabricante de dossiês de blindagem para Flávio e vigilante de opositores.",
+        proximidade: "Amigo pessoal dos filhos de Bolsonaro; quase nomeado diretor-geral da PF.",
+        inqueritoDesc: "Indiciado na Operação Vigilância Aproximada da PF por espionagem ilegal, violação de sigilo e formação de organização criminosa na ABIN.",
+        modusOperandi: "Uso clandestino de ferramentas de contraespionagem estatal para monitorar auditores fiscais da Receita Federal que autuaram a família de Flávio.",
+        operacoes: "Operação Vigilância Aproximada (PF), Inquérito 4781 (STF).",
+        statusJudicial: "Indiciado pela Polícia Federal com relatório conclusivo entregue ao STF.",
+        codinomes: ["O Espião do FirstMile", "O Xerife do Celular Alheio", "O Araponga de Gabinete", "O Delegado dos Dossiês", "Ramagem da Espionagem"],
+        cena: "Um gabinete secreto de inteligência onde telas de radar monitoram auditores da Receita Federal almoçando, enquanto advogadas do senador ditam os relatórios para safar a franquia de doces.",
+        musicaNome: "Relatório Sob Medida",
+        musicaRitmo: "Spy-Jazz / Trilha Noir Cômica",
+        musicaRefrão: "Grampeia o fiscal, apaga o sinal, a Abin virou assessoria do Zero Um no tribunal!",
+        fontes: [
+          { veiculo: "G1", titulo: "PF aponta que Abin paralela espionou auditores da Receita para blindar Flávio Bolsonaro", data: "25/01/2024", link: "G1 - Abin Paralela" },
+          { veiculo: "Folha de S.Paulo", titulo: "Áudio apreendido revela Bolsonaro, Ramagem e advogadas combinando espionagem contra o Coaf", data: "15/07/2024", link: "Folha - Áudio Secreto" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Assume a direção-geral da ABIN sob Bolsonaro e expande o uso do FirstMile." },
+          { ano: "Ago/2020", texto: "Reunião no Planalto com Bolsonaro e advogadas para traçar blindagem a Flávio." },
+          { ano: "2024", texto: "PF deflagra operação e apreende computadores com dossiês sobre as rachadinhas." }
+        ]
+      },
+      {
+        id: 8,
+        numero: "08",
+        nome: "Adriano da Nóbrega",
+        subtitulo: "Chefe do Escritório do Crime / Miliciano",
+        categoria: "milicia",
+        cor: "#16a34a", // Verde Militar (Diferenciado do Vermelho!)
+        conexaoGrau: "Conexão Direta (Homenagens, Salários e Vínculo Paramilitar)",
+        conexaoDesc: "Chefe do consórcio de pistoleiros e grileiros de Rio das Pedras. Condecorado por Flávio com a Medalha Tiradentes na cadeia. Sua mãe e ex-esposa foram funcionárias comissionadas no gabinete de Flávio na ALERJ, repassando salários para Queiroz.",
+        cifras: [
+          "Centenas de milhares de reais pagos em salários da ALERJ à mãe (Raimunda) e ex-mulher (Danielle).",
+          "R$ 400 mil repassados comprovadamente das contas das familiares direto para Fabrício Queiroz.",
+          "Milhões de reais movimentados no consórcio de assassinatos de aluguel e grilagem territorial."
+        ],
+        papel: "Comandante paramilitar do Escritório do Crime, fornecedor de assessores e elo com o submundo.",
+        proximidade: "Condecorado pessoalmente por Flávio com a mais alta honraria do estado enquanto estava preso.",
+        inqueritoDesc: "Alvo da Operação Os Intocáveis do MPRJ; investigado por assassinatos de aluguel, extorsão armada e elos com o Caso Marielle Franco.",
+        modusOperandi: "Nomeação de parentes diretos como assessores fantasmas na ALERJ para irrigar financeiramente a milícia e garantir suporte político.",
+        operacoes: "Operação Os Intocáveis (MPRJ), Operação Girasol (Polícia Civil da Bahia).",
+        statusJudicial: "Morto em suposto confronto com a PM da Bahia em fevereiro de 2020 após meses foragido.",
+        codinomes: ["O Capitão do Escritório", "O Padrinho Condecorado", "O Fantasma de Esplanada", "A Caveira de Ouro", "Adriano das Medalhas"],
+        cena: "Deputados discursando em plenário exaltando os 'serviços prestados à pátria' enquanto entregam a Medalha Tiradentes dentro de uma cela para um capitão preso por homicídio.",
+        musicaNome: "Medalha Tiradentes no Camburão",
+        musicaRitmo: "Moda de Viola Macabra",
+        musicaRefrão: "A comenda reluz na prisão, e o salário do gabinete abastece o fuzil do capitão!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Flávio Bolsonaro empregou mãe e mulher de chefe do Escritório do Crime", data: "22/01/2019", link: "The Intercept - Adriano Nóbrega" },
+          { veiculo: "Folha de S.Paulo", titulo: "Preso por homicídio, capitão do Bope recebeu medalha de Flávio Bolsonaro", data: "24/01/2019", link: "Folha - Medalha na Prisão" }
+        ],
+        timeline: [
+          { ano: "2003-2005", texto: "Flávio concede Moção de Louvor e a Medalha Tiradentes a Adriano preso por homicídio." },
+          { ano: "2007-2018", texto: "Parentes de Adriano ocupam cargos comissionados e repassam verbas a Queiroz." },
+          { ano: "Fev/2020", texto: "Adriano é morto em tiroteio com policiais na Bahia." }
+        ]
+      },
+      {
+        id: 9,
+        numero: "09",
+        nome: "Michelle Bolsonaro",
+        subtitulo: "Primeira-Dama / Micheque e as Carpas",
+        categoria: "familia",
+        cor: "#dc2626",
+        conexaoGrau: "Conexão Direta (Madrasta / Beneficiária das Contas)",
+        conexaoDesc: "Esposa de Jair Bolsonaro e madrasta de Flávio. Recebeu R$ 89 mil em cheques diretos de Fabrício Queiroz; esteve no centro do desvio dos estojos de joias de diamantes e mandou secar o lago do Alvorada para retirar moedas matando as carpas.",
+        cifras: [
+          "R$ 89.000,00 recebidos em 21 cheques de Fabrício Queiroz e sua esposa de 2011 a 2018.",
+          "R$ 16,5 milhões (valor do colar e brincos de diamantes Chopard retidos na alfândega de Guarulhos).",
+          "R$ 2.213,00 recolhidos em moedas atiradas no espelho d'água do Alvorada que asfixiaram as carpas."
+        ],
+        papel: "Madrasta, beneficiária dos cheques da rachadinha e figura de frente moral do eleitorado evangélico.",
+        proximidade: "Núcleo familiar direto.",
+        inqueritoDesc: "Investigada no Inquérito das Joias da Arábia Saudita no STF e nas apurações das movimentações financeiras de dinheiro vivo no Alvorada coordenadas por Mauro Cid.",
+        modusOperandi: "Recebimento de depósitos em cheques fracionados sem causa declarada e custeio de despesas pessoais com recursos não rastreados.",
+        operacoes: "Operação Furna da Onça, Inquérito das Joias (STF).",
+        statusJudicial: "Sem denúncia formalizada nas rachadinhas; investigada na PGR pelo acervo de joias.",
+        codinomes: ["Micheque", "A Pescadora de Níqueis", "A Dona dos Vinte e Um Cheques", "A Madrinha das Carpas", "A Rainha dos Diamantes"],
+        cena: "A primeira-dama com um balde plástico e um rodo na lama do palácio catando moedas de 10 centavos atiradas por turistas enquanto dezenas de carpas imperiais japonesas morrem asfixiadas.",
+        musicaNome: "Requiem Para uma Carpa Imperial",
+        musicaRitmo: "Fado Cômico / Valsa Circense",
+        musicaRefrão: "Secou a fonte sagrada, levou o troco do irmão, os peixes morreram sem ar e o cheque caiu no balcão!",
+        fontes: [
+          { veiculo: "Folha de S.Paulo", titulo: "Queiroz e mulher repassaram R$ 89 mil em cheques a Michelle Bolsonaro", data: "07/08/2020", link: "Folha - Cheques Michelle" },
+          { veiculo: "Metrópoles", titulo: "Servidores relatam ordem de Michelle para esvaziar espelho e recolher moedas, matando carpas", data: "07/02/2023", link: "Metrópoles - Carpas do Alvorada" }
+        ],
+        timeline: [
+          { ano: "2011-2018", texto: "Recebe 21 cheques que somam R$ 89 mil de Fabrício Queiroz em conta pessoal." },
+          { ano: "2021", texto: "Estojo milionário de diamantes sauditas destinado a Michelle é retido pela Receita." },
+          { ano: "Dez/2022", texto: "Ordem de esvaziamento do espelho d'água do Alvorada resulta na morte das carpas." }
+        ]
+      },
+      {
+        id: 10,
+        numero: "10",
+        nome: "Carlos Bolsonaro",
+        subtitulo: "02 / Carluxo / Maestro do Gabinete do Ódio",
+        categoria: "familia",
+        cor: "#dc2626",
+        conexaoGrau: "Conexão Direta (Irmão / Estrategista Digital)",
+        conexaoDesc: "Irmão de Flávio. Operava a estratégia de comunicação agressiva do clã a partir do 3º andar do Planalto. Defendeu Flávio com milícias digitais durante o estouro das rachadinhas e operou esquema análogo de assessores na Câmara do Rio.",
+        cifras: [
+          "R$ 2 milhões sob apuração do MPRJ em esquema de rachadinhas na Câmara Municipal do Rio.",
+          "Verbas públicas de publicidade digital direcionadas a canais de desinformação investigadas pela CPMI."
+        ],
+        papel: "Irmão, articulador de ataques digitais, controle da militância de rua e retórica radical.",
+        proximidade: "Núcleo familiar direto (Irmão de Flávio).",
+        inqueritoDesc: "Alvo da Operação Tempus Veritatis e do Inquérito das Fake News (STF); investigado pelo MPRJ por lavagem de dinheiro e nomeação de servidores fantasmas na Câmara do Rio.",
+        modusOperandi: "Disparos coordenados em redes sociais e WhatsApp, uso de apito de cachorro e montagem de campanhas de linchamento contra críticos do clã.",
+        operacoes: "Operação Tempus Veritatis, Inquérito 4781 (STF), CPMI das Fake News.",
+        statusJudicial: "Investigado pelo STF e réu em processos eleitorais e cíveis.",
+        codinomes: ["O Maestro do Terceiro Andar", "O Poeta da Paranoia", "Carluxo dos Disparos", "O Roteirista do Transe", "O Marechal dos Robôs"],
+        cena: "Um homem trancado num quarto escuro digitando mensagens sem pontuação cheias de códigos secretos que fazem multidões com capas de chuva amarela rezarem para um pneu de caminhão.",
+        musicaNome: "O Algoritmo do Carluxo",
+        musicaRitmo: "Eletropop Caótico / Punk Brega",
+        musicaRefrão: "Aperta o robô, manda o sinal, o que ele digita no quarto vira verdade nacional!",
+        fontes: [
+          { veiculo: "G1", titulo: "PF cumpre mandado contra Carlos Bolsonaro em inquérito sobre espionagem ilegal", data: "29/01/2024", link: "G1 - Mandados Carlos" },
+          { veiculo: "O Globo", titulo: "MP aponta que Carlos Bolsonaro empregou funcionários que nunca pisaram na Câmara", data: "18/05/2021", link: "O Globo - Rachadinha Carluxo" }
+        ],
+        timeline: [
+          { ano: "2001-2024", texto: "Seis mandatos consecutivos como vereador no Rio de Janeiro." },
+          { ano: "2019-2022", texto: "Comanda informalmente o 'Gabinete do Ódio' no Palácio do Planalto." },
+          { ano: "2024", texto: "Buscas e apreensões da PF miram computadores e celulares em sua residência." }
+        ]
+      },
+      {
+        id: 11,
+        numero: "11",
+        nome: "Eduardo Bolsonaro",
+        subtitulo: "03 / Bananinha / Articulador Internacional",
+        categoria: "familia",
+        cor: "#dc2626",
+        conexaoGrau: "Conexão Direta (Irmão / Rota Americana)",
+        conexaoDesc: "Irmão de Flávio. Conectou o grupo com fundos de investimento na Flórida e participou das negociações do filme Dark Horse nos EUA; autor da declaração de que bastariam 'um cabo e um soldado para fechar o STF'.",
+        cifras: [
+          "Centenas de milhares de reais em diárias internacionais e missões aos EUA.",
+          "Intermediação política com fundos de investimento cinematográficos orçados em dezenas de milhões de dólares."
+        ],
+        papel: "Irmão, chanceler informal da extrema-direita, lobista armamentista e articulador de rupturas.",
+        proximidade: "Núcleo familiar direto (Irmão de Flávio).",
+        inqueritoDesc: "Investigado pelo STF no Inquérito dos Atos Antidemocráticos e no Gabinete do Ódio; denunciado por incitação ao crime por falas de fechamento do Judiciário e reedição do AI-5.",
+        modusOperandi: "Articulação com redes conservadoras internacionais nos EUA e pressões corporativas armamentistas no Congresso.",
+        operacoes: "Inquérito dos Atos Antidemocráticos (STF).",
+        statusJudicial: "Deputado federal; sob representações no Conselho de Ética e inquéritos no STF.",
+        codinomes: ["O Cabo Teórico", "O Embaixador do Hambúrguer", "O Menino do AI-5", "Bananinha da Câmara", "O Agente da Flórida"],
+        cena: "Um deputado federal com um chapéu de caubói gravando vídeos em estandes de tiro na Flórida prometendo fechar cortes supremas com dois soldados enquanto come hambúrguer.",
+        musicaNome: "O Cabo, o Soldado e o Bananinha",
+        musicaRitmo: "Ska Animado / Marcha-Rancho",
+        musicaRefrão: "Com um cabo e um soldado ele ia derrubar, mas quando o tribunal chama começa a chorar!",
+        fontes: [
+          { veiculo: "Congresso em Foco", titulo: "Eduardo Bolsonaro diz que basta um cabo e um soldado para fechar o STF", data: "21/10/2018", link: "Congresso em Foco - Fala STF" },
+          { veiculo: "Folha de S.Paulo", titulo: "Eduardo defende novo AI-5 se esquerda radicalizar no Brasil", data: "31/10/2019", link: "Folha - AI-5 Eduardo" }
+        ],
+        timeline: [
+          { ano: "2018", texto: "Eleito deputado federal mais votado do país com ameaças de fechar cortes superiores." },
+          { ano: "2019", texto: "Cogitado para a embaixada em Washington alegando 'ter frito hambúrguer nos EUA'." },
+          { ano: "2024-2026", texto: "Articula fundos cinematográficos e suporte internacional à candidatura de Flávio." }
+        ]
+      },
+      {
+        id: 12,
+        numero: "12",
+        nome: "Jair Renan Bolsonaro",
+        subtitulo: "04 / O Influencer do Camarote 314",
+        categoria: "familia",
+        cor: "#dc2626",
+        conexaoGrau: "Conexão Direta (Irmão Mais Novo)",
+        conexaoDesc: "Filho mais novo de Jair Bolsonaro e meio-irmão de Flávio. Ganhou escritório e camarote de luxo no Estádio Mané Garrincha bancado por empresários que tinham contratos com o governo federal e abriam portas em ministérios.",
+        cifras: [
+          "R$ 290 mil em empréstimo bancário obtido com declarações de faturamento falsificadas.",
+          "R$ 3 milhões (valor estimado da mansão em Brasília alugada em nome de laranjas para sua mãe Ana Cristina Valle).",
+          "Carros elétricos de luxo e reformas patrocinadas por empreiteiros sob investigação."
+        ],
+        papel: "Herdeiro caçula, lobista amador e beneficiário de favores corporativos via prestígio presidencial.",
+        proximidade: "Núcleo familiar direto (Meio-irmão de Flávio).",
+        inqueritoDesc: "Réu na Justiça do Distrito Federal por lavagem de dinheiro, falsidade ideológica e uso de documentos falsos na Operação Nexum da Polícia Civil do DF.",
+        modusOperandi: "Inflar artificialmente o faturamento de empresa de eventos para obter crédito bancário subsidiado e intermediar reuniões de empresários no Ministério do Desenvolvimento Regional.",
+        operacoes: "Operação Nexum (PCDF), Inquérito da PF sobre Tráfico de Influência.",
+        statusJudicial: "Réu criminal por lavagem de dinheiro e estelionato perante a 5ª Vara Criminal de Brasília.",
+        codinomes: ["O Zero Quatro do Estádio", "O Menino do Camarote 314", "O Pegador do Condomínio", "O Prodígio dos Empréstimos", "Renanzinho da Mansão"],
+        cena: "Um jovem de 22 anos inaugurando um camarote milionário com champanhe e telões de LED dentro de um estádio de Copa do Mundo, cercado de empreiteiros que pedem em troca audiências no ministério do pai.",
+        musicaNome: "O Dono do Camarote 314",
+        musicaRitmo: "Trap Satírico / Pop Ostentação Cômico",
+        musicaRefrão: "O crachá é do papai, o dinheiro é do povão, peguei o camarote e financiei a mansão!",
+        fontes: [
+          { veiculo: "Metrópoles", titulo: "Justiça torna Jair Renan réu por lavagem de dinheiro e falsidade ideológica", data: "27/03/2024", link: "Metrópoles - Jair Renan Réu" },
+          { veiculo: "O Globo", titulo: "Empresário que deu carro a Renan Bolsonaro fechou contratos com o governo federal", data: "16/04/2021", link: "O Globo - Conexão Mané Garrincha" }
+        ],
+        timeline: [
+          { ano: "2020", texto: "Abre a empresa Bolsonaro Jr Eventos no Camarote 314 com patrocínio de empreiteiros." },
+          { ano: "2022", texto: "Muda-se com a mãe Ana Cristina Valle para mansão de luxo no Lago Sul registrada em nome de terceiros." },
+          { ano: "2024", texto: "Vira réu na Justiça do DF por fraudar faturamentos para contrair empréstimos." }
+        ]
+      },
+      {
+        id: 13,
+        numero: "13",
+        nome: "Wal do Açaí",
+        subtitulo: "Walderice Santos / A Fantasma de Angra",
+        categoria: "operadores",
+        cor: "#d97706",
+        conexaoGrau: "Conexão Direta (Servidora Fantasma do Clã)",
+        conexaoDesc: "Funcionária comissionada mantida na folha da Câmara por 15 anos pelo clã. Cuidava da casa de veraneio e dos cachorros de Jair e Flávio em Mambucaba enquanto vendia açaí na praia, sem nunca ter pisado em Brasília.",
+        cifras: [
+          "R$ 2,5 milhões (soma corrigida dos salários públicos desviados pelo gabinete ao longo de 15 anos).",
+          "Salários mensais de secretária parlamentar que variavam de R$ 1.300 a R$ 10.000 sem contraprestação laboral."
+        ],
+        papel: "Servidora doméstica privada remunerada integralmente com orçamento da Câmara dos Deputados.",
+        proximidade: "Assessora de confiança direta de Jair e Flávio na casa de praia de Angra.",
+        inqueritoDesc: "Alvo de Ação Civil Pública por Improbidade Administrativa ajuizada pelo Ministério Público Federal (MPF) contra Jair Bolsonaro e Walderice pela apropriação criminosa de recursos públicos.",
+        modusOperandi: "Nomeação em gabinete federal com assinatura fraudulenta de folhas de frequência à distância, prestando serviços caseiros particulares ao deputado.",
+        operacoes: "Inquérito Civil Público MPF/DF, Ação de Improbidade Administrativa.",
+        statusJudicial: "Ré em ação civil de improbidade administrativa em trâmite na Justiça Federal de Brasília.",
+        codinomes: ["A Parlamentar da Polpa", "Wal do Açaí", "A Cuidadora dos Canis", "A Secretária da Tigela", "A Fantasma de Mambucaba"],
+        cena: "O telefone toca com o toque de chamada oficial do Congresso e uma senhora de chinelo atende descalça na areia de Mambucaba, amassando açaí no pilão e botando ração pros cachorros do deputado.",
+        musicaNome: "O Açaí Parlamentar",
+        musicaRitmo: "Xote Litorâneo / Forró de Farsa",
+        musicaRefrão: "Em Brasília ela é doutora e ganha dez mil por mês, em Angra vende açaí e cuida dos cachorros outra vez!",
+        fontes: [
+          { veiculo: "Folha de S.Paulo", titulo: "Secretária de Bolsonaro vende açaí em Angra dos Reis em horário de expediente", data: "11/01/2018", link: "Folha - Wal do Açaí" },
+          { veiculo: "G1 / MPF", titulo: "Justiça Federal aceita ação de improbidade contra Bolsonaro e Wal do Açaí", data: "28/07/2023", link: "G1 - Ação MPF" }
+        ],
+        timeline: [
+          { ano: "2003-2018", texto: "Permanece 15 anos nomeada na Câmara sem jamais ter viajado a Brasília para cumprir ponto." },
+          { ano: "Jan/2018", texto: "Flagrada pela imprensa vendendo açaí na praia em horário de expediente da Câmara." },
+          { ano: "2022-2023", texto: "MPF formaliza ação de improbidade e Justiça avança para cobrança de ressarcimento." }
+        ]
+      },
+      {
+        id: 14,
+        numero: "14",
+        nome: "Alfredo Gaspar",
+        subtitulo: "O Vice de Flávio / O Relator do 'Big Boss'",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Candidato Oficial a Vice-Presidente de Flávio)",
+        conexaoDesc: "Candidato a vice-presidente na chapa de Flávio. Como relator da CPMI do INSS, indiciou mais de 200 pessoas mas poupou deliberadamente o 'Big Boss' das fraudes bilionárias contra aposentados ligadas a Willer Tomaz; foi alvo de denúncia por estupro de vulnerável no STF (arquivada).",
+        cifras: [
+          "Bilhões de reais desviados de aposentados e pensionistas do INSS na fraude do 'Big Boss' poupada na CPMI.",
+          "R$ 50 mil arbitrados pela Justiça em ação indenizatória contra acusações da senadora Soraya Thronicke."
+        ],
+        papel: "Candidato a vice-presidente, relator seletivo da CPMI e blindagem da bancada do PL.",
+        proximidade: "Companheiro de chapa eleitoral oficial de Flávio Bolsonaro para a Presidência.",
+        inqueritoDesc: "Relator da CPMI do INSS acusado de poupar o chefe do esquema ligado a Willer Tomaz; alvo de notícia-crime por estupro de vulnerável no STF movida por opositores, arquivada por Gilmar Mendes a pedido da PGR por falta de provas mínimas (forneceu DNA espontaneamente).",
+        modusOperandi: "Discurso punitivista histriônico de enfrentamento ao crime na tribuna combinado com blindagem seletiva de grandes operadores de previdência em relatórios oficiais.",
+        operacoes: "CPMI do INSS, Notícia-Crime STF (Pet 11.234).",
+        statusJudicial: "Deputado federal e candidato a vice; procedimentos criminais arquivados no STF por atipicidade probatória.",
+        codinomes: ["O Promotor do Big Boss", "O Relator Seletivo", "O Vice da Caneta Mágica", "Doutor Gasparzinho", "O Guardião da CPMI"],
+        cena: "Um relator de comissão parlamentar batendo na mesa prometendo botar todos os ladrões na cadeia, enquanto esconde discretamente debaixo do tapete o nome do chefão que roubava bilhões dos aposentados.",
+        musicaNome: "Quem Apagou o Big Boss?",
+        musicaRitmo: "Samba de Breque Tradicional",
+        musicaRefrão: "Prendeu o porteiro, o carteiro e o rapaz, mas o chefão do esquema ficou pra trás!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Como o relator da CPMI do INSS poupou o 'Big Boss' ligado a aliados de Flávio", data: "14/04/2026", link: "The Intercept - Big Boss" },
+          { veiculo: "Folha de S.Paulo", titulo: "Flávio Bolsonaro oficializa Alfredo Gaspar como seu candidato a vice-presidente", data: "28/07/2026", link: "Folha - Chapa Flávio e Gaspar" },
+          { veiculo: "STF / Consultor Jurídico", titulo: "Gilmar Mendes arquiva petição contra Alfredo Gaspar por falta de justa causa", data: "20/05/2026", link: "ConJur - Arquivamento Petição" }
+        ],
+        timeline: [
+          { ano: "2023", texto: "Assume a relatoria da CPMI que investiga os descontos sindicais e fraudes no INSS." },
+          { ano: "Mar/2026", texto: "Entrega relatório final indiciando centenas de pessoas, mas omitindo o operador central." },
+          { ano: "Jul/2026", texto: "É confirmado candidato a vice-presidente na chapa de Flávio Bolsonaro." }
+        ]
+      },
+      {
+        id: 15,
+        numero: "15",
+        nome: "Márcio Canella",
+        subtitulo: "Deputado da Baixada / Lavagem nos 96 Postos",
+        categoria: "milicia",
+        cor: "#16a34a",
+        conexaoGrau: "Conexão Direta (Principal Parceiro Eleitoral no RJ)",
+        conexaoDesc: "Articulador número um de Flávio no Estado do Rio. A chapa de Canella ao Senado previa a mãe de Flávio (Rogéria Bolsonaro) de primeira suplente; Flávio gravou vídeos de apoio integral ('100%') antes de Canella ser preso pela PF lavando dinheiro em 96 postos.",
+        cifras: [
+          "Centenas de milhões de reais lavados em rede de 96 postos de combustíveis controlada por milícias.",
+          "Milhões em contratos de obras públicas na Baixada Fluminense sob intervenção da Justiça."
+        ],
+        papel: "Líder eleitoral regional, ponte entre o clã e as estruturas paramilitares de combustíveis.",
+        proximidade: "Aliado político prioritário e compadre eleitoral de Flávio Bolsonaro.",
+        inqueritoDesc: "Preso preventivamente pela PF na 8ª fase da Operação Unha e Carne em 15/10/2026 por lavagem de dinheiro, corrupção e associação a organizações paramilitares na Baixada Fluminense.",
+        modusOperandi: "Controle territorial de postos de gasolina para adulteração e lavagem de capitais ilícitos convertidos em cabos eleitorais e votações recordes.",
+        operacoes: "Operação Unha e Carne (8ª Fase - Polícia Federal / Justiça Federal).",
+        statusJudicial: "Preso preventivamente no sistema penitenciário de segurança do Rio de Janeiro.",
+        codinomes: ["O Barão da Gasolina", "O Padrinho da Baixada", "O Homem dos 96 Postos", "Canella da Bomba", "O Articulador das Lajes"],
+        cena: "Um palanque montado na laje de um posto de combustível com faixas gigantescas e o senador discursando apoio incondicional, enquanto as viaturas da PF cercam as bombas de gasolina.",
+        musicaNome: "Gasolina com Suplência",
+        musicaRitmo: "Funk Consciente / Pagode Pesado",
+        musicaRefrão: "Lavou dinheiro na bomba com selo oficial, o compadre foi em cana na semana eleitoral!",
+        fontes: [
+          { veiculo: "G1 Rio", titulo: "PF deflagra 8ª fase da Operação Unha e Carne e prende deputado Márcio Canella", data: "15/10/2026", link: "G1 - Prisão Canella" },
+          { veiculo: "O Globo", titulo: "Flávio Bolsonaro tinha acordo com Canella para Rogéria Bolsonaro ser suplente ao Senado", data: "16/10/2026", link: "O Globo - Política Baixada" }
+        ],
+        timeline: [
+          { ano: "2022", texto: "Eleito deputado mais votado do Rio com votação massiva na Baixada Fluminense." },
+          { ano: "Set/2026", texto: "Fecha chapa ao Senado com Rogéria Bolsonaro como suplente com aval de Flávio." },
+          { ano: "15/Out/2026", texto: "É preso em flagrante pela PF por lavagem em 96 postos de combustíveis." }
+        ]
+      },
+      {
+        id: 16,
+        numero: "16",
+        nome: "Lídia Mazelli",
+        subtitulo: "A Doméstica Presidente / Laranja das Bets",
+        categoria: "bancos",
+        cor: "#0284c7",
+        conexaoGrau: "Conexão Indireta (Interposta Pessoa para Bens Usados por Flávio)",
+        conexaoDesc: "Empregada doméstica de Willer Tomaz colocada formalmente no papel como presidente de 14 empresas, incluindo a proprietária da mansão de Angra (frequentada por Flávio) e de plataformas de apostas. Assinava autorizações de resorts enquanto limpava chão.",
+        cifras: [
+          "Presidente formal de 14 empresas com patrimônio somado estimado em mais de R$ 50 milhões.",
+          "R$ 10 milhões (mansão de Angra dos Reis onde constava como administradora formal).",
+          "R$ 5 bilhões em movimentações de apostas eletrônicas das empresas de seu grupo."
+        ],
+        papel: "Laranja vulnerável usada para ocultar os verdadeiros donos de bens e plataformas de apostas.",
+        proximidade: "Funcionária doméstica do melhor amigo e sócio patrimonial de Flávio.",
+        inqueritoDesc: "Investigada por fraude societária, falsidade ideológica e crimes contra o sistema financeiro em holdings ligadas a Willer Tomaz e intermediários de Flávio.",
+        modusOperandi: "Assinatura de atos constitutivos e pedidos de licença ambiental em órgãos públicos sem ter ciência do teor dos negócios, enquanto recebia salário mínimo de faxina.",
+        operacoes: "Inquéritos de Fraude Societária (MPF / Polícia Civil / PF).",
+        statusJudicial: "Prestou depoimento desmentindo a condição de empresária e alegando coação e desconhecimento.",
+        codinomes: ["A Faxineira Presidente", "A Baronesa das Catorze Firmas", "A Dona do Rodo e das Ilhas", "Dona Lídia dos Resorts", "A Presidente do Balde"],
+        cena: "Dois advogados engravatados entrando na cozinha humilde da faxineira para estender pastas de couro carimbadas pedindo para ela assinar a presidência de um cassino de cinco bilhões.",
+        musicaNome: "O Rodo e a Canetada",
+        musicaRitmo: "Embolada Nordestina / Forró de Farsa",
+        musicaRefrão: "Ela assina o resort e nem sabe o que é, o patrão fica rico e ela segue a pé!",
+        fontes: [
+          { veiculo: "TVT News / ICL", titulo: "Doméstica preside 14 empresas de advogado amigo de Flávio Bolsonaro", data: "24/09/2026", link: "TVT News - Doméstica Laranja" },
+          { veiculo: "Alma Preta", titulo: "O uso de trabalhadoras vulneráveis como blindagem de patrimônio e bets", data: "26/09/2026", link: "Alma Preta - Blindagem Societária" }
+        ],
+        timeline: [
+          { ano: "2018", texto: "É inscrita no registro comercial como sócia de holdings de Willer Tomaz." },
+          { ano: "2024", texto: "Assina pedidos ao Inea para reforma e instalação de heliponto na mansão de Angra." },
+          { ano: "2026", texto: "Revela à imprensa em prantos que nunca viu a cor do dinheiro e continua faxinando." }
+        ]
+      },
+      {
+        id: 17,
+        numero: "17",
+        nome: "Fabiano Zettel",
+        subtitulo: "Cunhado de Vorcaro / Flat Vila Nova Conceição",
+        categoria: "bancos",
+        cor: "#0284c7",
+        conexaoGrau: "Conexão Indireta (Elo Vorcaro -> Willer -> Flávio)",
+        conexaoDesc: "Cunhado de Daniel Vorcaro. Dono original do apartamento de luxo de R$ 3,5 milhões na Vila Nova Conceição (SP) que foi transferido para Willer Tomaz e serviu de base e dormitório de Flávio Bolsonaro em São Paulo; preso ao tentar fugir para Dubai.",
+        cifras: [
+          "R$ 3,5 milhões (valor do apartamento duplex na Vila Nova Conceição usado por Flávio).",
+          "Milhões de reais doados para campanhas bolsonaristas.",
+          "Dezenas de milhões em movimentações da Operação Carbono Oculto."
+        ],
+        papel: "Operador de triangulações imobiliárias e financiador de campanhas do grupo Master.",
+        proximidade: "Cunhado do banqueiro de Flávio e parceiro imobiliário de Willer Tomaz.",
+        inqueritoDesc: "Preso pela Polícia Federal em flagrante no saguão do aeroporto internacional quando tentava embarcar em voo com destino a Dubai na Operação Carbono Oculto.",
+        modusOperandi: "Transferência de imóveis de luxo para empresas ligadas a advogados de modo a colocá-los à disposição de autoridades políticas sem rastro no nome do beneficiário.",
+        operacoes: "Operação Carbono Oculto (Polícia Federal).",
+        statusJudicial: "Preso preventivamente pela Justiça Federal.",
+        codinomes: ["O Cunhado de Dubai", "O Dono do Flat", "O Homem das Malas de Embarque", "O Comitê Triangulado", "O Hóspede da Vila Nova"],
+        cena: "O comitê político de um senador funcionando a todo vapor num apartamento duplex de três milhões em São Paulo, com o dono correndo com passaporte no aeroporto com a PF atrás.",
+        musicaNome: "O Hóspede da Vila Nova",
+        musicaRitmo: "Rock Paulista / Pós-Punk Irônico",
+        musicaRefrão: "O flat é do cunhado, passou pro doutor, e virou o dormitório do nobre senador!",
+        fontes: [
+          { veiculo: "Revista Piauí", titulo: "Flávio usou imóvel que pertenceu a cunhado de Vorcaro em compromissos em SP", data: "28/09/2026", link: "Piauí - Flat Vila Nova" },
+          { veiculo: "CNN Brasil", titulo: "PF prende empresário Fabiano Zettel ao tentar embarcar para Dubai na Op. Carbono Oculto", data: "11/10/2026", link: "CNN - Prisão no Aeroporto" }
+        ],
+        timeline: [
+          { ano: "2022", texto: "Adquire o apartamento de luxo na Vila Nova Conceição por R$ 3,5 mi." },
+          { ano: "2023", texto: "Transfere o imóvel para sociedade ligada a Willer Tomaz." },
+          { ano: "Out/2026", texto: "É interceptado e preso pela PF antes de embarcar para os Emirados Árabes." }
+        ]
+      },
+      {
+        id: 18,
+        numero: "18",
+        nome: "General Eduardo Pazuello",
+        subtitulo: "Ex-Ministro da Saúde / O Marechal da Logística Reversa",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Ministro Alinhado e Protegido por Flávio)",
+        conexaoDesc: "Ministro da Saúde do clã Bolsonaro na crise da COVID-19. Cunhou a célebre frase 'um manda e o outro obedece'; responsável pela crise de falta de oxigênio em Manaus e protegido com sigilo de 100 anos no Exército com apoio de Flávio.",
+        cifras: [
+          "Centenas de milhões em compras de cloroquina e medicamentos ineficazes pelo Ministério da Saúde.",
+          "Prejuízos incalculáveis com atraso intencional de 81 e-mails da Pfizer com ofertas de vacinas."
+        ],
+        papel: "Executor militar da imunidade de rebanho e desmonte dos protocolos sanitários.",
+        proximidade: "Ministro obediente a Jair e articulador eleitoral no Rio com Flávio Bolsonaro.",
+        inqueritoDesc: "Indiciado pela CPI da Pandemia por múltiplos crimes, incluindo epidemia com resultado de morte e prevaricação; alvo de apuração disciplinar no Exército por subir em palanque político.",
+        modusOperandi: "Subordinação militar cega a ordens ilegais e imposição de sigilos centenários para blindar processos disciplinares das Forças Armadas.",
+        operacoes: "CPI da COVID-19 (Senado Federal), Procedimento Disciplinar do Comando do Exército.",
+        statusJudicial: "Deputado federal; indiciado no relatório final da CPI e alvo de inquérito civil no MPF.",
+        codinomes: ["O Mestre da Logística Reversa", "O General do 'Um Manda'", "O Marechal do Sufoco", "O Indisciplinado Secreto", "O Intendente do Colapso"],
+        cena: "Um general do Exército sentado ao lado do presidente em uma live admitindo com um sorriso amarelo que abandonou a medicina e o dever cívico apenas para cumprir caprichos de gabinete.",
+        musicaNome: "Um Manda, Eu Obedeço",
+        musicaRitmo: "Marcha Militar Fúnebre e Tragicômica",
+        musicaRefrão: "Um manda e eu obedeço, o oxigênio faltou, a farda virou capa do plano do doutor!",
+        fontes: [
+          { veiculo: "G1", titulo: "Pazuello diz 'um manda e o outro obedece' após Bolsonaro desautorizar compra de vacina", data: "22/10/2020", link: "G1 - Frase Pazuello" },
+          { veiculo: "Folha de S.Paulo", titulo: "Exército impõe sigilo de 100 anos em processo disciplinar de Pazuello por ato com Bolsonaro", data: "07/06/2021", link: "Folha - Sigilo Pazuello" }
+        ],
+        timeline: [
+          { ano: "2020-2021", texto: "Comanda o Ministério da Saúde durante o colapso de Manaus e recusa à Pfizer." },
+          { ano: "Mai/2021", texto: "Participa de comício de moto com Bolsonaro no Rio e recebe sigilo de 100 anos no processo disciplinar." },
+          { ano: "2022", texto: "Eleito deputado federal pelo Rio de Janeiro com suporte da máquina bolsonarista." }
+        ]
+      },
+      {
+        id: 19,
+        numero: "19",
+        nome: "Milton Ribeiro",
+        subtitulo: "Ex-Ministro do MEC / Os Pastores do Ouro",
+        categoria: "ideologia",
+        cor: "#d946ef", // Magenta / Fé e Lobbies
+        conexaoGrau: "Conexão Direta (Ministro do MEC Operando por Ordem do Clã)",
+        conexaoDesc: "Ministro da Educação de Bolsonaro. Operou balcão paralelo no MEC onde os pastores Gilmar Santos e Arilton Moura cobravam propina em barras de ouro para liberar verbas de escolas; confessou que atendia a 'pedido especial do presidente'.",
+        cifras: [
+          "Solicitações de propina de 1 quilo de ouro em barras por município para liberar recursos do FNDE.",
+          "Dezenas de milhões de reais em verbas federais de creches travadas ou direcionadas ilegalmente."
+        ],
+        papel: "Ministro fantoche que entregou a caneta do orçamento da educação a lobistas religiosos.",
+        proximidade: "Pastor presbiteriano indicado para a bancada fundamentalista aliada de Flávio.",
+        inqueritoDesc: "Preso preventivamente pela Polícia Federal na Operação Acesso Pago por corrupção passiva, prevaricação, advocacia administrativa e tráfico de influência no MEC.",
+        modusOperandi: "Recepção de prefeitos em hotéis de Brasília mediada por pastores sem cargo público, exigindo propinas em dinheiro e ouro físico.",
+        operacoes: "Operação Acesso Pago (Polícia Federal), CPI do MEC.",
+        statusJudicial: "Réu perante a Justiça Federal; processo criminal ativo após período de prisão preventiva.",
+        codinomes: ["O Ministro do Altar Paralelo", "O Teólogo da Barra de Ouro", "O Portador da Bíblia com Foto", "O Fantoche dos Bispos", "O Pastor do Despacho"],
+        cena: "Dois pastores com ternos reluzentes abrindo malas dentro do gabinete do Ministério da Educação e pesando barras de ouro numa balança de precisão ao lado de uma montanha de cartilhas escolares.",
+        musicaNome: "A Bíblia com Retrato e a Pepita de Ouro",
+        musicaRitmo: "Toada Nordestina / Forró de Repente Sarcástico",
+        musicaRefrão: "No altar do ministério a merenda virou ouro, com foto na Bíblia os pastores acham o tesouro!",
+        fontes: [
+          { veiculo: "Folha de S.Paulo", titulo: "Áudio mostra ministro da Educação dizendo que prioriza pastores a pedido de Bolsonaro", data: "21/03/2022", link: "Folha - Áudio Milton Ribeiro" },
+          { veiculo: "G1", titulo: "PF prende ex-ministro da Educação Milton Ribeiro em operação sobre corrupção no MEC", data: "22/06/2022", link: "G1 - Prisão de Milton Ribeiro" }
+        ],
+        timeline: [
+          { ano: "2020-2022", texto: "Chefia o MEC e entrega a gestão de repasses do FNDE aos pastores Gilmar e Arilton." },
+          { ano: "Mar/2022", texto: "Áudio revelado pela Folha expõe a ordem presidencial para favorecer os lobistas." },
+          { ano: "Jun/2022", texto: "É preso pela PF em Santos na Operação Acesso Pago." }
+        ]
+      },
+      {
+        id: 20,
+        numero: "20",
+        nome: "Carla Zambelli",
+        subtitulo: "A Pistoleira dos Jardins / Contratante do Hacker",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Articuladora Parlamentar e Conexão Hacker)",
+        conexaoDesc: "Deputada federal íntima do clã. Perseguiu um homem de arma em punho pelas ruas de São Paulo na véspera da eleição de 2022; contratou o hacker Walter Delgatti para invadir os sistemas do CNJ e emitir ordem de prisão falsa contra Alexandre de Moraes.",
+        cifras: [
+          "R$ 40.000,00 repassados ao hacker Walter Delgatti Neto em pagamentos intermediados por assessores.",
+          "Milhares de reais em multas aplicadas pelo STF e TSE por desinformação eleitoral."
+        ],
+        papel: "Tropa de choque parlamentar, operadora de invasões cibernéticas e linha de frente armada do bolsonarismo.",
+        proximidade: "Madrinha política no Congresso e parceira de palanque de Flávio e Jair.",
+        inqueritoDesc: "Indiciada pela PF e ré no STF pelo porte ilegal de arma e constrangimento ilegal nos Jardins; alvo da Operação 3FA por invasão de dispositivo informático e falsidade ideológica no CNJ.",
+        modusOperandi: "Sacar arma de fogo em via pública diante de provocações verbais e contratar cibercriminosos para tentar desmoralizar a Justiça Eleitoral.",
+        operacoes: "Operação 3FA (Polícia Federal), Inquéritos STF (Pet 11.444).",
+        statusJudicial: "Ré perante o Supremo Tribunal Federal com parecer da PGR pela condenação.",
+        codinomes: ["A Pistoleira dos Jardins", "A Dama do Mandado Falso", "A Espanhola das Ruas", "A Condutora do Hacker", "A Valquíria do Desespero"],
+        cena: "Uma deputada federal tropeçando de salto alto e empunhando uma pistola no meio dos carros parados em um bairro nobre de São Paulo, berrando para um pedestre desarmado deitar no chão.",
+        musicaNome: "Corre Que a Deputada Tá Armada!",
+        musicaRitmo: "Frevo Acelerado / Marchinha Alucinada",
+        musicaRefrão: "Tropeçou no salto alto, engatilhou o cano na mão, contratou o hacker da praça pra tentar salvar a eleição!",
+        fontes: [
+          { veiculo: "G1", titulo: "Vídeo mostra Carla Zambelli com arma em punho perseguindo homem em SP", data: "29/10/2022", link: "G1 - Zambelli Armada" },
+          { veiculo: "UOL", titulo: "PF indicia Carla Zambelli e Walter Delgatti por invasão aos sistemas do Judiciário", data: "23/04/2024", link: "UOL - Indiciamento Zambelli" }
+        ],
+        timeline: [
+          { ano: "29/Out/2022", texto: "Persegue homem de arma em punho em SP a menos de 24h da eleição presidencial." },
+          { ano: "2023", texto: "Hacker Delgatti revela na CPMI que recebeu ordens de Zambelli e encontrou Bolsonaro no Alvorada." },
+          { ano: "2024", texto: "STF abre ação penal e a torna ré por invasão de sistemas e porte ilegal de arma." }
+        ]
+      },
+      {
+        id: 21,
+        numero: "21",
+        nome: "Walter Delgatti Neto",
+        subtitulo: "O Hacker de Araraquara / O Invasor do CNJ",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Operador Cibernético Contratado)",
+        conexaoDesc: "Hacker contratado pela cúpula bolsonarista. Reuniu-se pessoalmente com Jair Bolsonaro no Palácio da Alvorada para planejar a invasão das urnas eletrônicas com garantia de indulto presidencial; invadiu o CNJ e forjou mandado de prisão contra Alexandre de Moraes.",
+        cifras: [
+          "R$ 40.000,00 recebidos de assessores de Carla Zambelli por serviços cibernéticos clandestinos.",
+          "Promessa formal de indulto e perdão presidencial formulada diretamente por Bolsonaro no Alvorada."
+        ],
+        papel: "Mercenário cibernético mobilizado para tentar fragilizar o sistema eleitoral e forjar prisões.",
+        proximidade: "Atendido diretamente pelo presidente no palácio com aval da bancada aliada de Flávio.",
+        inqueritoDesc: "Preso preventivamente pela PF na Operação 3FA; confessou em depoimento na CPMI do 8 de Janeiro toda a trama urdida com Bolsonaro e Zambelli.",
+        modusOperandi: "Invasão de bancos de dados do Poder Judiciário utilizando credenciais clonadas e inserção de mandados e alvarás fraudulentos.",
+        operacoes: "Operação Spoofing, Operação 3FA (Polícia Federal).",
+        statusJudicial: "Preso preventivamente no sistema penitenciário federal; réu perante o STF.",
+        codinomes: ["O Hacker de Araraquara", "O Invasor do Alvorada", "O Carimbador do Mandado Fake", "O Prometido do Indulto", "O Ilusionista do Código-Fonte"],
+        cena: "Um estelionatário de bermuda entrando pela porta de serviço do palácio presidencial para prometer a generais que consegue quebrar a segurança da eleição em troca de um perdão assinado.",
+        musicaNome: "Um Abraço pro Alexandre de Moraes",
+        musicaRitmo: "Rap Eletrônico / Hip Hop Cômico",
+        musicaRefrão: "Entrou no CNJ com senha de ladrão, botou o mandado fake e pediu o indulto do capitão!",
+        fontes: [
+          { veiculo: "G1", titulo: "Delgatti diz à CPMI que Bolsonaro prometeu indulto e pediu invasão de urnas", data: "17/08/2023", link: "G1 - Depoimento Delgatti" },
+          { veiculo: "Folha de S.Paulo", titulo: "PF confirma pagamentos de assessores de Zambelli a hacker que invadiu CNJ", data: "02/08/2023", link: "Folha - Pagamentos Hacker" }
+        ],
+        timeline: [
+          { ano: "Ago/2022", texto: "Reunião secreta no Alvorada com Bolsonaro para tramar invasão de urnas." },
+          { ano: "Jan/2023", texto: "Invade o sistema do CNJ e emite falso mandado de prisão contra Alexandre de Moraes." },
+          { ano: "Ago/2023", texto: "É preso pela PF e confessa a trama golpista em detalhes na CPMI do Congresso." }
+        ]
+      },
+      {
+        id: 22,
+        numero: "22",
+        nome: "Paulo Guedes",
+        subtitulo: "Ex-Ministro da Economia / A Granada no Bolso",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Fiador Econômico do Clã e das Reformas)",
+        conexaoDesc: "Ministro da Economia de Bolsonaro. Na reunião de 22/04/2020 comemorou ter colocado uma 'granada no bolso' dos servidores públicos, defendeu vender o Banco do Brasil e cunhou o lema de 'deixar cada um se f...'; arquiteto do plano que inspirou a Super PEC de Flávio.",
+        cifras: [
+          "R$ 250 bilhões em cortes de aposentadorias e pisos de saúde previstos no modelo de desindexação econômica.",
+          "US$ 9,5 milhões mantidos em offshore privada no paraíso fiscal das Ilhas Virgens Britânicas (Dreadnoughts) enquanto ditava a política cambial do país."
+        ],
+        papel: "Ideólogo ultraliberal, liquidante de direitos trabalhistas e fiador da elite financeira com o clã.",
+        proximidade: "Ministro mais influente do governo e formulador do receituário econômico de Flávio Bolsonaro.",
+        inqueritoDesc: "Investigado na Operação Greenfield e no caso Pandora Papers pela manutenção de offshores milionárias no exterior enquanto geria a desvalorização do real.",
+        modusOperandi: "Congelamento de salários de categorias de base, pressão por privatizações sem freios e criação de desindexações fiscais contra vulneráveis.",
+        operacoes: "Operação Greenfield (MPF), Investigação Pandora Papers.",
+        statusJudicial: "Sem condenações definitivas; representações ativas no TCU e Ministério Público Federal.",
+        codinomes: ["O Homem da Granada no Bolso", "O Banqueiro do 'Deixa Se Foder'", "O Chicago Boy Sem Freio", "O Vendedor da Porra Toda", "O Posto Ipiranga do Desmonte"],
+        cena: "Um banqueiro de iate em uma reunião ministerial fechada rindo e comemorando que congelou o salário de professores e enfermeiros durante a maior pandemia da história.",
+        musicaNome: "Uma Granada no Bolso do Inimigo",
+        musicaRitmo: "Rock Progressivo Satírico / Ópera Bufa",
+        musicaRefrão: "Bota a granada no bolso do trabalhador, congela o salário e vende o que sobrou!",
+        fontes: [
+          { veiculo: "G1", titulo: "Guedes diz na reunião ministerial: 'Já botamos a granada no bolso do inimigo'", data: "22/05/2020", link: "G1 - Frase Granada" },
+          { veiculo: "El País / Pandora Papers", titulo: "Paulo Guedes mantém offshore milionária em paraíso fiscal durante mandato no ministério", data: "03/10/2021", link: "El País - Pandora Papers" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Aprova a PEC do Teto de Gastos e a Reforma da Previdência com votos da família Bolsonaro." },
+          { ano: "2020", texto: "Gravação ministerial registra falas sobre colocar granadas no bolso dos servidores públicos." },
+          { ano: "2021", texto: "Vazamento dos Pandora Papers expõe offshore milionária mantida nas Ilhas Virgens Britânicas." }
+        ]
+      },
+      {
+        id: 23,
+        numero: "23",
+        nome: "Ricardo Salles",
+        subtitulo: "Ex-Ministro do Meio Ambiente / O Boiadeiro Infralegal",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Ministro Alinhado às Pautas Fundiárias de Flávio)",
+        conexaoDesc: "Ministro do Meio Ambiente de Bolsonaro. Defendeu na reunião ministerial de 2020 aproveitar a distração das mortes da COVID-19 para 'passar a boiada' e desregulamentar leis ambientais por pareceres de caneta; alvo de operação por contrabando de madeira.",
+        cifras: [
+          "Centenas de milhões em madeira ilegal apreendida exportada clandestinamente para os EUA e Europa.",
+          "Milhões de reais em multas ambientais perdoadas e paralisação do Fundo Amazônia de mais de R$ 3 bilhões."
+        ],
+        papel: "Demolidor da fiscalização ambiental do Ibama/ICMBio e articulador dos setores grileiros.",
+        proximidade: "Aliado íntimo dos filhos de Bolsonaro no Congresso e fiador da bancada madeireira.",
+        inqueritoDesc: "Alvo da Operação Akuanduba da PF por facilitação de contrabando de madeira nativa da Amazônia; réu na Justiça Federal após pedido de prisão e renúncia do ministério.",
+        modusOperandi: "Uso de despachos e pareceres de gaveta para anular fiscalizações sem passar pelo Congresso Nacional enquanto a imprensa focava em calamidades sanitárias.",
+        operacoes: "Operação Akuanduba (Polícia Federal), Notícia-Crime da PF do Amazonas.",
+        statusJudicial: "Réu na Justiça Federal por contrabando, corrupção e organização criminosa.",
+        codinomes: ["O Boiadeiro Infralegal", "O Piloto da Canetada", "O Desmatador do Parecer", "O Boiadeiro da COVID", "O Ministro da Madeira"],
+        cena: "Um ministro do Meio Ambiente comemorando numa live que a floresta está queimando e que ninguém está olhando porque só se fala de hospital e cemitério.",
+        musicaNome: "Passando a Boiada Enquanto o Povo Morre",
+        musicaRitmo: "Moda de Viola Macabra / Sertanejo Satírico",
+        musicaRefrão: "A imprensa fala de luto e de infecção, ele passa a boiada com a caneta na mão!",
+        fontes: [
+          { veiculo: "G1", titulo: "Salles defendeu na reunião 'passar a boiada' para mudar regras ambientais durante a pandemia", data: "22/05/2020", link: "G1 - Boiada Salles" },
+          { veiculo: "Folha de S.Paulo", titulo: "PF cumpre mandados contra Ricardo Salles em operação sobre exportação ilegal de madeira", data: "19/05/2021", link: "Folha - Operação Akuanduba" }
+        ],
+        timeline: [
+          { ano: "2019", texto: "Desmonta a fiscalização do Ibama e exonera fiscais que autuaram madeireiros." },
+          { ano: "Abr/2020", texto: "Confessa em vídeo ministerial o plano de passar a boiada por meio de pareceres." },
+          { ano: "Jun/2021", texto: "Pede demissão do ministério após ser alvo de buscas e apreensões da Polícia Federal." }
+        ]
+      },
+      {
+        id: 24,
+        numero: "24",
+        nome: "General Augusto Heleno",
+        subtitulo: "Ex-Chefe do GSI / O Virador de Mesa",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Articulador Central do Plano de Ruptura)",
+        conexaoDesc: "Ministro-chefe do GSI de Bolsonaro. Na reunião de 05/07/2022, defendeu que 'se tiver que virar a mesa, tem que ser antes da eleição'; comandava a estrutura à qual a ABIN de Ramagem estava subordinada formalmente.",
+        cifras: [
+          "Milhões em orçamentos secretos de inteligência e espionagem geridos pelo GSI.",
+          "Verbas públicas de diárias militares usadas em reuniões de conspiração institucional."
+        ],
+        papel: "Fiador militar histórico, ideólogo linha-dura e planejador da intervenção institucional.",
+        proximidade: "Mentor militar venerado por Jair e Flávio Bolsonaro nos bastidores do Planalto.",
+        inqueritoDesc: "Investigado na Operação Tempus Veritatis por tentativa de golpe de Estado e abolição violenta da democracia; depoente na CPMI do 8 de Janeiro.",
+        modusOperandi: "Pressão corporativa sobre os comandantes das três Forças e uso do aparelho estatal de inteligência para infiltrar agentes em campanhas rivais.",
+        operacoes: "Operação Tempus Veritatis (Polícia Federal), Inquérito do Golpe (STF).",
+        statusJudicial: "Investigado formalmente no Supremo Tribunal Federal com medidas restritivas.",
+        codinomes: ["O Virador de Mesa", "O Vovô da Intervenção", "O General do Conclave", "O Estrategista Apressado", "Heleno do GSI"],
+        cena: "Um general veterano batendo com o punho na mesa ministerial exigindo que se dê um golpe de Estado antes de abrir as urnas, sendo calado pelo presidente com medo de microfone ligado.",
+        musicaNome: "Vira a Mesa Antes da Meia-Noite",
+        musicaRitmo: "Marcha Rancho Militar / Bolero Apressado",
+        musicaRefrão: "Se esperar a eleição não vai dar pra virar, chama a tropa pro golpe antes do povo votar!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Em reunião golpista, Heleno defendeu 'virar a mesa antes da eleição'", data: "08/02/2024", link: "O Globo - Fala Heleno" },
+          { veiculo: "G1", titulo: "Vídeo apreendido pela PF mostra Heleno propondo infiltração da Abin em campanhas", data: "09/02/2024", link: "G1 - Vídeo Reunião" }
+        ],
+        timeline: [
+          { ano: "2019-2022", texto: "Comanda o GSI e tutela a ABIN durante os monitoramentos ilegais do FirstMile." },
+          { ano: "Jul/2022", texto: "Propõe explicitamente agir contra as eleições em reunião ministerial secreta." },
+          { ano: "2024", texto: "É alvo de mandados da PF na Operação Tempus Veritatis com apreensão de documentos." }
+        ]
+      },
+      {
+        id: 25,
+        numero: "25",
+        nome: "Pastor André Valadão",
+        subtitulo: "Igreja da Lagoinha / Elo com o Banco Master",
+        categoria: "ideologia",
+        cor: "#d946ef",
+        conexaoGrau: "Conexão Indireta (Paz e Negócios entre Vorcaro, Nikolas e Flávio)",
+        conexaoDesc: "Líder da Igreja da Lagoinha. Receptor de dezenas de milhões em doações e patrocínios de Daniel Vorcaro; intermediou o pedido de desculpas de Nikolas Ferreira ao dono do Banco Master após queixas do banqueiro.",
+        cifras: [
+          "Dezenas de milhões de reais em doações corporativas do Banco Master para congregações da Lagoinha.",
+          "R$ 20 milhões estimados em celebrações de debutante e casamentos de gala para a cúpula do banco.",
+          "Movimentações financeiras da fintech e cartão de crédito religioso Clava Forte."
+        ],
+        papel: "Elo financeiro-religioso, pacificador de atritos políticos do Master e líder de cultos morais.",
+        proximidade: "Pastor íntimo de Daniel Vorcaro e fiador espiritual dos jovens deputados aliados de Flávio.",
+        inqueritoDesc: "Citado em relatórios da Polícia Federal na análise de áudios apreendidos no celular de Daniel Vorcaro relativos a tráfico de influência e favores corporativos.",
+        modusOperandi: "Uso do púlpito para discursos moralistas radicais enquanto mantém negócios financeiros, cartões de crédito e intermediação com banqueiros de ponta.",
+        operacoes: "Inquéritos de Atos Antidemocráticos, análise de quebras telemáticas da PF.",
+        statusJudicial: "Alvo de representações no MPF por discursos de ódio e investigado em desdobramentos da PF.",
+        codinomes: ["O Pastor do Master", "O Pacificador do Zap", "O Cruzado de Orlando", "O Ourives do Cartão Fé", "O Celebrante dos Bilhões"],
+        cena: "Um culto inflamado contra a perda dos valores da família que termina no gabinete dos fundos com uma reunião de cafezinho acertando o cartão de crédito do banco para os fiéis pagarem o dízimo.",
+        musicaNome: "O Cartão de Crédito Ungido",
+        musicaRitmo: "Gospel Pop Satírico / Balada Dançante",
+        musicaRefrão: "Passa o dízimo no cartão do patrão, Deus perdoa a taxa e abençoa a transação!",
+        fontes: [
+          { veiculo: "The Intercept Brasil", titulo: "Áudios da PF mostram Valadão intermediando conversas de Nikolas com Vorcaro", data: "18/09/2026", link: "The Intercept - Valadão e Vorcaro" },
+          { veiculo: "UOL Notícias", titulo: "As festas milionárias e a relação de Daniel Vorcaro com a cúpula da Lagoinha", data: "02/10/2026", link: "UOL - Negócios Lagoinha" }
+        ],
+        timeline: [
+          { ano: "2023", texto: "Expande a rede da Lagoinha em Orlando e recebe doações de empresários de elite." },
+          { ano: "2024", texto: "Intermedeia o pedido de desculpas de Nikolas Ferreira a Daniel Vorcaro." },
+          { ano: "2026", texto: "Mensagens telemáticas expõem a proximidade com o controlador do Banco Master." }
+        ]
+      },
+      {
+        id: 26,
+        numero: "26",
+        nome: "Pastor Silas Malafaia",
+        subtitulo: "ADVEC / O Mascate dos Santinhos por Correio",
+        categoria: "ideologia",
+        cor: "#d946ef",
+        conexaoGrau: "Conexão Direta (Conselheiro Espiritual e Operador de Mala Direta)",
+        conexaoDesc: "Líder da Assembleia de Deus Vitória em Cristo. Organizou remessas de correspondências com santinhos eleitorais em massa enviadas a domicílios em SP e MG pagas por sua associação para eleger Flávio e aliados.",
+        cifras: [
+          "Milhões de reais gastos em correspondências e envio de malas diretas eleitorais por meio de entidades religiosas.",
+          "Milhões em isenções fiscais a templos religiosos negociadas e sancionadas pelo governo federal."
+        ],
+        papel: "Conselheiro sênior, agitador de palanque religioso e propagandista postal do clã.",
+        proximidade: "Acesso permanente ao Alvorada e conselheiro pessoal de Flávio Bolsonaro.",
+        inqueritoDesc: "Investigado pela PF por incitação a atos golpistas e alvo de representações no Ministério Público Eleitoral por abuso de poder econômico e uso indevido de estrutura eclesiástica.",
+        modusOperandi: "Uso do púlpito, canais de televisão e cadastros de fiéis para envio de panfletos eleitorais financiados por associações com isenção tributária.",
+        operacoes: "Inquérito dos Atos Antidemocráticos, Representações no Tribunal Superior Eleitoral.",
+        statusJudicial: "Investigado pelo STF nos desdobramentos de redes antidemocráticas.",
+        codinomes: ["O Mascate dos Santinhos", "O Pastor dos Correios", "O Gritador da Vitória", "O Coronel da Mala Direta", "Silas do Altar Político"],
+        cena: "Um pastor aos berros no estúdio de TV segurando uma montanha de cartas timbradas com o rosto de candidatos, dizendo aos fiéis que quem não votar naqueles nomes vai direto para o inferno.",
+        musicaNome: "A Mala Direta da Salvação",
+        musicaRitmo: "Gospel Rock Inflamado / Paródia",
+        musicaRefrão: "A bênção chegou com o CEP carimbado, vota no Zero Um pra não ser condenado!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "Malafaia usa associação religiosa para disparar cartas com santinhos de aliados de Bolsonaro", data: "12/10/2026", link: "O Globo - Mala Direta Malafaia" },
+          { veiculo: "Folha de S.Paulo", titulo: "MPE recebe representação contra Malafaia por propaganda eleitoral ilegal em templos", data: "14/10/2026", link: "Folha - Ação Eleitoral" }
+        ],
+        timeline: [
+          { ano: "2013-2022", texto: "Celebra o casamento de Jair e Michelle e vira o conselheiro religioso número um da família." },
+          { ano: "2024", texto: "Financia atos de rua na Avenida Paulista em defesa da anistia a condenados do 8 de janeiro." },
+          { ano: "Out/2026", texto: "Envia cartas em massa para eleitores pressionando pelo voto em Flávio Bolsonaro." }
+        ]
+      },
+      {
+        id: 27,
+        numero: "27",
+        nome: "Nikolas Ferreira",
+        subtitulo: "Nicolas Chupetinha / Áudios do Master",
+        categoria: "ideologia",
+        cor: "#d946ef",
+        conexaoGrau: "Conexão Direta (Articulador Jovem e Negócios com Vorcaro)",
+        conexaoDesc: "Deputado mais votado de Flávio. Foi flagrado em áudios da PF com Daniel Vorcaro tratando de ativos minerários e pedindo perdão mediado por Valadão após atacar o Master; símbolo das provocações com peruca loira no plenário.",
+        cifras: [
+          "Milhões em ativos minerários negociados em tratativas com o Banco Master reveladas pela PF.",
+          "Verbas públicas de gabinete e fundos eleitorais para impulsionamento de vídeos virais."
+        ],
+        papel: "Agitador de redes sociais, provocador da tribuna e operador de acordos com minerárias.",
+        proximidade: "Principal puxador de votos e parceiro de palanque jovem de Flávio Bolsonaro.",
+        inqueritoDesc: "Investigado no STF por transfobia e quebra de decoro na Câmara dos Deputados; áudios apreendidos pela PF na Operação Carbono Oculto.",
+        modusOperandi: "Guerra cultural performática na tribuna para mascarar negociações pragmáticas de ativos com banqueiros sob escrutínio policial.",
+        operacoes: "Operação Carbono Oculto (desdobramentos telemáticos da PF).",
+        statusJudicial: "Condenado em ações de injúria e réu em representações no Conselho de Ética.",
+        codinomes: ["Nicolas Chupetinha", "A Nicole da Tribuna", "O Coroinha do Master", "O Garoto do Minério", "O Menino dos Três Bilhões de Likes"],
+        cena: "O deputado subindo na tribuna com uma peruca de plástico amarela gritando contra a corrupção moral, e logo depois correndo para o banheiro para mandar áudio pedindo desculpas ao banqueiro pelo WhatsApp.",
+        musicaNome: "O Sermão da Peruca Loira",
+        musicaRitmo: "Pop Drag Teatral / Cabaré de Escárnio",
+        musicaRefrão: "Bota a peruca pro povão aplaudir, e pede perdão pro banqueiro não sumir!",
+        fontes: [
+          { veiculo: "Metrópoles", titulo: "Áudios da PF revelam negociação de Nikolas com Vorcaro sobre ativo minerário", data: "09/10/2026", link: "Metrópoles - Áudios Nikolas" },
+          { veiculo: "Folha de S.Paulo", titulo: "Deputado coloca peruca na tribuna no Dia da Mulher e causa revolta no Congresso", data: "08/03/2023", link: "Folha - Peruca Nikolas" }
+        ],
+        timeline: [
+          { ano: "2022", texto: "Eleito deputado federal mais votado do país após campanha agressiva no TikTok." },
+          { ano: "2023", texto: "Coloca peruca loira no Dia da Mulher e responde a processo por transfobia." },
+          { ano: "2026", texto: "Áudios periciados pela PF mostram desculpas enviadas ao banqueiro Daniel Vorcaro." }
+        ]
+      },
+      {
+        id: 28,
+        numero: "28",
+        nome: "Pablo Marçal",
+        subtitulo: "Coach do Mindset / 'Ministério da Prosperidade'",
+        categoria: "bancos",
+        cor: "#0284c7",
+        conexaoGrau: "Conexão Direta (Cabo Eleitoral e Idealizador do Desmonte)",
+        conexaoDesc: "Influenciador e coach que se aliou a Flávio no segundo turno. Idealizou a fusão de pastas no 'Ministério da Prosperidade' e a conversão da Caixa em banco coach; declarou publicamente que encomendou o terno para a posse e que queria vaga no STF para 'tocar o terror'.",
+        cifras: [
+          "Milhões de reais arrecadados em palestras de autoajuda e cursos de 'desbloqueio mental'.",
+          "Multas de centenas de milhares de reais aplicadas pela Justiça Eleitoral por disparos e cortes ilegais.",
+          "Orçamento de dezenas de bilhões do Bolsa Família que pretendia absorver no novo ministério."
+        ],
+        papel: "Ideólogo do desmonte ministerial coach, mobilizador de cortes no TikTok e cabo eleitoral de Flávio.",
+        proximidade: "Conselheiro digital e articulador da nova máquina pública no 2º turno de Flávio.",
+        inqueritoDesc: "Condenado por crimes contra o sistema financeiro em Goiás (prescrito); investigado pela PF por falsidade ideológica eleitoral e manipulação de cortes em redes nas eleições municipais de SP.",
+        modusOperandi: "Conversão da política em venda de palestras de enriquecimento rápido com estética de confronto agressivo e ameaça aberta a cortes judiciais.",
+        operacoes: "Inquéritos Eleitorais do TRE-SP, investigações de lavagem em campanhas.",
+        statusJudicial: "Inelegível até 2032 por decisão unânime do Tribunal Superior Eleitoral.",
+        codinomes: ["O Ministro do Mindset", "O Terrorista do STF", "O Coach do Altar Eletrônico", "O Homem do Terno Pronto", "O Ilusionista dos Cortes"],
+        cena: "Um homem de paletó ajustado e tênis caro subindo ao palco para dizer à família sem comida que o problema dela não é falta de dinheiro, mas 'mentalidade fraca', enquanto pede um ministério para tocar o terror.",
+        musicaNome: "O Hino da Prosperidade Sem Almoço",
+        musicaRitmo: "Pop Eletrônico Corporativo / Paródia",
+        musicaRefrão: "Não precisa de salário, só precisa destravar, compra o curso do ministro e aprende a prosperar!",
+        fontes: [
+          { veiculo: "O Estado de S. Paulo", titulo: "Flávio Bolsonaro anuncia criação do 'Ministério da Prosperidade' com apoio de Marçal", data: "09/10/2026", link: "Estadão - Ministério da Prosperidade" },
+          { veiculo: "Folha de S.Paulo", titulo: "Marçal diz que encomendou terno para posse de Flávio e que quer vaga no STF para tocar o terror", data: "11/10/2026", link: "Folha - Marçal no STF" }
+        ],
+        timeline: [
+          { ano: "2024", texto: "Candidato em SP, bate recordes de engajamento e tem candidatura anulada pela Justiça." },
+          { ano: "2026", texto: "Fica inelegível até 2032 pelo TSE por uso sistemático de empresas para cortes digitais." },
+          { ano: "Out/2026", texto: "Sobe no palanque de Flávio prometendo chefiar o Ministério da Prosperidade." }
+        ]
+      },
+      {
+        id: 29,
+        numero: "29",
+        nome: "Silvinei Vasques",
+        subtitulo: "Ex-Diretor da PRF / O Tranca-Rua do Nordeste",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Operação Policial Clandestina para o Clã)",
+        conexaoDesc: "Diretor da PRF que montou barreiras ilegais em rodovias do Nordeste no segundo turno de 2022 para reter ônibus de eleitores e favorecer a reeleição da chapa de Jair e Flávio Bolsonaro.",
+        cifras: [
+          "Centenas de milhares de reais em diárias e combustível policial deslocados para o Nordeste no 2º turno.",
+          "Prejuízos incalculáveis com a retenção de transportes coletivos e retenção de eleitores."
+        ],
+        papel: "Comandante da força ostensiva mobilizada para tentar fraudar o fluxo eleitoral.",
+        proximidade: "Subordinado fiel de Jair e articulador operacional dos comícios de Flávio.",
+        inqueritoDesc: "Preso preventivamente pela PF na Operação Constituição Cidadã por crimes eleitorais, prevaricação, violência política e desobediência a ordens judiciais do TSE.",
+        modusOperandi: "Direcionamento geográfico de fiscalizações atípicas no dia da votação para causar engarrafamentos em zonas de votação majoritariamente oposicionistas.",
+        operacoes: "Operação Constituição Cidadã (Polícia Federal).",
+        statusJudicial: "Preso preventivamente por meses; réu perante o Supremo Tribunal Federal.",
+        codinomes: ["O Tranca-Rua do Nordeste", "O Marechal do Engarrafamento", "O Guarda do Voto Impedido", "O Diretor das Cancelas", "Silvinei da Parada"],
+        cena: "Viaturas da polícia cruzando a rodovia no sertão debaixo de sol escaldante fingindo checar lâmpadas queimadas de ônibus, enquanto os passageiros descem a pé com o título de eleitor na mão.",
+        musicaNome: "Cancela Aberta pro Chefe, Fechada pro Povo",
+        musicaRitmo: "Baião Dramático / Xaxado Pesado",
+        musicaRefrão: "A cancela travou no meio da estrada, mas o povo foi a pé garantir a virada!",
+        fontes: [
+          { veiculo: "G1", titulo: "PF prende Silvinei Vasques em operação sobre blitze da PRF no 2º turno de 2022", data: "09/08/2023", link: "G1 - Prisão Silvinei" },
+          { veiculo: "Folha de S.Paulo", titulo: "Mapas da PRF apreendidos pela PF mostram foco direcionado em cidades lulistas", data: "11/08/2023", link: "Folha - Mapas PRF" }
+        ],
+        timeline: [
+          { ano: "Out/2022", texto: "Comanda operação de bloqueio de rodovias com mais de 500 blitze no Nordeste." },
+          { ano: "2023", texto: "É preso preventivamente pela Polícia Federal ao tentar ocultar planilhas." },
+          { ano: "2024", texto: "Responde a processo criminal no STF por interferência nas eleições." }
+        ]
+      },
+      {
+        id: 30,
+        numero: "30",
+        nome: "Anderson Torres",
+        subtitulo: "Ex-Ministro da Justiça / A Minuta no Armário",
+        categoria: "estado",
+        cor: "#8b5cf6",
+        conexaoGrau: "Conexão Direta (Escrivão da Tentativa de Ruptura)",
+        conexaoDesc: "Ministro da Justiça do governo Bolsonaro. Guardava no armário de casa a minuta golpista para intervir no TSE; assumiu a Secretaria de Segurança do DF às vésperas do 8 de Janeiro e viajou para Orlando na invasão dos Três Poderes.",
+        cifras: [
+          "R$ 200 mil em dinheiro vivo e moedas estrangeiras apreendidos em sua residência na operação da PF.",
+          "Centenas de milhões de reais em danos causados à sede dos Três Poderes pela conivência na segurança."
+        ],
+        papel: "Arquiteto institucional do decreto de Estado de Defesa e fiador da inércia policial no 8/1.",
+        proximidade: "Ministro indicado com chancela de Flávio e Jair para controlar a Polícia Federal.",
+        inqueritoDesc: "Preso preventivamente pela PF no Inquérito do 8 de Janeiro; indiciado por tentativa de abolição violenta do Estado Democrático de Direito e prevaricação.",
+        modusOperandi: "Elaboração e guarda de minutas ilegais de intervenção institucional aliada à desmobilização programada do policiamento da capital federal.",
+        operacoes: "Operação Lesa Pátria, Inquérito do Golpe de Estado (STF).",
+        statusJudicial: "Responde com tornozeleira eletrônica a inquéritos em fase conclusiva no STF.",
+        codinomes: ["O Ministro do Armário", "O Turista de Orlando", "O Guardião da Minuta", "O Delegado da Intervenção", "O Escrivão do Caos"],
+        cena: "Um ministro da Justiça dobrando o rascunho de um golpe de Estado debaixo de meias e sapatos no guarda-roupa, antes de comprar passagem de avião para tomar sorvete na Flórida.",
+        musicaNome: "A Minuta Dobrada na Gaveta",
+        musicaRitmo: "Samba de Breque Cômico",
+        musicaRefrão: "Dobrou o decreto debaixo da meia, pegou o avião e acordou na cadeia!",
+        fontes: [
+          { veiculo: "O Globo", titulo: "PF encontra minuta de decreto golpista para intervir no TSE na casa de Anderson Torres", data: "12/01/2023", link: "O Globo - Minuta do Golpe" },
+          { veiculo: "G1", titulo: "Moraes determina prisão de ex-ministro da Justiça Anderson Torres após 8 de janeiro", data: "10/01/2023", link: "G1 - Prisão de Torres" }
+        ],
+        timeline: [
+          { ano: "2021-2022", texto: "Assume o Ministério da Justiça e atua como escudo contra investigações na PF." },
+          { ano: "Jan/2023", texto: "Viaja para Orlando; PF apreende minuta de intervenção em seu guarda-roupa." },
+          { ano: "2023-2024", texto: "Fica preso em batalhão da PM e passa para o regime de tornozeleira eletrônica." }
+        ]
+      },
+      {
+        id: 31,
+        numero: "31",
+        nome: "Glaidson Acácio",
+        subtitulo: "O Faraó do Bitcoin / GAS Consultoria",
+        categoria: "milicia",
+        cor: "#16a34a",
+        conexaoGrau: "Conexão Direta (Defesa Judicial por Flávio Bolsonaro)",
+        conexaoDesc: "Dono da GAS Consultoria em Cabo Frio. Montou pirâmide financeira bilionária e contratou pistoleiros contra rivais; o escritório de advocacia de Flávio Bolsonaro assumiu a representação forense de ex-sócios de sua quadrilha.",
+        cifras: [
+          "R$ 38 bilhões movimentados ilegalmente em pirâmides financeiras da GAS Consultoria.",
+          "Milhões de reais pagos em honorários advocatícios e contratos a intermediários com trânsito em Brasília."
+        ],
+        papel: "Financiador de esquemas paralelos de criptoativos e contratante de redes de pistoleiros.",
+        proximidade: "Seus ex-sócios e operadores contrataram o escritório de advocacia de Flávio Bolsonaro no RJ.",
+        inqueritoDesc: "Preso na Operação Kryptos da PF por crimes contra o sistema financeiro, lavagem de capitais e mandante de homicídios qualificados de concorrentes.",
+        modusOperandi: "Promessa de retorno de 10% ao mês com criptomoedas para lavar dinheiro de contraventores e milicianos, usando armas pesadas para eliminar rivais.",
+        operacoes: "Operação Kryptos (Polícia Federal), CPI das Pirâmides Financeiras.",
+        statusJudicial: "Preso em presídio federal de segurança máxima; condenado e réu por homicídio e crimes financeiros.",
+        codinomes: ["O Faraó do Bitcoin", "O Profeta dos Dez Por Cento", "O Pirâmideiro de Cabo Frio", "O Banqueiro da Bala", "Glaidson das Criptomoedas"],
+        cena: "Reuniões secretas em uma mansão em Cabo Frio onde barras de ouro e contratos de advocacia de Brasília se misturam com pistolas e fuzis de milicianos da Região dos Lagos.",
+        musicaNome: "Criptomoeda da Baixada",
+        musicaRitmo: "Trap Satírico / Pop Ostentação",
+        musicaRefrão: "Prometeu dez por cento na moeda do faraó, contratou o doutor e na cadeia ficou só!",
+        fontes: [
+          { veiculo: "Portal do Bitcoin / UOL", titulo: "Flávio Bolsonaro atuou na defesa de sócios presos do Faraó do Bitcoin", data: "14/09/2023", link: "Portal do Bitcoin - Defesa Flávio" },
+          { veiculo: "G1", titulo: "Operação Kryptos: PF prende o Faraó do Bitcoin e apreende milhões em carros e dinheiro", data: "25/08/2021", link: "G1 - Prisão Faraó" }
+        ],
+        timeline: [
+          { ano: "2015-2021", texto: "Monta a GAS Consultoria em Cabo Frio movimentando R$ 38 bilhões." },
+          { ano: "Ago/2021", texto: "É preso pela Polícia Federal na Operação Kryptos com carros de luxo e armas." },
+          { ano: "2023", texto: "Revelada a atuação do escritório de Flávio na representação jurídica de seus ex-sócios." }
+        ]
+      },
+      {
+        id: 32,
+        numero: "32",
+        nome: "Renan dos Santos",
+        subtitulo: "Líder do MBL / 'O Capanga de Vorcaro'",
+        categoria: "ideologia",
+        cor: "#d946ef",
+        conexaoGrau: "Conexão Antagônica Direta (Denunciante do Elo Flávio-Master)",
+        conexaoDesc: "Coordenador do MBL. Ex-aliado que rompeu com o clã; denunciou publicamente Flávio Bolsonaro como 'capanga armado de Daniel Vorcaro' no Senado e ridicularizou a militância que rezava para pneus nos quartéis.",
+        cifras: [
+          "Milhões de reais arrecadados em vaquinhas e campanhas digitais para projetos eleitorais da terceira via.",
+          "Verbas de marketing digital e monetização de vídeos no YouTube e lives políticas."
+        ],
+        papel: "Antagonista da própria direita, denunciante do Banco Master e crítico do transe bolsonarista.",
+        proximidade: "Inimigo íntimo do clã; organizador dos primeiros atos que alçaram Bolsonaro ao poder em 2014-2016.",
+        inqueritoDesc: "Alvo de investigações fiscais e inquéritos da Polícia Civil de SP por lavagem em doações (arquivadas); protagonista de guerras de difamação digital com o Gabinete do Ódio.",
+        modusOperandi: "Uso de comícios virtuais, vídeos provocativos e desmonte retórico das incoerências financeiras de Flávio Bolsonaro para disputar o eleitorado conservador.",
+        operacoes: "Inquéritos de Lavagem do MBL (arquivados), representações no TSE.",
+        statusJudicial: "Sem condenações; dirigente partidário e comentarista político de oposição ao bolsonarismo.",
+        codinomes: ["O Inquisidor da Mesma Trincheira", "O Denunciante do Capanga", "O Domador de Gado Arrependido", "O General do MBL", "O Roteirista da Terceira Via"],
+        cena: "Um líder de protestos de 2013 gravando lives furiosas mostrando que o grande 'mito patriota' virou despachante de luxo de um banqueiro da Faria Lima que financia faroestes nos Estados Unidos.",
+        musicaNome: "O Capanga do Banqueiro",
+        musicaRitmo: "Rock Nacional Anos 80 / Pós-Punk Irônico",
+        musicaRefrão: "Chamou de mito, foi no embalo, agora é capanga do dono do cavalo!",
+        fontes: [
+          { veiculo: "Poder360", titulo: "Renan do MBL ataca Flávio Bolsonaro por atuação pró-Master: 'Capanga de Vorcaro'", data: "22/09/2026", link: "Poder360 - Ataques MBL" },
+          { veiculo: "Folha de S.Paulo", titulo: "Racha na direita: MBL e bolsonaristas trocam acusações de corrupção e traição", data: "15/10/2026", link: "Folha - Racha Direita" }
+        ],
+        timeline: [
+          { ano: "2014-2018", texto: "Lidera marchas pelo impeachment e apoia a ascensão de Bolsonaro." },
+          { ano: "2019", texto: "Rompe com o clã após escândalos de Queiroz e do Gabinete do Ódio." },
+          { ano: "2026", texto: "Lança ofensiva pública denunciando a atuação de Flávio como operador de Daniel Vorcaro." }
+        ]
+      }
+    ];
+
+    const svgEl = document.getElementById('svg-diagram');
+    const layerArrows = document.getElementById('layer-arrows');
+    const layerNodes = document.getElementById('layer-nodes');
+    const cardsWrapper = document.getElementById('cards-wrapper');
+
+    const CX = 800;
+    const CY = 550;
+    const RX = 630;
+    const RY = 430;
+    const TOTAL_NODES = charactersData.length; // 32 Personagens
+    const NODE_W = 124;
+    const NODE_H = 62;
+
+    let zoomLevel = 1;
+    let isSoundOn = true;
+    let audioCtx = null;
+    let currentLayout = 'noir'; // 'noir' ou 'clean'
+    let currentTheme = 'dark'; // 'dark' ou 'light'
+    let currentView = 'radial'; // 'radial' ou 'grid'
+
+    function renderDiagram() {
+      layerArrows.innerHTML = '';
+      layerNodes.innerHTML = '';
+      cardsWrapper.innerHTML = '';
+
+      const isClean = (currentLayout === 'clean');
+      const isLight = (currentTheme === 'light');
+
+      charactersData.forEach((char, i) => {
+        // Cálculo orbital em 360 Graus para os 32 nós (topo: -90°)
+        const angle = -Math.PI / 2 + (i * 2 * Math.PI / TOTAL_NODES);
+        const x = CX + RX * Math.cos(angle);
+        const y = CY + RY * Math.sin(angle);
+
+        // Geometria das Setas apontando para o Centro
+        const centerRadius = 105;
+        const outerNodeRadius = 34;
+        
+        const dx = CX - x;
+        const dy = CY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const xStart = x + (dx / dist) * outerNodeRadius;
+        const yStart = y + (dy / dist) * outerNodeRadius;
+        const xEnd = CX - (dx / dist) * centerRadius;
+        const yEnd = CY - (dy / dist) * centerRadius;
+
+        // 1. Linha com Marcador de Flecha apontada para o Centro
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', xStart);
+        line.setAttribute('y1', yStart);
+        line.setAttribute('x2', xEnd);
+        line.setAttribute('y2', yEnd);
+        
+        const strokeColor = isClean 
+          ? (isLight ? '#94a3b8' : '#475569') 
+          : (isLight ? '#64748b' : '#64748b');
+        
+        line.setAttribute('stroke', strokeColor);
+        line.setAttribute('stroke-width', isClean ? '1.5' : '1.7');
+        line.setAttribute('marker-end', isClean ? 'url(#arrowhead-clean)' : 'url(#arrowhead)');
+        line.setAttribute('class', 'arrow-line');
+        line.setAttribute('id', `arrow-${char.id}`);
+        line.setAttribute('data-target', char.id);
+        layerArrows.appendChild(line);
+
+        // 2. Grupo SVG do Nó Periférico
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'node-outer cursor-pointer');
+        g.setAttribute('id', `node-${char.id}`);
+        g.setAttribute('data-category', char.categoria);
+        g.setAttribute('data-name', char.nome.toLowerCase());
+        g.setAttribute('onclick', `abrirModalPersonagem(${char.id})`);
+        g.setAttribute('onmouseenter', `destacarConexao(${char.id}, true)`);
+        g.setAttribute('onmouseleave', `destacarConexao(${char.id}, false)`);
+
+        if (isClean) {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', x - NODE_W / 2);
+          rect.setAttribute('y', y - NODE_H / 2);
+          rect.setAttribute('width', NODE_W);
+          rect.setAttribute('height', NODE_H);
+          rect.setAttribute('rx', '12');
+          rect.setAttribute('ry', '12');
+          rect.setAttribute('fill', isLight ? '#ffffff' : '#1e293b');
+          rect.setAttribute('stroke', char.cor);
+          rect.setAttribute('stroke-width', '1.8');
+          g.appendChild(rect);
+        } else {
+          const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+          ellipse.setAttribute('cx', x);
+          ellipse.setAttribute('cy', y);
+          ellipse.setAttribute('rx', NODE_W / 2);
+          ellipse.setAttribute('ry', NODE_H / 2);
+          ellipse.setAttribute('fill', isLight ? 'url(#grad-node-clean-light)' : 'url(#grad-node)');
+          ellipse.setAttribute('stroke', char.cor);
+          ellipse.setAttribute('stroke-width', '2');
+          g.appendChild(ellipse);
+        }
+
+        // Badge com Número do Personagem
+        const badgeBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        badgeBg.setAttribute('cx', x - NODE_W / 2 + 13);
+        badgeBg.setAttribute('cy', y - NODE_H / 2 + 13);
+        badgeBg.setAttribute('r', '9.5');
+        badgeBg.setAttribute('fill', isClean ? (isLight ? '#f1f5f9' : '#0f172a') : '#070b12');
+        badgeBg.setAttribute('stroke', char.cor);
+        badgeBg.setAttribute('stroke-width', '1.5');
+        g.appendChild(badgeBg);
+
+        const badgeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        badgeText.setAttribute('x', x - NODE_W / 2 + 13);
+        badgeText.setAttribute('y', y - NODE_H / 2 + 16.5);
+        badgeText.setAttribute('text-anchor', 'middle');
+        badgeText.setAttribute('fill', char.cor);
+        badgeText.setAttribute('font-size', '8.5');
+        badgeText.setAttribute('font-weight', 'bold');
+        badgeText.setAttribute('font-family', "'JetBrains Mono', monospace");
+        badgeText.textContent = char.numero;
+        g.appendChild(badgeText);
+
+        // Nome do Personagem
+        const textTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textTitle.setAttribute('x', x);
+        textTitle.setAttribute('y', y - 3);
+        textTitle.setAttribute('text-anchor', 'middle');
+        textTitle.setAttribute('fill', isLight ? '#0f172a' : '#ffffff');
+        textTitle.setAttribute('font-size', '10.5');
+        textTitle.setAttribute('font-weight', '800');
+        textTitle.textContent = formatarNomeSvg(char.nome);
+        g.appendChild(textTitle);
+
+        // Subtítulo
+        const textSub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textSub.setAttribute('x', x);
+        textSub.setAttribute('y', y + 13);
+        textSub.setAttribute('text-anchor', 'middle');
+        textSub.setAttribute('fill', isLight ? '#64748b' : '#94a3b8');
+        textSub.setAttribute('font-size', '7.8');
+        textSub.setAttribute('font-weight', '500');
+        textSub.textContent = formatarSubtitulo(char.subtitulo);
+        g.appendChild(textSub);
+
+        layerNodes.appendChild(g);
+
+        // Renderizar Cartão para a Visão em Grade
+        renderCard(char);
+      });
+
+      atualizarAparenciaCentro();
+    }
+
+    function formatarNomeSvg(str) {
+      return (str.length > 18) ? str.substring(0, 16) + '..' : str;
+    }
+
+    function formatarSubtitulo(str) {
+      return (str.length > 22) ? str.substring(0, 20) + '...' : str;
+    }
+
+    function renderCard(char) {
+      const isLight = (currentTheme === 'light');
+      const card = document.createElement('div');
+      card.className = `${isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-800 text-white'} border hover:border-red-600/60 p-4 rounded-xl cursor-pointer transition transform hover:-translate-y-1 shadow-lg flex flex-col justify-between`;
+      card.setAttribute('onclick', `abrirModalPersonagem(${char.id})`);
+      card.setAttribute('data-card-category', char.categoria);
+      card.setAttribute('data-card-name', char.nome.toLowerCase());
+
+      card.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded ${isLight ? 'bg-slate-100 text-red-600 border-slate-300' : 'bg-slate-950 text-red-400 border-slate-800'} border">#${char.numero}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-mono uppercase font-bold text-slate-400">${char.categoria}</span>
+              <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${char.cor}"></span>
+            </div>
+          </div>
+          <h3 class="font-bold text-sm mb-1 ${isLight ? 'text-slate-900' : 'text-white'}">${char.nome}</h3>
+          <p class="text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'} leading-relaxed line-clamp-2">${char.subtitulo}</p>
+        </div>
+        <div class="mt-4 pt-3 border-t ${isLight ? 'border-slate-100 text-slate-400' : 'border-slate-800/80 text-slate-500'} flex items-center justify-between text-xs font-mono">
+          <span class="capitalize text-emerald-400 font-bold flex items-center gap-1">$$$ Cifras</span>
+          <span class="text-red-500 font-semibold flex items-center gap-1">Dossiê 4 Abas &rarr;</span>
+        </div>
+      `;
+      cardsWrapper.appendChild(card);
+    }
+
+    function atualizarAparenciaCentro() {
+      const isClean = (currentLayout === 'clean');
+      const centerCircleMain = document.getElementById('center-circle-main');
+      const centerCircleDashed = document.getElementById('center-circle-dashed');
+
+      if (centerCircleMain) {
+        centerCircleMain.setAttribute('fill', isClean ? 'url(#grad-center-clean)' : 'url(#grad-center)');
+        centerCircleMain.setAttribute('stroke', isClean ? '#fee2e2' : '#fca5a5');
+      }
+      if (centerCircleDashed) {
+        centerCircleDashed.style.display = isClean ? 'none' : 'block';
+      }
+    }
+
+    function playBeep(freq = 440, type = 'sine', duration = 0.08) {
+      if (!isSoundOn) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Fallback silencioso
+      }
+    }
+
+    function toggleAudio() {
+      isSoundOn = !isSoundOn;
+      const btn = document.getElementById('btn-sound');
+      if (isSoundOn) {
+        btn.classList.replace('text-slate-500', 'text-emerald-400');
+        playBeep(659, 'sine', 0.1);
+      } else {
+        btn.classList.replace('text-emerald-400', 'text-slate-500');
+      }
+    }
+
+    function destacarConexao(id, ativar) {
+      const arrow = document.getElementById(`arrow-${id}`);
+      if (!arrow) return;
+      if (ativar) {
+        arrow.classList.add('arrow-highlight');
+        playBeep(280 + id * 12, 'sine', 0.04);
+      } else {
+        arrow.classList.remove('arrow-highlight');
+      }
+    }
+
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalPanel = document.getElementById('modal-panel');
+
+    function abrirModalPersonagem(id) {
+      const char = charactersData.find(c => c.id === id);
+      if (!char) return;
+
+      playBeep(520, 'triangle', 0.12);
+
+      // Topo
+      document.getElementById('modal-badge-avatar').textContent = char.numero;
+      document.getElementById('modal-badge-avatar').style.borderColor = char.cor;
+      document.getElementById('modal-badge-cat').textContent = char.categoria;
+      document.getElementById('modal-badge-cat').style.color = char.cor;
+      document.getElementById('modal-badge-cat').style.borderColor = char.cor + '60';
+      document.getElementById('modal-nome').textContent = `${char.numero}. ${char.nome}`;
+
+      // ABA 1: Conexão & Cifras
+      document.getElementById('modal-grau-conexao').textContent = char.conexaoGrau;
+      document.getElementById('modal-conexao-desc').textContent = char.conexaoDesc;
+      document.getElementById('modal-papel').textContent = char.papel;
+      document.getElementById('modal-proximidade').textContent = char.proximidade;
+
+      const cifrasList = document.getElementById('modal-cifras-list');
+      cifrasList.innerHTML = '';
+      if (char.cifras && char.cifras.length > 0) {
+        char.cifras.forEach(item => {
+          const li = document.createElement('div');
+          li.className = "flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30";
+          li.innerHTML = `<span class="text-emerald-400 font-bold">💲</span><span>${item}</span>`;
+          cifrasList.appendChild(li);
+        });
+      }
+
+      // ABA 2: Fatos Forenses & Inquéritos
+      document.getElementById('modal-inquerito-desc').textContent = char.inqueritoDesc;
+      document.getElementById('modal-modus-operandi').textContent = char.modusOperandi;
+      document.getElementById('modal-operacoes').textContent = char.operacoes;
+      document.getElementById('modal-status-judicial').textContent = char.statusJudicial;
+
+      // ABA 3: Sátira & Músicas
+      const codinomesList = document.getElementById('modal-codinomes-list');
+      codinomesList.innerHTML = '';
+      if (char.codinomes && char.codinomes.length > 0) {
+        char.codinomes.forEach(cod => {
+          const sp = document.createElement('span');
+          sp.className = "text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded";
+          sp.textContent = `"${cod}"`;
+          codinomesList.appendChild(sp);
+        });
+      }
+      document.getElementById('modal-cena-desc').textContent = `"${char.cena}"`;
+      document.getElementById('modal-musica-nome').textContent = char.musicaNome;
+      document.getElementById('modal-musica-ritmo').textContent = char.musicaRitmo;
+      document.getElementById('modal-musica-refrão').textContent = char.musicaRefrão;
+
+      // ABA 4: Fontes & Cronologia
+      const fontesCont = document.getElementById('modal-fontes-container');
+      fontesCont.innerHTML = '';
+      if (char.fontes && char.fontes.length > 0) {
+        char.fontes.forEach(f => {
+          const div = document.createElement('div');
+          div.className = "bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-1";
+          div.innerHTML = `
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40">${f.veiculo}</span>
+              <span class="text-slate-500">${f.data}</span>
+            </div>
+            <h5 class="text-sm font-bold text-white">${f.titulo}</h5>
+            <div class="text-xs text-red-400 font-semibold pt-1">
+              Registro: <span class="italic text-slate-300">${f.link}</span>
+            </div>
+          `;
+          fontesCont.appendChild(div);
+        });
+      }
+
+      const timelineCont = document.getElementById('modal-timeline-container');
+      timelineCont.innerHTML = '<div class="timeline-line"></div>';
+      if (char.timeline && char.timeline.length > 0) {
+        char.timeline.forEach(t => {
+          const div = document.createElement('div');
+          div.className = "relative flex items-start gap-3 text-xs";
+          div.innerHTML = `
+            <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+            <div>
+              <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">${t.ano}</span>
+              <p class="text-slate-300 leading-relaxed">${t.texto}</p>
+            </div>
+          `;
+          timelineCont.appendChild(div);
+        });
+      }
+
+      trocarAbaModal('conexao');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    /* Modal do Centro: Flávio Bolsonaro */
+    function abrirModalCentro() {
+      playBeep(220, 'sawtooth', 0.2);
+
+      document.getElementById('modal-badge-avatar').textContent = "★";
+      document.getElementById('modal-badge-avatar').style.borderColor = '#ef4444';
+      document.getElementById('modal-badge-cat').textContent = "Vértice Central";
+      document.getElementById('modal-badge-cat').style.color = '#ef4444';
+      document.getElementById('modal-badge-cat').style.borderColor = '#ef444460';
+      document.getElementById('modal-nome').textContent = "FLÁVIO BOLSONARO (O Vértice Central)";
+
+      // Aba 1
+      document.getElementById('modal-grau-conexao').textContent = "Ponto de Convergência de Todos os 32 Nós";
+      document.getElementById('modal-conexao-desc').textContent = "Senador da República e filho mais velho ('01'). Ponto geométrico e funcional onde confluem as finanças de Queiroz, o jatinho offshore de Willer Tomaz, as festas e filmes de Daniel Vorcaro, as emendas da Baixada com Canella e o desmonte do Estado com Marçal.";
+      document.getElementById('modal-papel').textContent = "Beneficiário final e articulador político das 32 conexões investigadas.";
+      document.getElementById('modal-proximidade').textContent = "O Núcleo de Convergência Central.";
+
+      const cifrasList = document.getElementById('modal-cifras-list');
+      cifrasList.innerHTML = `
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">💲</span>
+          <span>R$ 5,97 milhões na compra da mansão do Lago Sul financiada pelo BRB (parcelas de R$ 18,7 mil/mês).</span>
+        </div>
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">💲</span>
+          <span>R$ 1,6 milhão em faturamento em espécie depositado na franquia Bolsotini Chocolates do Shopping Tijuca.</span>
+        </div>
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">💲</span>
+          <span>R$ 134 milhões (US$ 24 mi) cobrados de Daniel Vorcaro para a cinebiografia Dark Horse nos EUA.</span>
+        </div>
+        <div class="flex items-start gap-2 bg-slate-900/80 p-2 rounded border border-emerald-900/30">
+          <span class="text-emerald-400 font-bold">💲</span>
+          <span>R$ 300 milhões em emendas parlamentares federais direcionadas a aliados e municípios da Baixada.</span>
+        </div>
+      `;
+
+      // Aba 2
+      document.getElementById('modal-inquerito-desc').textContent = "Denunciado pelo MPRJ no esquema das rachadinhas da ALERJ por peculato, lavagem de capitais e organização criminosa. Provas anuladas no STJ/STF. Alvo de investigações no STF por tráfico de influência com o Banco Master e a aeronave Legacy 650.";
+      document.getElementById('modal-modus-operandi').textContent = "Distribuição de lucros societários isentos de IR originados de depósitos em dinheiro vivo, advocacia de influência perante tribunais superiores e articulação de projetos de lei estratégicos (PEC das Praias, cassinos e flexibilização da jornada 6x1).";
+      document.getElementById('modal-operacoes').textContent = "Operação Furna da Onça, Operação Carbono Oculto, CPMI do Golpe, Inquéritos STF.";
+      document.getElementById('modal-status-judicial').textContent = "Processo da ALERJ trancado; inquéritos do Banco Master e jatinho ativos no STF.";
+
+      // Aba 3
+      const codinomesList = document.getElementById('modal-codinomes-list');
+      codinomesList.innerHTML = `
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Willy Wonka da ALERJ"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"Doutor Balas Perdidas"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Magnata do Lago Sul"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Cerca-Praia de Las Vegas"</span>
+        <span class="text-xs font-mono font-bold bg-amber-950/70 text-amber-300 border border-amber-800/50 px-2 py-0.5 rounded">"O Usuário Master do Jatinho"</span>
+      `;
+      document.getElementById('modal-cena-desc').textContent = `"O político em coletiva jurando que o operador foragido no poço de Atibaia, a compra da mansão do BRB, a franquia de doces e a senha da offshore do avião foram puras coincidências do destino."`;
+      document.getElementById('modal-musica-nome').textContent = "O Conclave do Zero Um";
+      document.getElementById('modal-musica-ritmo').textContent = "Ópera Bufa / Samba-Enredo Paródia";
+      document.getElementById('modal-musica-refrão').textContent = "Todas as 32 flechas apontam pro centro, quem manda o Pix e assina o aumento!";
+
+      // Aba 4
+      const fontesCont = document.getElementById('modal-fontes-container');
+      fontesCont.innerHTML = `
+        <div class="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-1">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-cyan-400 font-bold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40">Inquéritos Consolidado</span>
+            <span class="text-slate-500">2018 - 2026</span>
+          </div>
+          <h5 class="text-sm font-bold text-white">Acervo Oficial STF, STJ, TJRJ e Polícia Federal</h5>
+          <p class="text-xs text-slate-400">Autos dos Procedimentos de Investigação Criminal da ALERJ, Operação Furna da Onça, Operação Carbono Oculto e CPMI do Golpe.</p>
+        </div>
+      `;
+
+      const timelineCont = document.getElementById('modal-timeline-container');
+      timelineCont.innerHTML = `
+        <div class="timeline-line"></div>
+        <div class="relative flex items-start gap-3 text-xs">
+          <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+          <div>
+            <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">2003 - 2018</span>
+            <p class="text-slate-300">Mandatos na ALERJ; montagem da arrecadação com Queiroz e franquia Bolsotini Chocolates.</p>
+          </div>
+        </div>
+        <div class="relative flex items-start gap-3 text-xs">
+          <span class="absolute -left-[1.85rem] sm:-left-[2.1rem] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 shadow"></span>
+          <div>
+            <span class="font-mono font-bold text-emerald-400 text-xs px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-800/50 inline-block mb-1">2019 - 2026</span>
+            <p class="text-slate-300">Senado Federal; compra da mansão do Lago Sul; articulação com Vorcaro, Willer Tomaz, offshore e aliança com Marçal.</p>
+          </div>
+        </div>
+      `;
+
+      trocarAbaModal('conexao');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    function fecharModal() {
+      playBeep(350, 'sine', 0.05);
+      modalBackdrop.classList.replace('opacity-100', 'opacity-0');
+      modalPanel.classList.replace('scale-100', 'scale-95');
+      setTimeout(() => {
+        modalBackdrop.classList.add('hidden', 'pointer-events-none');
+      }, 200);
+    }
+
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) fecharModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') fecharModal();
+    });
+
+    function trocarAbaModal(aba) {
+      playBeep(480, 'sine', 0.04);
+      
+      const abas = ['conexao', 'fatos', 'satira', 'fontes'];
+      const cores = {
+        conexao: 'border-emerald-500 text-white',
+        fatos: 'border-red-500 text-white',
+        satira: 'border-amber-500 text-white',
+        fontes: 'border-cyan-500 text-white'
+      };
+
+      abas.forEach(nome => {
+        const conteudo = document.getElementById(`modal-tab-${nome}`);
+        const botao = document.getElementById(`tab-btn-${nome}`);
+        
+        if (nome === aba) {
+          conteudo.classList.remove('hidden');
+          botao.className = `px-4 py-3 border-b-2 ${cores[nome]} flex items-center gap-1.5 whitespace-nowrap transition`;
+        } else {
+          conteudo.classList.add('hidden');
+          botao.className = "px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition";
+        }
+      });
+    }
+
+    function filtrarCategoria(cat) {
+      playBeep(580, 'sine', 0.06);
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = "filter-btn px-2 py-1 rounded bg-red-700 text-white font-semibold transition whitespace-nowrap";
+        } else {
+          btn.className = "filter-btn px-2 py-1 rounded text-slate-400 hover:text-white transition whitespace-nowrap";
+        }
+      });
+
+      charactersData.forEach(char => {
+        const nodeG = document.getElementById(`node-${char.id}`);
+        const arrow = document.getElementById(`arrow-${char.id}`);
+        const match = (cat === 'todas' || char.categoria === cat);
+
+        if (nodeG) {
+          nodeG.style.opacity = match ? '1' : '0.12';
+          nodeG.style.pointerEvents = match ? 'auto' : 'none';
+        }
+        if (arrow) {
+          arrow.style.opacity = match ? '0.75' : '0.05';
+        }
+      });
+
+      document.querySelectorAll('#cards-wrapper > div').forEach(card => {
+        const cardCat = card.getAttribute('data-card-category');
+        if (cat === 'todas' || cardCat === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function pesquisarPersonagem(termo) {
+      const q = termo.trim().toLowerCase();
+      charactersData.forEach(char => {
+        const nodeG = document.getElementById(`node-${char.id}`);
+        const arrow = document.getElementById(`arrow-${char.id}`);
+        const match = q === '' || char.nome.toLowerCase().includes(q) || char.subtitulo.toLowerCase().includes(q) || char.papel.toLowerCase().includes(q);
+
+        if (nodeG) {
+          nodeG.style.opacity = match ? '1' : '0.1';
+          nodeG.style.pointerEvents = match ? 'auto' : 'none';
+        }
+        if (arrow) {
+          arrow.style.opacity = match ? '0.8' : '0.04';
+        }
+      });
+
+      document.querySelectorAll('#cards-wrapper > div').forEach(card => {
+        const cardName = card.getAttribute('data-card-name');
+        if (q === '' || cardName.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /* ALTERNAR ESTILO NOIR VS CLEAN */
+    function alternarLayoutEstilo() {
+      playBeep(640, 'triangle', 0.08);
+      const body = document.body;
+      const label = document.getElementById('label-layout');
+      const badgeInfo = document.getElementById('badge-style-info');
+
+      if (currentLayout === 'noir') {
+        currentLayout = 'clean';
+        body.classList.replace('style-noir', 'style-clean');
+        label.textContent = "Dossiê";
+        badgeInfo.textContent = "Design Clean 360°";
+      } else {
+        currentLayout = 'noir';
+        body.classList.replace('style-clean', 'style-noir');
+        label.textContent = "Clean";
+        badgeInfo.textContent = "32 Conexões Mapeadas";
+      }
+
+      renderDiagram();
+    }
+
+    /* ALTERNAR TEMA DARK VS LIGHT */
+    function alternarTemaCor() {
+      playBeep(500, 'sine', 0.06);
+      const html = document.documentElement;
+      const icon = document.getElementById('icon-theme');
+      const label = document.getElementById('label-theme');
+
+      if (currentTheme === 'dark') {
+        currentTheme = 'light';
+        html.classList.remove('dark');
+        html.classList.add('light');
+        label.textContent = "Escuro";
+        icon.innerHTML = `<svg class="w-3.5 h-3.5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+      } else {
+        currentTheme = 'dark';
+        html.classList.remove('light');
+        html.classList.add('dark');
+        label.textContent = "Claro";
+        icon.innerHTML = `<svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+      }
+
+      renderDiagram();
+    }
+
+    /* ALTERNAR VISÃO: RADIAL 360° VS LISTA DE CARDS */
+    function alternarVisao() {
+      const containerRadial = document.getElementById('container-radial');
+      const containerGrid = document.getElementById('container-grid');
+      const label = document.getElementById('label-toggle-view');
+
+      playBeep(420, 'sine', 0.06);
+
+      if (currentView === 'radial') {
+        currentView = 'grid';
+        containerRadial.classList.add('hidden');
+        containerGrid.classList.remove('hidden');
+        label.textContent = "Diagrama 360°";
+      } else {
+        currentView = 'radial';
+        containerRadial.classList.remove('hidden');
+        containerGrid.classList.add('hidden');
+        label.textContent = "Lista";
+      }
+    }
+
+    function toggleMobileFilters() {
+      const tb = document.getElementById('toolbar-actions');
+      tb.classList.toggle('hidden');
+      tb.classList.toggle('flex');
+    }
+
+    function aplicarZoom(fator) {
+      zoomLevel *= fator;
+      if (zoomLevel < 0.55) zoomLevel = 0.55;
+      if (zoomLevel > 2.6) zoomLevel = 2.6;
+
+      const layerNodes = document.getElementById('layer-nodes');
+      const layerArrows = document.getElementById('layer-arrows');
+      const centerNode = document.getElementById('center-node');
+
+      const transformStr = `translate(${CX * (1 - zoomLevel)}, ${CY * (1 - zoomLevel)}) scale(${zoomLevel})`;
+      layerNodes.setAttribute('transform', transformStr);
+      layerArrows.setAttribute('transform', transformStr);
+      centerNode.setAttribute('transform', transformStr);
+
+      playBeep(400, 'sine', 0.04);
+    }
+
+    function resetZoom() {
+      zoomLevel = 1;
+      const layerNodes = document.getElementById('layer-nodes');
+      const layerArrows = document.getElementById('layer-arrows');
+      const centerNode = document.getElementById('center-node');
+
+      layerNodes.removeAttribute('transform');
+      layerArrows.removeAttribute('transform');
+      centerNode.removeAttribute('transform');
+      playBeep(450, 'sine', 0.05);
+    }
+
+    /* INICIALIZAÇÃO NA CARGA DA PÁGINA */
+    window.onload = function() {
+      renderDiagram();
+    };
+  </script>
+</body>
+</html>

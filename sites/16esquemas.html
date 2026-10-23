@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagrama Investigativo: Flávio Bolsonaro e as 16 Conexões</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#b91c1c',
+              darkred: '#7f1d1d',
+              crimson: '#dc2626',
+              gold: '#d97706',
+              board: '#090d16',
+              card: '#131b2e'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #080c14;
+      color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    /* Estilização dos elementos SVG */
+    .svg-container {
+      cursor: grab;
+      touch-action: none;
+    }
+    .svg-container:active {
+      cursor: grabbing;
+    }
+    .node-outer {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .node-outer:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.45));
+    }
+    .node-center {
+      animation: pulse-center 3.5s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes pulse-center {
+      0% {
+        filter: drop-shadow(0 0 15px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 35px rgba(153, 27, 27, 0.35));
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.9)) drop-shadow(0 0 60px rgba(220, 38, 38, 0.55));
+      }
+    }
+    .arrow-line {
+      transition: stroke 0.25s ease, stroke-width 0.25s ease, stroke-dashoffset 0.25s ease;
+    }
+    .node-outer:hover ~ .arrow-layer line[data-target],
+    .arrow-highlight {
+      stroke: #f87171 !important;
+      stroke-width: 3.5px !important;
+      stroke-dasharray: 6 3;
+      animation: dash 1s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1120;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-700 selection:text-white">
+
+  <!-- Header Principal com Controles -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-950 flex items-center justify-center shadow-lg shadow-red-950/50 border border-red-500/30">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 0 1 10 10M12 12l5-5m-5 5H2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800/40">Dossiê Especial</span>
+            <span class="text-xs text-slate-400">PowerPoint Parody Edition</span>
+          </div>
+          <h1 class="text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+            O Vértice Central: Flávio Bolsonaro
+          </h1>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros e Ferramentas -->
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Filtros por Categoria -->
+        <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs font-medium">
+          <button onclick="filtrarCategoria('todas')" class="filter-btn px-2.5 py-1 rounded-md bg-red-700 text-white font-semibold transition" data-cat="todas">Todos (16)</button>
+          <button onclick="filtrarCategoria('dinheiro')" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition" data-cat="dinheiro">Dinheiro Vivo</button>
+          <button onclick="filtrarCategoria('milicia')" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition" data-cat="milicia">Violência/Milícia</button>
+          <button onclick="filtrarCategoria('luxo')" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition" data-cat="luxo">Bens & Vorcaro</button>
+          <button onclick="filtrarCategoria('lobby')" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition" data-cat="lobby">Lobbies & Estado</button>
+        </div>
+
+        <!-- Botões de Ação Visual -->
+        <div class="flex items-center gap-1">
+          <button id="btn-toggle-view" onclick="alternarVisao()" title="Alternar entre Diagrama 360° e Grade de Cards" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-medium flex items-center gap-1.5 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span id="label-toggle-view">Ver Lista</span>
+          </button>
+          <button onclick="resetZoom()" title="Redefinir Enquadramento" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </button>
+          <button id="btn-sound" onclick="toggleAudio()" title="Efeitos Sonoros" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 rounded-lg transition">
+            <svg id="icon-sound" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Área de Apresentação Principal -->
+  <main class="flex-1 relative flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
+    
+    <!-- Barra de Dica Superior -->
+    <div class="absolute top-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+      <div class="bg-slate-900/90 border border-slate-700/80 text-slate-300 text-xs px-3.5 py-1.5 rounded-full shadow-xl flex items-center gap-2 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        <span>Clique em qualquer bolha periférica para abrir a <b>ficha probatória e sugestões artísticas</b>.</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 1: CANVAS DO DIAGRAMA RADIAL (360 GRAUS) -->
+    <div id="container-radial" class="w-full h-[78vh] min-h-[550px] relative rounded-2xl bg-gradient-to-b from-[#0a0f1d] via-[#070b14] to-[#04060a] border border-slate-800/80 shadow-2xl flex items-center justify-center overflow-hidden">
+      
+      <!-- Grade decorativa sutil de fundo -->
+      <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+      <!-- SVG Interativo -->
+      <svg id="svg-diagram" class="w-full h-full svg-container" viewBox="0 0 1440 960" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- Ponta da Flecha para as Setas Apontando para o Centro -->
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#ef4444" />
+          </marker>
+          <marker id="arrowhead-subtle" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#64748b" />
+          </marker>
+          <radialGradient id="grad-center" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ef4444"/>
+            <stop offset="45%" stop-color="#b91c1c"/>
+            <stop offset="100%" stop-color="#450a0a"/>
+          </radialGradient>
+          <linearGradient id="grad-node" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Camada de Conexões e Setas (Renderizadas via JS) -->
+        <g id="layer-arrows" class="arrow-layer opacity-80"></g>
+
+        <!-- Nó Central: Flávio Bolsonaro -->
+        <g id="center-node" class="node-center cursor-pointer" onclick="abrirModalCentro()">
+          <!-- Círculo externo brilhante -->
+          <circle cx="720" cy="480" r="105" fill="url(#grad-center)" stroke="#fca5a5" stroke-width="4" />
+          <circle cx="720" cy="480" r="95" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="6 4" />
+          <!-- Textos do Centro -->
+          <text x="720" y="445" text-anchor="middle" fill="#fef2f2" font-size="20" font-weight="900" letter-spacing="1">FLÁVIO</text>
+          <text x="720" y="475" text-anchor="middle" fill="#fee2e2" font-size="24" font-weight="900" letter-spacing="1.5">BOLSONARO</text>
+          <line x1="660" y1="492" x2="780" y2="492" stroke="#fca5a5" stroke-width="2" opacity="0.8" />
+          <text x="720" y="515" text-anchor="middle" fill="#fecaca" font-size="13" font-weight="700" letter-spacing="0.5">O VÉRTICE CENTRAL</text>
+          <text x="720" y="534" text-anchor="middle" fill="#cbd5e1" font-size="10.5" font-family="'JetBrains Mono', monospace" opacity="0.85">PONTO DE CONVERGÊNCIA</text>
+        </g>
+
+        <!-- Camada dos 16 Nós Periféricos (Renderizados via JS) -->
+        <g id="layer-nodes"></g>
+      </svg>
+
+      <!-- Controles de Zoom Flutuantes no Canto -->
+      <div class="absolute bottom-4 right-4 flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-1 gap-1 shadow-2xl backdrop-blur-md">
+        <button onclick="aplicarZoom(1.15)" title="Aumentar Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">+</button>
+        <button onclick="aplicarZoom(0.85)" title="Diminuir Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">−</button>
+        <button onclick="resetZoom()" title="Centralizar" class="px-2 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs font-mono transition">100%</button>
+      </div>
+
+      <!-- Legenda de Cores Rápidas -->
+      <div class="absolute bottom-4 left-4 hidden md:flex items-center gap-3 bg-slate-900/90 border border-slate-800 px-3.5 py-2 rounded-xl text-xs backdrop-blur-md">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Dinheiro & Rachas</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Submundo & Milícia</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> Jatos & Vorcaro</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-violet-500"></span> Estado & Lobbies</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 2: GRADE DE CARDS DETALHADOS (ALTERNATIVA / MOBILE FRIENDLY) -->
+    <div id="container-grid" class="hidden w-full max-w-7xl mx-auto py-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cards-wrapper">
+        <!-- Injetado dinamicamente via JavaScript -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE DETALHAMENTO DO FATO SELECIONADO -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6 transition-opacity opacity-0 pointer-events-none">
+    <div id="modal-panel" class="bg-slate-900 border border-slate-700/80 w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-200">
+      
+      <!-- Topo do Modal -->
+      <div class="p-5 border-b border-slate-800 bg-slate-950 flex items-start justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div id="modal-badge-num" class="w-10 h-10 rounded-xl bg-red-950 border border-red-700/60 text-red-300 font-mono font-black text-lg flex items-center justify-center flex-shrink-0 shadow-inner">
+            01
+          </div>
+          <div>
+            <span id="modal-badge-cat" class="text-xs font-mono font-semibold uppercase tracking-wider text-amber-400 bg-amber-950/60 border border-amber-800/40 px-2 py-0.5 rounded">
+              Dinheiro Vivo
+            </span>
+            <h2 id="modal-titulo" class="text-xl font-black text-white tracking-tight mt-1">Título do Fato</h2>
+          </div>
+        </div>
+        <button onclick="fecharModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Corpo com Abas -->
+      <div class="flex border-b border-slate-800 bg-slate-900/60 text-xs font-semibold">
+        <button id="tab-btn-fatos" onclick="trocarAbaModal('fatos')" class="px-5 py-3 border-b-2 border-red-500 text-white flex items-center gap-1.5 transition">
+          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Evidências & Dados Forenses
+        </button>
+        <button id="tab-btn-arte" onclick="trocarAbaModal('arte')" class="px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          Sátira, Músicas & Teatro
+        </button>
+      </div>
+
+      <!-- Conteúdo da Aba 1: Fatos Forenses -->
+      <div id="modal-tab-fatos" class="p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed">
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-red-400 font-bold mb-1.5">Conexão com a Seta Central</h4>
+          <p id="modal-seta" class="text-white font-medium"></p>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Resumo das Investigações Oficiais</h4>
+          <p id="modal-descricao"></p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Personagens / Operadores</span>
+            <span id="modal-operadores" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Status / Desfecho Judicial</span>
+            <span id="modal-status" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdo da Aba 2: Arte & Sátira -->
+      <div id="modal-tab-arte" class="p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div class="bg-amber-950/30 border border-amber-800/40 p-4 rounded-xl">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block mb-1">Codinome Satírico do Tema</span>
+          <p id="modal-codinome" class="text-lg font-black text-amber-200 tracking-wide"></p>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Ideia de Esquete / Cena Teatral / Ilusionismo</h4>
+          <p id="modal-cena" class="text-slate-200 italic"></p>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Sugestão de Música & Ritmo</h4>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="modal-musica-titulo" class="font-bold text-white text-base"></span>
+              <span id="modal-musica-estilo" class="text-xs font-mono bg-red-950 text-red-300 px-2.5 py-0.5 rounded border border-red-800/50"></span>
+            </div>
+            <p id="modal-musica-gancho" class="text-xs text-slate-400"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between">
+        <span class="text-xs text-slate-500 font-mono">Dossiê Clã Bolsonaro • 16 Pontos Periféricos</span>
+        <button onclick="fecharModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition">
+          Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500 font-mono">
+    Diagrama Conceitual Inspirado no Famoso Slide dos Procuradores • Mapeamento de Fatos, Inquéritos e Sátiras Artísticas
+  </footer>
+
+  <!-- SCRIPT DE DADOS E LÓGICA DO DIAGRAMA -->
+  <script>
+    // BANCO DE DADOS DOS 16 FATOS E NÓS PERIFÉRICOS
+    const nodesData = [
+      {
+        id: 1,
+        numero: "01",
+        titulo: "O Caixa da ALERJ",
+        subtitulo: "Queiroz e 48 envelopes na boca do caixa",
+        categoria: "dinheiro",
+        cor: "#f59e0b",
+        seta: "Aponta para o sustento familiar imediato: faturas escolares das filhas, planos de saúde e 48 depósitos fracionados na conta pessoal.",
+        descricao: "Movimentação atípica de R$ 1,2 milhão na conta de Fabrício Queiroz, motorista e amigo íntimo de décadas. Esquema sistemático de recolhimento de parte dos salários de dezenas de servidores do gabinete na ALERJ, além de repasse de 21 cheques totalizando R$ 89 mil para a primeira-dama Michelle Bolsonaro.",
+        operadores: "Fabrício Queiroz, Márcia Aguiar, Michelle Bolsonaro",
+        status: "Provas anuladas pelo STJ/STF por quebra indevida de sigilo e envio de relatórios do COAF sem autorização.",
+        codinome: "O Rei da Devolução / Dom Queiroz das Sombras",
+        cena: "Um assessor parlamentar entra suando frio numa agência bancária no subsolo da assembleia legislativa com dezenas de envelopes pardos, abastecendo caixas automáticos em fila contínua enquanto um relógio apita.",
+        musicaTitulo: "A Fila do Caixa Eletrônico",
+        musicaEstilo: "Samba Sincopado Carioca",
+        musicaGancho: "O contraste entre o suor do trabalhador sacando o salário mínimo e a ginástica de depositar envelopes de cem em notas novinhas."
+      },
+      {
+        id: 2,
+        numero: "02",
+        titulo: "Chocolates Bolsotini",
+        subtitulo: "A fantástica fábrica de dinheiro vivo",
+        categoria: "dinheiro",
+        cor: "#f59e0b",
+        seta: "Lavagem e conversão de dinheiro vivo recolhido na ALERJ em lucros societários isentos de imposto de renda.",
+        descricao: "Franquia da Kopenhagen no Shopping Tijuca em sociedade com Alexandre Santini e Fernanda Bolsonaro. A quebra bancária revelou um volume desproporcional de aportes em dinheiro vivo (invertendo a lógica do varejo de 80% em cartão) exatamente nos dias de pagamento da ALERJ. Lucros distribuídos sem saques declarados.",
+        operadores: "Flávio Bolsonaro, Fernanda Bolsonaro, Alexandre Santini",
+        status: "Alvo de mandado de busca na Operação Furna da Onça; denúncia arquivada após invalidação probatória das quebras bancárias.",
+        codinome: "O Willy Wonka da ALERJ / Mestre do Panetone Fantasma",
+        cena: "Um cliente pede um bombom de chocolate de 5 reais e o vendedor abre a gaveta com maços amarrados de 100 reais, carimbando notas fiscais de doces que nunca existiram.",
+        musicaTitulo: "A Fantástica Fábrica de Bombom Vivo",
+        musicaEstilo: "Choro Malandreado / Samba de Breque",
+        musicaGancho: "O chocolate que adoça o bolso do deputado com o cacau mais caro e o dinheiro mais vivo do Rio."
+      },
+      {
+        id: 3,
+        numero: "03",
+        titulo: "Estagiário Quântico",
+        subtitulo: "Brasília de dia, Cândido Mendes à noite",
+        categoria: "lobby",
+        cor: "#8b5cf6",
+        seta: "Salário público da Câmara Federal funcionando como mesada estatal para formação privada sem dedicação funcional.",
+        descricao: "Entre 1999 e 2002, Flávio ocupou cargo comissionado na liderança do PTB na Câmara dos Deputados em Brasília, com exigência legal de dedicação exclusiva de 40 horas semanais, enquanto cursava Direito presencial na Universidade Cândido Mendes no Rio de Janeiro e cumpria estágio presencial no fórum.",
+        operadores: "Jair Bolsonaro (deputado federal), Liderança do PTB",
+        status: "Documentado por registros acadêmicos e folhas de pagamento públicas da Câmara dos Deputados.",
+        codinome: "O Onipresente da Ponte Aérea / O Acadêmico do Contra-Cheque",
+        cena: "Um estudante que aparece teletransportado entre o plenário do Congresso em Brasília e a sala de aula no centro do Rio, assinando folhas de ponto com velocidade quântica.",
+        musicaTitulo: "O Estudante Bilocado",
+        musicaEstilo: "Marcha-Rancho Futurista",
+        musicaGancho: "O dom sobrenatural de cumprir expediente em Brasília enquanto bebe café e assiste à aula na Praça XV."
+      },
+      {
+        id: 4,
+        numero: "04",
+        titulo: "Mansão no Lago Sul",
+        subtitulo: "R$ 6 mi e empréstimo de 70% da renda",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Triplicação do patrimônio pessoal imediatamente após assumir a cadeira no Senado Federal.",
+        descricao: "Compra de uma mansão de 2,4 mil m² no Setor de Mansões Dom Bosco por R$ 5,97 milhões em 2021. Flávio deu R$ 2,87 milhões de entrada e financiou R$ 3,1 milhões no Banco de Brasília (BRB) com prestações de R$ 18,7 mil — equivalentes a quase 70% de seu subsídio líquido parlamentar. Justificou como ganhos de advocacia.",
+        operadores: "Flávio Bolsonaro, Cúpula do BRB (Paulo Henrique Costa)",
+        status: "Alvo de representações ao Ministério Público de Contas do DF e inquéritos sobre favorecimento bancário.",
+        codinome: "O Magnata do Lago Sul / Doutor de Fachada",
+        cena: "Um advogado que nunca sustentou uma ação em tribunal de Brasília recebendo as chaves de um palacete de mármore e piscina aquecida de um gerente bancário sorridente.",
+        musicaTitulo: "O Enigma do Lago Sul",
+        musicaEstilo: "Tango Cômico / Valsa de Farsa",
+        musicaGancho: "Como comprar um palácio de embaixada com a renda de um senador e um escritório de porta fechada."
+      },
+      {
+        id: 5,
+        numero: "05",
+        titulo: "Adriano da Nóbrega",
+        subtitulo: "Homenagem ao Escritório do Crime",
+        categoria: "milicia",
+        cor: "#f43f5e",
+        seta: "Cordão umbilical entre o mandato parlamentar e a liderança de pistoleiros e grileiros de Rio das Pedras.",
+        descricao: "Flávio condecorou Adriano Magalhães da Nóbrega (ex-capitão do BOPE e chefe do consórcio de assassinatos de aluguel) com Moção de Louvor (2003) e a Medalha Tiradentes (2005), quando ele já estava preso por homicídio. O gabinete empregou a mãe (Raimunda) e a ex-mulher (Danielle) de Adriano, que repassavam seus salários a Queiroz.",
+        operadores: "Adriano da Nóbrega, Raimunda Veras, Danielle Mendonça, Queiroz",
+        status: "Adriano foi morto em operação policial na Bahia em 2020 após meses foragido; vínculos atestados pela Operação Os Intocáveis.",
+        codinome: "O Padrinho de Miliciano / Patrono das Medalhas",
+        cena: "Uma cerimônia solene na assembleia onde deputados engravatados pregam medalhas de ouro no peito de um preso algemado por homicídio com honras de herói do povo.",
+        musicaTitulo: "Medalha Tiradentes no Camburão",
+        musicaEstilo: "Moda de Viola Macabra",
+        musicaGancho: "A condecoração oficial na cadeia e os envelopes de salário que alimentavam o consórcio das sombras."
+      },
+      {
+        id: 6,
+        numero: "06",
+        titulo: "Doutor Balas Perdidas",
+        subtitulo: "Defesa do PM no caso da menina Ana Clara",
+        categoria: "milicia",
+        cor: "#f43f5e",
+        seta: "Contradição frontal entre a pregação de 'defesa da infância' e a atuação jurídica para livrar executores fardados.",
+        descricao: "Flávio Bolsonaro atuou formalmente como advogado do cabo PM Bruno Dias Delaroli, acusado de disparar o tiro de fuzil que matou a menina Ana Clara Gomes Machado, de 5 anos, na porta de casa em Niterói (2021). A perícia descartou confronto. Flávio ingressou com recursos ao STJ e STF travando o Tribunal do Júri popular por mais de 5 anos.",
+        operadores: "Flávio Bolsonaro (advogado), Bruno Dias Delaroli (PM)",
+        status: "Processo paralisado por manobras recursais da defesa; exposto no episódio 3 da série 'Revelando'.",
+        codinome: "O Advogado do Fuzil / Doutor Balas Perdidas",
+        cena: "O contraste entre o senador nos palanques dizendo proteger as crianças do Brasil e o mesmo parlamentar digitando petições para que o atirador de uma menina de 5 anos não enfrente os jurados.",
+        musicaTitulo: "O Tiro Que Não Teve Júri",
+        musicaEstilo: "MPB Dramática / R&B Fúnebre",
+        musicaGancho: "O choro de uma mãe na periferia de Niterói e a toga dourada de quem defende a bala no tribunal."
+      },
+      {
+        id: 7,
+        numero: "07",
+        titulo: "Faraó do Bitcoin",
+        subtitulo: "Banca jurídica de pirâmides e milícia",
+        categoria: "dinheiro",
+        cor: "#f59e0b",
+        seta: "Aproximação e representação judicial de esquemas bilionários de cripto-pirâmides do interior fluminense.",
+        descricao: "Atuação formal do escritório de Flávio na representação jurídica de ex-sócios de Glaidson Acácio dos Santos (o 'Faraó do Bitcoin', da GAS Consultoria em Cabo Frio). O consórcio movimentou dezenas de bilhões de reais em fraudes financeiras e chegou a contratar milicianos para assassinar concorrentes no ramo de moedas virtuais.",
+        operadores: "Flávio Bolsonaro, Glaidson Acácio, Ex-sócios da GAS",
+        status: "GAS Consultoria foi desmantelada pela Operação Kryptos da PF; Glaidson segue preso em presídio federal.",
+        codinome: "O Defensor das Cripto-Pirâmides / Profeta dos 10%",
+        cena: "Reuniões secretas em Cabo Frio onde moedas virtuais inexistentes e maços de dinheiro vivo se misturam a pistolas de milicianos e pareceres jurídicos carimbados.",
+        musicaTitulo: "Criptomoeda da Baixada",
+        musicaEstilo: "Trap Satírico / Pop Ostentação",
+        musicaGancho: "O milagre da pirâmide de dez por cento ao mês protegida pelo escritório mais caro do poder."
+      },
+      {
+        id: 8,
+        numero: "08",
+        titulo: "Postos da Baixada",
+        subtitulo: "Márcio Canella e a lavagem em 96 postos",
+        categoria: "milicia",
+        cor: "#f43f5e",
+        seta: "Aliança territorial e eleitoral prioritária com a máquina de lavagem de combustíveis da milícia.",
+        descricao: "Em outubro de 2026, a PF deflagrou a 8ª fase da Operação Unha e Carne, prendendo Márcio Canella (deputado mais votado e articulador de Flávio) e o ex-secretário Marcus Amim. O esquema lavava recursos de milícias em 96 postos de combustíveis. Canella ia disputar o Senado com Rogéria Bolsonaro (mãe de Flávio) de primeira suplente.",
+        operadores: "Márcio Canella, Flávio Bolsonaro, Rogéria Bolsonaro, Marcus Amim",
+        status: "Prisão preventiva decretada pela Justiça Federal na Operação Unha e Carne em 15/10/2026.",
+        codinome: "O Barão da Gasolina / O Padrinho da Baixada",
+        cena: "Um comício eleitoral em cima da laje de um posto de gasolina lotado de viaturas e faixas de campanha, com o candidato gravando vídeo de apoio 100% enquanto o camburão da PF dobra a esquina.",
+        musicaTitulo: "Gasolina com Suplência",
+        musicaEstilo: "Funk Consciente Paródia / Pagode Pesado",
+        musicaGancho: "Lavando as notas do crime na bomba de etanol com a benção da família mais famosa da Barra."
+      },
+      {
+        id: 9,
+        numero: "09",
+        titulo: "Pombo Sem Mansão",
+        subtitulo: "Mansão de Angra tomada de Richarlison",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Apropriação e desfrute de residência cinematográfica no litoral por meio de litígio conduzido por Willer Tomaz.",
+        descricao: "Mansão de 56 mil m² na Ilha Comprida em Angra dos Reis avaliada em R$ 10 milhões. A empresa do jogador Richarlison (Sport 70) comprou a posse, mas foi despejada por manobra judicial de Willer Tomaz, amigo íntimo de Flávio. Flávio utilizou a casa para férias e aniversários de família e foi testemunha de Willer na ação.",
+        operadores: "Willer Tomaz, Flávio Bolsonaro, Richarlison, Renato Velasco",
+        status: "Cobrança pública do jogador Richarlison nas redes; denúncia retratada no 'Revelando 2'.",
+        codinome: "O Tomador da Ilha / O Grilo de Luxo de Angra",
+        cena: "O jogador de futebol fazendo gols na Premier League e recebendo mensagem no celular avisando que um advogado com jatinho e o filho do presidente trocaram a fechadura da sua mansão de praia.",
+        musicaTitulo: "O Pombo Ficou Sem Ninho",
+        musicaEstilo: "Samba de Roda / Pagode Descontraído",
+        musicaGancho: "O craque da seleção perdeu a casa na canetada para o amigo do senador fazer churrasco na ilha."
+      },
+      {
+        id: 10,
+        numero: "10",
+        titulo: "Faxineira Presidente",
+        subtitulo: "Lídia Mazelli com ilhas e R$ 5 bi em bets",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Utilização de trabalhadora doméstica humilde como interposta pessoa (laranja) para ocultar bens e plataformas bilionárias.",
+        descricao: "Lídia Mazelli, trabalhadora doméstica de Willer Tomaz, constava nos registros formais como presidente de 14 empresas do grupo, incluindo a sociedade detentora da mansão de Angra e plataformas de bets. Lídia assinou requerimentos ao Inea para autorizar resorts na ilha, enquanto declarava à imprensa que continuava faxinando e não sabia de nada.",
+        operadores: "Willer Tomaz, Lídia Mazelli, Flávio Bolsonaro",
+        status: "Revelado pelo ICL Notícias e TVT News; Willer Tomaz perdeu R$ 163 mi em apostas e sacou US$ 236 mil em cassino nos EUA.",
+        codinome: "A Faxineira Presidente / A Baronesa das Catorze Firmas",
+        cena: "Uma senhora segurando um balde e um rodo enquanto dois engravatados colocam uma pasta de couro na frente dela dizendo: 'Assina aqui a presidência das bets de 5 bilhões, dona Lídia'.",
+        musicaTitulo: "A Faxineira Bilionária",
+        musicaEstilo: "Forró Humorístico / Embolada Nordestina",
+        musicaGancho: "Dona Lídia limpa o chão de manhã e de tarde é dona de ilha, de cassino virtual e de resort de luxo."
+      },
+      {
+        id: 11,
+        numero: "11",
+        titulo: "Usuário Master do Jato",
+        subtitulo: "Senha master na conta offshore do Legacy",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Comprovação de gestão e controle financeiro direto sobre a aeronave de luxo usada em campanhas e viagens.",
+        descricao: "Documento da PF e revelações da jornalista Malu Gaspar em outubro de 2026 demonstraram que Flávio figurava como 'usuário master' de conta do Santander em nome da Alcazar Holdings (offshore de Willer Tomaz que detinha 33% do Legacy 650 compartilhado com Vorcaro). E-mail de 2025 da secretária de Tomaz pediu a exclusão formal do acesso de Flávio.",
+        operadores: "Flávio Bolsonaro, Willer Tomaz, Daniel Vorcaro (Prime You)",
+        status: "Desmente a tese de 'mero passageiro de carona'; inquérito em curso no STF.",
+        codinome: "O Usuário Master do Jatinho / O Passageiro com Senha",
+        cena: "O político dando entrevista jurando que 'pegava carona despretensiosa' enquanto o extrato bancário na tela pisca mostrando o login dele autorizando o combustível no paraíso fiscal.",
+        musicaTitulo: "O Jato Não É Meu, Mas Eu Tenho a Senha",
+        musicaEstilo: "Bossa Nova Sarcástica / Jazz Noir",
+        musicaGancho: "Não tenho carro nem avião, mas na conta da offshore quem manda o Pix sou eu."
+      },
+      {
+        id: 12,
+        numero: "12",
+        titulo: "Flat Vila Nova Conceição",
+        subtitulo: "Ap do cunhado de Vorcaro usado em SP",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Triangulação imobiliária de bens de luxo do grupo Master colocados à disposição logística do senador.",
+        descricao: "Apartamento de R$ 3,5 milhões na Vila Nova Conceição (bairro mais caro de SP) que pertencia originalmente a Fabiano Zettel (cunhado de Daniel Vorcaro, preso no aeroporto tentando fugir para Dubai). O imóvel foi transferido para empresa de Willer Tomaz e serviu de base e hospedagem de Flávio em campanhas na capital paulista.",
+        operadores: "Fabiano Zettel, Willer Tomaz, Daniel Vorcaro, Flávio Bolsonaro",
+        status: "Zettel preso na Operação Carbono Oculto; condomínio confirmou estadas de Flávio apesar do sumiço das gravações.",
+        codinome: "O Dormitório Paulistano / O Comitê Triangulado",
+        cena: "Um comitê de campanha montado num duplex de três milhões de reais com o proprietário correndo no aeroporto com passaporte para os Emirados Árabes.",
+        musicaTitulo: "O Hóspede da Vila Nova",
+        musicaEstilo: "Rock Paulista Anos 80 / Pós-Punk",
+        musicaGancho: "O flat é do cunhado do banco, passou pro doutor e virou o quarto do senador."
+      },
+      {
+        id: 13,
+        numero: "13",
+        titulo: "O Faroeste Dark Horse",
+        subtitulo: "Filme de R$ 134 mi cobrado no WhatsApp",
+        categoria: "luxo",
+        cor: "#06b6d4",
+        seta: "Utilização do prestígio de senador para intermediar aportes milionários de banqueiros para propaganda ideológica.",
+        descricao: "Negociação de US$ 24 milhões (cerca de R$ 134 milhões) para a produção do longa-metragem pró-Bolsonaro 'Dark Horse' nos EUA, estrelado por Jim Caviezel. Mensagens e áudios da PF mostram Flávio cobrando Daniel Vorcaro: 'Estamos no terceiro dia de gravação, me dá uma luz!'. Dinheiro transitava pela offshore Havengate e Go Up.",
+        operadores: "Daniel Vorcaro, Flávio Bolsonaro, Cyrus Nowrasteh, Jim Caviezel",
+        status: "PF apura crimes de evasão de divisas, lavagem de capitais e tráfico de influência; inquérito no STF com Flávio Dino.",
+        codinome: "O Produtor Executivo do WhatsApp / O Cineasta da Faria Lima",
+        cena: "Um set de filmagem em Hollywood com atores fantasiados esperando diária de almoço enquanto o senador manda mensagem de áudio desesperada para o banqueiro mandar mais dólares.",
+        musicaTitulo: "Tô no Terceiro Dia de Gravação!",
+        musicaEstilo: "Western Épico Paródia / Sinfonia Cômica",
+        musicaGancho: "Cem milhões do banqueiro para pintar o pai de cavaleiro heróico na tela dos cinemas."
+      },
+      {
+        id: 14,
+        numero: "14",
+        titulo: "A Abin Paralela",
+        subtitulo: "Ramagem e relatórios para salvar Flávio",
+        categoria: "lobby",
+        cor: "#8b5cf6",
+        seta: "Aparelhamento criminoso do órgão oficial de inteligência do Estado para fabricar provas em favor do filho do presidente.",
+        descricao: "Sob comando do delegado Alexandre Ramagem, a ABIN usou o software espião FirstMile para monitorar alvos sem autorização judicial e produziu relatórios de inteligência apócrifos desenhados sob medida para orientar as advogadas de Flávio na tentativa de anular a investigação das rachadinhas da ALERJ no STF/STJ.",
+        operadores: "Alexandre Ramagem, Jair Bolsonaro, Advogadas de Flávio (Luciana Pires)",
+        status: "Operação Vigilância Aproximada da PF; áudio de reunião de Bolsonaro e Ramagem apreendido no computador de Mauro Cid.",
+        codinome: "O Espião do FirstMile / O Araponga Amigo",
+        cena: "A cúpula da inteligência nacional trancada no gabinete presidencial debatendo como espionar auditores da Receita para livrar a loja de chocolates da cadeia.",
+        musicaTitulo: "Relatório Sob Medida",
+        musicaEstilo: "Spy-Jazz / Trilha Noir Cômica",
+        musicaGancho: "O software de ponta do Estado virou detetive particular para apagar a mancha do gabinete."
+      },
+      {
+        id: 15,
+        numero: "15",
+        titulo: "Catraca na Areia",
+        subtitulo: "PEC das Praias e tour de cassinos em Vegas",
+        categoria: "lobby",
+        cor: "#8b5cf6",
+        seta: "Desregulamentação de patrimônio público da União em favor de megainvestidores hoteleiros e operadores de apostas.",
+        descricao: "Flávio foi o relator da PEC 03/2022 (PEC das Praias), que prevê a extinção do domínio da União sobre os terrenos de marinha, permitindo a apropriação privada da orla por resorts. A pauta caminhou casada com o projeto dos cassinos após missão oficial a Las Vegas e Miami em janeiro de 2020 paga com dinheiro do Senado.",
+        operadores: "Flávio Bolsonaro, Senador Irajá, Lobistas de Cassinos de Vegas",
+        status: "PEC travada no Senado após revolta popular nacional; debatida no episódio de Luana Piovani no 'Revelando'.",
+        codinome: "O Cerca-Praia de Las Vegas / O Crupiê do Maranhão",
+        cena: "O senador fincando mourões de arame farpado e roletas de pôquer na praia de Copacabana, cobrando ingresso dos banhistas para molhar o pé na água salgada.",
+        musicaTitulo: "Cancela na Areia (O Funk da PEC)",
+        musicaEstilo: "Funk Melody Carioca / Marchinha",
+        musicaGancho: "Voltou de Las Vegas querendo botar catraca na praia do povo e cassino no morro."
+      },
+      {
+        id: 16,
+        numero: "16",
+        titulo: "Ataque à Aposentadoria",
+        subtitulo: "Super PEC e a revanche contra a 6x1",
+        categoria: "lobby",
+        cor: "#8b5cf6",
+        seta: "Desmonte dos pisos constitucionais de seguridade social enquanto atua para manter a sobrecarga patronal de trabalho.",
+        descricao: "Flávio liderou a resistência contra o fim da jornada 6x1 no Senado (aprovada por 75 a 1, com o voto isolado de Mourão e fuga do plenário de Flávio). Seu plano econômico prevê uma 'Super PEC' para desindexar BPC, aposentadorias e pisos de saúde e educação do salário mínimo, cortando R$ 250 bilhões da população vulnerável.",
+        operadores: "Flávio Bolsonaro, Hamilton Mourão, Bancada Patronal do PL",
+        status: "Fuga da votação nominal da 6x1 em 15/10/2026 e articulação de nova PEC para liberar negociação individual.",
+        codinome: "O Inimigo do Domingo / O Reformador da Vovó",
+        cena: "O parlamentar que nunca bateu ponto às 6 da manhã correndo pelos corredores do Congresso mandando bilhetes secretos para cortar o reajuste da aposentadoria da dona de casa.",
+        musicaTitulo: "A Super PEC da Minha Vó",
+        musicaEstilo: "Marchinha Carnavalesca Tradicional",
+        musicaGancho: "Defende a família mas corta o remédio da vovó e o descanso semanal de quem trabalha de segunda a sábado."
+      }
+    ];
+
+    // INICIALIZAÇÃO E RENDERIZAÇÃO GEOMÉTRICA
+    const svgEl = document.getElementById('svg-diagram');
+    const layerArrows = document.getElementById('layer-arrows');
+    const layerNodes = document.getElementById('layer-nodes');
+    const cardsWrapper = document.getElementById('cards-wrapper');
+
+    const CX = 720;
+    const CY = 480;
+    const RX = 520;
+    const RY = 350;
+    const TOTAL_NODES = 16;
+    const NODE_W = 150;
+    const NODE_H = 75;
+
+    let zoomLevel = 1;
+    let isSoundOn = true;
+    let audioCtx = null;
+
+    function renderDiagram() {
+      layerArrows.innerHTML = '';
+      layerNodes.innerHTML = '';
+      cardsWrapper.innerHTML = '';
+
+      nodesData.forEach((node, i) => {
+        // Cálculo do Ângulo em 360 Graus (começando do topo -90°)
+        const angle = -Math.PI / 2 + (i * 2 * Math.PI / TOTAL_NODES);
+        const x = CX + RX * Math.cos(angle);
+        const y = CY + RY * Math.sin(angle);
+
+        // Pontos para a Linha / Seta Apontando para o Centro
+        // Reduzindo o comprimento para não invadir o círculo central nem a bolha externa
+        const centerRadius = 105;
+        const outerNodeRadius = 40;
+        
+        const dx = CX - x;
+        const dy = CY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const xStart = x + (dx / dist) * outerNodeRadius;
+        const yStart = y + (dy / dist) * outerNodeRadius;
+        const xEnd = CX - (dx / dist) * centerRadius;
+        const yEnd = CY - (dy / dist) * centerRadius;
+
+        // 1. Criar Seta Conectora Apontando para o Centro
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', xStart);
+        line.setAttribute('y1', yStart);
+        line.setAttribute('x2', xEnd);
+        line.setAttribute('y2', yEnd);
+        line.setAttribute('stroke', '#64748b');
+        line.setAttribute('stroke-width', '1.8');
+        line.setAttribute('marker-end', 'url(#arrowhead)');
+        line.setAttribute('class', 'arrow-line');
+        line.setAttribute('id', `arrow-${node.id}`);
+        line.setAttribute('data-target', node.id);
+        layerArrows.appendChild(line);
+
+        // 2. Criar Grupo do Nó Periférico
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'node-outer cursor-pointer');
+        g.setAttribute('id', `node-${node.id}`);
+        g.setAttribute('data-category', node.categoria);
+        g.setAttribute('onclick', `abrirModalFato(${node.id})`);
+        g.setAttribute('onmouseenter', `destacarConexao(${node.id}, true)`);
+        g.setAttribute('onmouseleave', `destacarConexao(${node.id}, false)`);
+
+        // Elipse de Fundo
+        const ellipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        ellipse.setAttribute('cx', x);
+        ellipse.setAttribute('cy', y);
+        ellipse.setAttribute('rx', NODE_W / 2);
+        ellipse.setAttribute('ry', NODE_H / 2);
+        ellipse.setAttribute('fill', 'url(#grad-node)');
+        ellipse.setAttribute('stroke', node.cor);
+        ellipse.setAttribute('stroke-width', '2');
+        ellipse.setAttribute('class', 'shadow-lg');
+        g.appendChild(ellipse);
+
+        // Badge com Número do Fato
+        const badgeBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        badgeBg.setAttribute('cx', x - NODE_W / 2 + 16);
+        badgeBg.setAttribute('cy', y - NODE_H / 2 + 16);
+        badgeBg.setAttribute('r', '11');
+        badgeBg.setAttribute('fill', '#090d16');
+        badgeBg.setAttribute('stroke', node.cor);
+        badgeBg.setAttribute('stroke-width', '1.5');
+        g.appendChild(badgeBg);
+
+        const badgeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        badgeText.setAttribute('x', x - NODE_W / 2 + 16);
+        badgeText.setAttribute('y', y - NODE_H / 2 + 20);
+        badgeText.setAttribute('text-anchor', 'middle');
+        badgeText.setAttribute('fill', node.cor);
+        badgeText.setAttribute('font-size', '10');
+        badgeText.setAttribute('font-weight', 'bold');
+        badgeText.setAttribute('font-family', "'JetBrains Mono', monospace");
+        badgeText.textContent = node.numero;
+        g.appendChild(badgeText);
+
+        // Texto do Título
+        const textTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textTitle.setAttribute('x', x);
+        textTitle.setAttribute('y', y - 4);
+        textTitle.setAttribute('text-anchor', 'middle');
+        textTitle.setAttribute('fill', '#ffffff');
+        textTitle.setAttribute('font-size', '11.5');
+        textTitle.setAttribute('font-weight', '800');
+        textTitle.textContent = node.titulo;
+        g.appendChild(textTitle);
+
+        // Texto do Subtítulo (dividido se necessário)
+        const textSub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textSub.setAttribute('x', x);
+        textSub.setAttribute('y', y + 14);
+        textSub.setAttribute('text-anchor', 'middle');
+        textSub.setAttribute('fill', '#94a3b8');
+        textSub.setAttribute('font-size', '8.5');
+        textSub.setAttribute('font-weight', '500');
+        textSub.textContent = formatarSubtituloSvg(node.subtitulo);
+        g.appendChild(textSub);
+
+        layerNodes.appendChild(g);
+
+        // 3. Montar Card para a Visão de Grade Alternativa
+        renderCard(node);
+      });
+    }
+
+    function formatarSubtituloSvg(str) {
+      if (str.length > 28) {
+        return str.substring(0, 26) + '...';
+      }
+      return str;
+    }
+
+    function renderCard(node) {
+      const card = document.createElement('div');
+      card.className = "bg-slate-900 border border-slate-800 hover:border-red-600/60 p-4 rounded-xl cursor-pointer transition transform hover:-translate-y-1 shadow-lg flex flex-col justify-between";
+      card.setAttribute('onclick', `abrirModalFato(${node.id})`);
+      card.setAttribute('data-card-category', node.categoria);
+
+      card.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-950 text-red-400 border border-slate-800">#${node.numero}</span>
+            <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${node.cor}"></span>
+          </div>
+          <h3 class="font-bold text-white text-sm mb-1">${node.titulo}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">${node.subtitulo}</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500 font-mono">
+          <span class="capitalize text-slate-400">${node.categoria}</span>
+          <span class="text-red-400 font-semibold flex items-center gap-1">Ver Dossiê &rarr;</span>
+        </div>
+      `;
+      cardsWrapper.appendChild(card);
+    }
+
+    // Interações Sonoras Sintetizadas (Web Audio API nativa - sem arquivos externos)
+    function playBeep(freq = 440, type = 'sine', duration = 0.08) {
+      if (!isSoundOn) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Áudio silenciado ou bloqueado pelo navegador
+      }
+    }
+
+    function toggleAudio() {
+      isSoundOn = !isSoundOn;
+      const btn = document.getElementById('btn-sound');
+      const icon = document.getElementById('icon-sound');
+      if (isSoundOn) {
+        btn.classList.replace('text-slate-500', 'text-emerald-400');
+        playBeep(659, 'sine', 0.1);
+      } else {
+        btn.classList.replace('text-emerald-400', 'text-slate-500');
+      }
+    }
+
+    // Destaque de Conexão e Setas ao Passar o Mouse
+    function destacarConexao(id, ativar) {
+      const arrow = document.getElementById(`arrow-${id}`);
+      if (!arrow) return;
+      if (ativar) {
+        arrow.classList.add('arrow-highlight');
+        playBeep(320 + id * 20, 'sine', 0.04);
+      } else {
+        arrow.classList.remove('arrow-highlight');
+      }
+    }
+
+    // CONTROLE DO MODAL DE DETALHES
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const modalPanel = document.getElementById('modal-panel');
+
+    function abrirModalFato(id) {
+      const node = nodesData.find(n => n.id === id);
+      if (!node) return;
+
+      playBeep(520, 'triangle', 0.12);
+
+      document.getElementById('modal-badge-num').textContent = node.numero;
+      document.getElementById('modal-badge-cat').textContent = node.categoria;
+      document.getElementById('modal-titulo').textContent = `${node.numero}. ${node.titulo}`;
+      document.getElementById('modal-seta').textContent = node.seta;
+      document.getElementById('modal-descricao').textContent = node.descricao;
+      document.getElementById('modal-operadores').textContent = node.operadores;
+      document.getElementById('modal-status').textContent = node.status;
+      
+      // Conteúdo artístico
+      document.getElementById('modal-codinome').textContent = `"${node.codinome}"`;
+      document.getElementById('modal-cena').textContent = `"${node.cena}"`;
+      document.getElementById('modal-musica-titulo').textContent = node.musicaTitulo;
+      document.getElementById('modal-musica-estilo').textContent = node.musicaEstilo;
+      document.getElementById('modal-musica-gancho').textContent = node.musicaGancho;
+
+      trocarAbaModal('fatos');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    function abrirModalCentro() {
+      playBeep(220, 'sawtooth', 0.2);
+      
+      document.getElementById('modal-badge-num').textContent = "★";
+      document.getElementById('modal-badge-cat').textContent = "Ponto de Convergência";
+      document.getElementById('modal-titulo').textContent = "FLÁVIO BOLSONARO (O Vértice Central)";
+      document.getElementById('modal-seta').textContent = "Todas as 16 flechas convergem para a consolidação patrimonial, blindagem judicial e expansão política da família.";
+      document.getElementById('modal-descricao').textContent = "Filho mais velho de Jair Bolsonaro, conhecido como '01'. Elegeu-se sucessivamente deputado estadual na ALERJ (2003-2018) e senador da República (2019-presente). Teve seu gabinete e advocacia no centro dos principais inquéritos de desvios, triangulações imobiliárias, relações com milícias e lobbies bilionários.";
+      document.getElementById('modal-operadores').textContent = "Núcleo familiar do clã, operadores jurídicos e bancários";
+      document.getElementById('modal-status').textContent = "Investigações anuladas em instâncias superiores e novas apurações em curso no STF/PF.";
+
+      document.getElementById('modal-codinome').textContent = `"O Willy Wonka da ALERJ / Doutor Balas Perdidas / O Usuário Master"`;
+      document.getElementById('modal-cena').textContent = `"A conferência de imprensa surreal em que o político tenta justificar que o operador foragido em Atibaia, as compras de imóveis com dinheiro vivo, a franquia de doces e a conta internacional do jatinho são puras coincidências do destino."`;
+      document.getElementById('modal-musica-titulo').textContent = "O Conclave do Zero Um";
+      document.getElementById('modal-musica-estilo').textContent = "Ópera Bufa / Samba-Enredo Paródia";
+      document.getElementById('modal-musica-gancho').textContent = "A narrativa épica de como um único parlamentar conseguiu ligar a praia de Angra, o Banco Master, a morte de Ana Clara e as faturas do caixa eletrônico.";
+
+      trocarAbaModal('fatos');
+
+      modalBackdrop.classList.remove('hidden', 'pointer-events-none');
+      setTimeout(() => {
+        modalBackdrop.classList.replace('opacity-0', 'opacity-100');
+        modalPanel.classList.replace('scale-95', 'scale-100');
+      }, 10);
+    }
+
+    function fecharModal() {
+      playBeep(350, 'sine', 0.05);
+      modalBackdrop.classList.replace('opacity-100', 'opacity-0');
+      modalPanel.classList.replace('scale-100', 'scale-95');
+      setTimeout(() => {
+        modalBackdrop.classList.add('hidden', 'pointer-events-none');
+      }, 200);
+    }
+
+    // Fechar ao clicar fora
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) fecharModal();
+    });
+
+    // Tecla ESC para fechar
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') fecharModal();
+    });
+
+    function trocarAbaModal(aba) {
+      playBeep(480, 'sine', 0.04);
+      const tabFatos = document.getElementById('modal-tab-fatos');
+      const tabArte = document.getElementById('modal-tab-arte');
+      const btnFatos = document.getElementById('tab-btn-fatos');
+      const btnArte = document.getElementById('tab-btn-arte');
+
+      if (aba === 'fatos') {
+        tabFatos.classList.remove('hidden');
+        tabArte.classList.add('hidden');
+        btnFatos.className = "px-5 py-3 border-b-2 border-red-500 text-white flex items-center gap-1.5 transition";
+        btnArte.className = "px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition";
+      } else {
+        tabFatos.classList.add('hidden');
+        tabArte.classList.remove('hidden');
+        btnFatos.className = "px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition";
+        btnArte.className = "px-5 py-3 border-b-2 border-amber-500 text-white flex items-center gap-1.5 transition";
+      }
+    }
+
+    // FILTRO POR CATEGORIA
+    function filtrarCategoria(cat) {
+      playBeep(580, 'sine', 0.06);
+
+      // Atualizar botões de filtro
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = "filter-btn px-2.5 py-1 rounded-md bg-red-700 text-white font-semibold transition";
+        } else {
+          btn.className = "filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:text-white transition";
+        }
+      });
+
+      // Filtrar no SVG
+      nodesData.forEach(node => {
+        const nodeG = document.getElementById(`node-${node.id}`);
+        const arrow = document.getElementById(`arrow-${node.id}`);
+        const match = (cat === 'todas' || node.categoria === cat);
+
+        if (nodeG) {
+          nodeG.style.opacity = match ? '1' : '0.15';
+          nodeG.style.pointerEvents = match ? 'auto' : 'none';
+        }
+        if (arrow) {
+          arrow.style.opacity = match ? '0.8' : '0.08';
+        }
+      });
+
+      // Filtrar na grade de cards
+      document.querySelectorAll('#cards-wrapper > div').forEach(card => {
+        const cardCat = card.getAttribute('data-card-category');
+        if (cat === 'todas' || cardCat === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // CONTROLES DE ZOOM E PAN NO SVG
+    function aplicarZoom(fator) {
+      zoomLevel *= fator;
+      if (zoomLevel < 0.6) zoomLevel = 0.6;
+      if (zoomLevel > 2.5) zoomLevel = 2.5;
+
+      const layerNodes = document.getElementById('layer-nodes');
+      const layerArrows = document.getElementById('layer-arrows');
+      const centerNode = document.getElementById('center-node');
+
+      const transformStr = `translate(${CX * (1 - zoomLevel)}, ${CY * (1 - zoomLevel)}) scale(${zoomLevel})`;
+      layerNodes.setAttribute('transform', transformStr);
+      layerArrows.setAttribute('transform', transformStr);
+      centerNode.setAttribute('transform', transformStr);
+
+      playBeep(400, 'sine', 0.04);
+    }
+
+    function resetZoom() {
+      zoomLevel = 1;
+      const layerNodes = document.getElementById('layer-nodes');
+      const layerArrows = document.getElementById('layer-arrows');
+      const centerNode = document.getElementById('center-node');
+
+      layerNodes.removeAttribute('transform');
+      layerArrows.removeAttribute('transform');
+      centerNode.removeAttribute('transform');
+      playBeep(450, 'sine', 0.05);
+    }
+
+    // ALTERNAR ENTRE DIAGRAMA 360° E GRADE DE CARDS
+    let modoAtual = 'radial';
+    function alternarVisao() {
+      const containerRadial = document.getElementById('container-radial');
+      const containerGrid = document.getElementById('container-grid');
+      const label = document.getElementById('label-toggle-view');
+
+      playBeep(420, 'sine', 0.06);
+
+      if (modoAtual === 'radial') {
+        modoAtual = 'grid';
+        containerRadial.classList.add('hidden');
+        containerGrid.classList.remove('hidden');
+        label.textContent = "Ver Diagrama 360°";
+      } else {
+        modoAtual = 'radial';
+        containerRadial.classList.remove('hidden');
+        containerGrid.classList.add('hidden');
+        label.textContent = "Ver Lista";
+      }
+    }
+
+    // INICIALIZAR NA CARGA DA PÁGINA
+    window.onload = function() {
+      renderDiagram();
+    };
+
+    // REDIMENSIONAMENTO RESPONSIVO
+    window.addEventListener('resize', () => {
+      // O SVG preserva o aspectRatio nativamente pelo viewBox (0 0 1440 960)
+    });
+  </script>
+</body>
+</html>
