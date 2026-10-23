@@ -38,5 +38,12 @@ const pagesData = [
     description: "Lista expandida com detalhes de 32 personagens.",
     category: "Personagens",
     tags: ["personagens", "lista", "estendido", "32"]
+  },
+  {
+    title: "Rachadinha",
+    url: "sites/rachadinha.html",
+    description: "Detalhes e ramificações sobre o esquema da Rachadinha.",
+    category: "Esquemas",
+    tags: ["rachadinha", "esquema"]
   }
 ];
