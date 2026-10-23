@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Índice de Páginas - vertice2026</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Índice de Páginas</h1>
+      <p>Explore as páginas disponíveis no repositório.</p>
+    </header>
+
+    <div class="filters">
+      <div class="filter-group">
+        <label for="category-filter">Filtrar por Categoria:</label>
+        <select id="category-filter">
+          <option value="">Todas as Categorias</option>
+          <!-- Options dynamically populated by JS -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="search-input">Buscar (Títulos, Tags, etc.):</label>
+        <input type="text" id="search-input" placeholder="Digite para buscar...">
+      </div>
+    </div>
+
+    <main>
+      <div id="cards-container" class="cards-container">
+        <!-- Cards dynamically populated by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Import data structure first -->
+  <script src="assets/js/data.js"></script>
+  <!-- Import main application logic -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
