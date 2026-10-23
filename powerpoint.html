@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerPoint - vertice2026</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .gallery-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .gallery-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: none;
+    }
+    .gallery-image.active {
+      display: inline-block;
+    }
+    .gallery-controls {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .gallery-controls button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .gallery-controls button:hover {
+      background-color: #2980b9;
+    }
+    .download-section {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .btn-download {
+      display: inline-block;
+      padding: 15px 30px;
+      background-color: #e74c3c;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .btn-download:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="powerpoint.html">PowerPoint</a></li>
+      </ul>
+    </nav>
+    <header>
+      <h1>Apresentação PowerPoint</h1>
+      <p>Confira os slides com os infográficos em detalhes ou faça o download para editar.</p>
+    </header>
+
+    <main>
+      <div class="gallery-container">
+        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide1.PNG" alt="Slide 1" class="gallery-image active" id="slide-1">
+        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide2.PNG" alt="Slide 2" class="gallery-image" id="slide-2">
+        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide3.PNG" alt="Slide 3" class="gallery-image" id="slide-3">
+        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide4.PNG" alt="Slide 4" class="gallery-image" id="slide-4">
+
+        <div class="gallery-controls">
+          <button id="prev-btn">Anterior</button>
+          <span id="slide-counter" style="align-self: center; font-weight: bold;">1 / 4</span>
+          <button id="next-btn">Próximo</button>
+        </div>
+      </div>
+
+      <div class="download-section">
+        <h2>Gostou? Baixe o arquivo original!</h2>
+        <p>Você pode baixar o arquivo PPTX para explorar e usar os infográficos na sua apresentação.</p>
+        <br>
+        <a href="PowerPoint/Vértice Central-2026.pptx" class="btn-download" download>Baixar PPTX</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.gallery-image');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const counter = document.getElementById('slide-counter');
+      let currentIndex = 0;
+
+      function updateGallery() {
+        slides.forEach((slide, index) => {
+          if (index === currentIndex) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+        counter.textContent = `${currentIndex + 1} / ${slides.length}`;
+      }
+
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+        updateGallery();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+        updateGallery();
+      });
+    });
+  </script>
+</body>
+</html>
