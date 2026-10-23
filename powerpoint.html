@@ -62,6 +62,62 @@
       background-color: #c0392b;
       transform: translateY(-2px);
     }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 50px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+    .modal-caption {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      text-align: center;
+      color: #ccc;
+      padding: 10px 0;
+      font-size: 1.2rem;
+    }
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .close-modal:hover,
+    .close-modal:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .gallery-image {
+      cursor: pointer;
+    }
+    #slide-description {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
@@ -79,10 +135,10 @@
 
     <main>
       <div class="gallery-container">
-        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide1.PNG" alt="Slide 1" class="gallery-image active" id="slide-1">
-        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide2.PNG" alt="Slide 2" class="gallery-image" id="slide-2">
-        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide3.PNG" alt="Slide 3" class="gallery-image" id="slide-3">
-        <img src="PowerPoint/Vértice_Central-2026-PNG/Slide4.PNG" alt="Slide 4" class="gallery-image" id="slide-4">
+        <div id="slides-container">
+          <!-- Images dynamically populated by JS -->
+        </div>
+        <p id="slide-description" style="margin-top: 10px; color: #555;"></p>
 
         <div class="gallery-controls">
           <button id="prev-btn">Anterior</button>
@@ -100,12 +156,56 @@
     </main>
   </div>
 
+  <!-- Modal for full-size images -->
+  <div id="image-modal" class="modal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+    <div id="modal-caption" class="modal-caption"></div>
+  </div>
+
   <script>
+    const slidesData = [
+      {
+        src: "PowerPoint/Vértice_Central-2026-PNG/Slide1.PNG",
+        alt: "Slide 1",
+        description: "Visão geral do esquema de corrupção."
+      },
+      {
+        src: "PowerPoint/Vértice_Central-2026-PNG/Slide2.PNG",
+        alt: "Slide 2",
+        description: "Detalhes dos operadores financeiros."
+      },
+      {
+        src: "PowerPoint/Vértice_Central-2026-PNG/Slide3.PNG",
+        alt: "Slide 3",
+        description: "Conexões com o núcleo político."
+      },
+      {
+        src: "PowerPoint/Vértice_Central-2026-PNG/Slide4.PNG",
+        alt: "Slide 4",
+        description: "Impacto e desdobramentos."
+      }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
-      const slides = document.querySelectorAll('.gallery-image');
+      const slidesContainer = document.getElementById('slides-container');
       const prevBtn = document.getElementById('prev-btn');
       const nextBtn = document.getElementById('next-btn');
       const counter = document.getElementById('slide-counter');
+      const descriptionEl = document.getElementById('slide-description');
+
+      // Render slides
+      slidesData.forEach((slide, index) => {
+        const img = document.createElement('img');
+        img.src = slide.src;
+        img.alt = slide.alt;
+        img.className = 'gallery-image';
+        if (index === 0) img.classList.add('active');
+        img.dataset.index = index;
+        slidesContainer.appendChild(img);
+      });
+
+      const slides = document.querySelectorAll('.gallery-image');
       let currentIndex = 0;
 
       function updateGallery() {
@@ -117,7 +217,43 @@
           }
         });
         counter.textContent = `${currentIndex + 1} / ${slides.length}`;
+        descriptionEl.textContent = slidesData[currentIndex].description;
       }
+
+      // Initial update to show description
+      updateGallery();
+
+      // Modal logic
+      const modal = document.getElementById('image-modal');
+      const modalImg = document.getElementById('modal-img');
+      const modalCaption = document.getElementById('modal-caption');
+      const closeModal = document.querySelector('.close-modal');
+
+      function openModal() {
+        modal.style.display = "block";
+        modalImg.src = slidesData[currentIndex].src;
+        modalCaption.textContent = slidesData[currentIndex].description;
+      }
+
+      slidesContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG') {
+          openModal();
+        }
+      });
+
+      descriptionEl.addEventListener('click', () => {
+        openModal();
+      });
+
+      closeModal.addEventListener('click', () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
 
       prevBtn.addEventListener('click', () => {
         currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;

@@ -45,5 +45,12 @@ const pagesData = [
     description: "Detalhes e ramificações sobre o esquema da Rachadinha.",
     category: "Esquemas",
     tags: ["rachadinha", "esquema"]
+  },
+  {
+    title: "Apresentação PowerPoint",
+    url: "powerpoint.html",
+    description: "Confira os slides com os infográficos em detalhes ou faça o download para editar.",
+    category: "Recursos",
+    tags: ["powerpoint", "apresentação", "slides", "download"]
   }
 ];
