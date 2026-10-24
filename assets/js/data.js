@@ -12,6 +12,13 @@
  */
 const pagesData = [
   {
+    title: "O Vértice Consolidado (V1)",
+    url: "consolidado/index.html",
+    description: "Versão unificada contendo todos os dossiês (16 esquemas, personagens, rachadinha e armamentista) em uma única interface interativa.",
+    category: "Esquemas",
+    tags: ["consolidado", "v1", "unificado", "todos"]
+  },
+  {
     title: "16 Esquemas",
     url: "sites/16esquemas.html",
     description: "Visualização original dos 16 esquemas.",

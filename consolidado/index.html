@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Dossiê Interativo: O Vértice Armamentista (Flávio Bolsonaro & Clã)</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #050811;
+      --bg-canvas: #070c18;
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    html.light {
+      --bg-main: #f8fafc;
+      --bg-canvas: #edf2f7;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      touch-action: pan-x pan-y;
+    }
+    body.style-noir .svg-container {
+      background: radial-gradient(circle at center, #111827 0%, #050811 100%);
+    }
+    body.style-clean .svg-container {
+      background: #ffffff;
+    }
+    html.dark body.style-clean .svg-container {
+      background: #0b1120;
+    }
+    .svg-container {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .svg-container:active {
+      cursor: grabbing;
+    }
+    .node-outer {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .node-outer:hover {
+      transform: scale(1.1);
+    }
+    body.style-noir .node-outer:hover {
+      filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.65));
+    }
+    body.style-clean .node-outer:hover {
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+    .node-center {
+      animation: pulse-center 3.6s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes pulse-center {
+      0% {
+        filter: drop-shadow(0 0 16px rgba(220, 38, 38, 0.65)) drop-shadow(0 0 32px rgba(153, 27, 27, 0.35));
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 60px rgba(220, 38, 38, 0.6));
+      }
+    }
+    .arrow-line {
+      transition: stroke 0.2s ease, stroke-width 0.2s ease, stroke-dashoffset 0.2s ease;
+    }
+    .arrow-highlight {
+      stroke: #ef4444 !important;
+      stroke-width: 3.5px !important;
+      stroke-dasharray: 6 3;
+      animation: dash 1s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+    .timeline-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1.25rem;
+      width: 2px;
+      background: #334155;
+    }
+    html.light .timeline-line {
+      background: #cbd5e1;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-700 selection:text-white style-noir">
+
+  <!-- CABEÇALHO COM CONTROLES -->
+  <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-4 py-2.5 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-3">
+
+      <!-- Identificação e Título do Vértice Armamentista -->
+      <div class="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-start">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-600 via-slate-800 to-black flex items-center justify-center shadow-lg shadow-slate-950/60 border border-slate-500/40 flex-shrink-0">
+            <svg class="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-sm font-black text-white uppercase tracking-wider drop-shadow-md flex items-center gap-2" id="header-title">
+              O VÉRTICE CONSOLIDADO
+              <span class="px-1.5 py-0.5 bg-red-600 text-[10px] rounded font-bold uppercase tracking-widest text-white shadow shadow-red-900/50">V1</span>
+            </h1>
+            <div class="mt-1">
+              <select id="dossie-selector" class="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded block w-full p-1" onchange="window.mudarDossie(this.value)">
+                <option value="esquemas16_v2">16 Esquemas (V2)</option>
+                <option value="personagens20">20 Personagens e Cifras</option>
+                <option value="personagens32">32 Personagens Completo</option>
+                <option value="armamentista" selected>O Vértice Armamentista</option>
+                <option value="rachadinha">A Teia da Rachadinha</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+  </header>
+
+  <!-- ÁREA DE APRESENTAÇÃO PRINCIPAL -->
+  <main class="flex-1 relative flex flex-col items-center justify-center p-1 sm:p-4 overflow-hidden">
+
+    <!-- Barra de Dica Superior Adaptada para Mobile -->
+    <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none px-2 w-full max-w-xl text-center">
+      <div id="hint-badge" class="bg-slate-900/90 border border-slate-700/80 text-slate-300 text-[11px] sm:text-xs px-3.5 py-1.5 rounded-full shadow-xl flex items-center justify-center gap-2 backdrop-blur-sm transition-colors duration-300">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">Toque nos nós para ver <b>arsenais, inquéritos e o link com o Google IA</b>. Pinça para zoom.</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 1: CANVAS RADIAL 360 GRAUS (SVG ADAPTATIVO MOBILE/DESKTOP) -->
+    <div id="container-radial" class="w-full h-[82vh] min-h-[580px] relative rounded-2xl border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden transition-all duration-300">
+
+      <!-- Grade tática de fundo sutil -->
+      <div id="bg-grid-overlay" class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#475569_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+      <!-- SVG do Diagrama Equidistante -->
+      <svg id="svg-diagram" class="w-full h-full svg-container" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#ef4444" />
+          </marker>
+          <marker id="arrowhead-clean" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#dc2626" />
+          </marker>
+          <radialGradient id="grad-center" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ef4444"/>
+            <stop offset="45%" stop-color="#b91c1c"/>
+            <stop offset="100%" stop-color="#450a0a"/>
+          </radialGradient>
+          <radialGradient id="grad-center-clean" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#dc2626"/>
+            <stop offset="100%" stop-color="#991b1b"/>
+          </radialGradient>
+          <linearGradient id="grad-node" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="grad-node-clean-light" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f8fafc"/>
+          </linearGradient>
+        </defs>
+
+        <!-- CONTAINER UNIFICADO DO GRAFO: resolve o erro de deslocamento no zoom e pan -->
+        <g id="viewport-content">
+          <!-- Camada de Conexões (Setas dinâmicas recalculadas) -->
+          <g id="layer-arrows" class="arrow-layer opacity-75"></g>
+
+          <!-- VÉRTICE CENTRAL: Flávio Bolsonaro (Hub das Pautas Armamentistas) -->
+          <g id="center-node" class="node-center cursor-pointer" onclick="abrirModalCentro()">
+            <circle id="center-circle-main" cx="800" cy="550" r="110" fill="url(#grad-center)" stroke="#fca5a5" stroke-width="4" />
+            <circle id="center-circle-dashed" cx="800" cy="550" r="100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="6 4" />
+            <text id="center-text-title1" x="800" y="512" text-anchor="middle" fill="#fef2f2" font-size="20" font-weight="900" letter-spacing="1">FLÁVIO</text>
+            <text id="center-text-title2" x="800" y="542" text-anchor="middle" fill="#fee2e2" font-size="24" font-weight="900" letter-spacing="1.5">BOLSONARO</text>
+            <line id="center-text-line" x1="730" y1="560" x2="870" y2="560" stroke="#fca5a5" stroke-width="2" opacity="0.8" />
+            <text id="center-text-sub1" x="800" y="583" text-anchor="middle" fill="#fecaca" font-size="12" font-weight="800" letter-spacing="0.8">O VÉRTICE ARMAMENTISTA</text>
+            <text id="center-text-sub2" x="800" y="604" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'JetBrains Mono', monospace" opacity="0.9">LEIS, CACs & MILÍCIAS</text>
+          </g>
+
+          <!-- Camada dos Nós Periféricos -->
+          <g id="layer-nodes"></g>
+        </g>
+      </svg>
+
+      <!-- Controles de Zoom Flutuantes -->
+      <div id="zoom-controls-box" class="absolute bottom-4 right-4 flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-1 gap-1 shadow-2xl backdrop-blur-md">
+        <button onclick="aplicarZoomBotao(1.2)" title="Aumentar Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">+</button>
+        <button onclick="aplicarZoomBotao(0.8)" title="Diminuir Zoom" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-sm font-bold transition">−</button>
+        <button onclick="resetZoom()" title="Centralizar" class="px-2 h-8 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs font-mono transition">100%</button>
+      </div>
+
+      <!-- Legenda das Categorias das Armas -->
+      <div id="legend-box" class="absolute bottom-4 left-4 hidden lg:flex flex-wrap items-center gap-3 bg-slate-900/90 border border-slate-800 px-3.5 py-2 rounded-xl text-xs backdrop-blur-md">
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span> Decretos & Clã</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Milícia & Fuzis</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> CACs & Desvios</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Tiros & Granadas</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Lobby Proarmas / Indústria</span>
+      </div>
+    </div>
+
+    <!-- VISÃO 2: GRADE DE CARDS DOS CASOS ARMAMENTISTAS -->
+    <div id="container-grid" class="hidden w-full max-w-7xl mx-auto py-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="cards-wrapper">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE DETALHAMENTO EM 4 ABAS COM GOOGLE SEARCH LINK INTEGRADO -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-6 transition-opacity opacity-0 pointer-events-none">
+    <div id="modal-panel" class="bg-slate-900 border border-slate-700/80 w-full max-w-4xl max-h-[94vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-200">
+
+      <!-- Topo do Modal -->
+      <div class="p-4 sm:p-5 border-b border-slate-800 bg-slate-950 flex items-start justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div id="modal-badge-avatar" class="w-11 h-11 rounded-xl bg-red-950 border border-red-700/60 text-red-300 font-mono font-black text-base flex items-center justify-center flex-shrink-0 shadow-inner">
+            01
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="modal-badge-cat" class="text-xs font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded border">
+                Categoria
+              </span>
+              <span id="modal-cifra-badge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded flex items-center gap-1">
+                🎯 Arsenal & Impacto
+              </span>
+            </div>
+            <h2 id="modal-nome" class="text-base sm:text-xl font-black text-white tracking-tight mt-1">Nome do Personagem</h2>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Botão Dinâmico de Pesquisa no Google Modo IA -->
+          <a
+            id="modal-google-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Abrir pesquisa exata no Google com fontes e resposta do Modo IA"
+            class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-md transition"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Pesquisar no Google (IA)</span>
+          </a>
+
+          <button onclick="fecharModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Navegação das 4 Abas -->
+      <div class="flex border-b border-slate-800 bg-slate-900/90 text-xs font-semibold overflow-x-auto no-scrollbar">
+        <button id="tab-btn-conexao" onclick="trocarAbaModal('conexao')" class="px-4 py-3 border-b-2 border-red-500 text-white flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          1. Conexão Bélica & Arsenais
+        </button>
+        <button id="tab-btn-fatos" onclick="trocarAbaModal('fatos')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          2. Decretos, Inquéritos & PF
+        </button>
+        <button id="tab-btn-satira" onclick="trocarAbaModal('satira')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          3. Sátira, Codinomes & Músicas
+        </button>
+        <button id="tab-btn-fontes" onclick="trocarAbaModal('fontes')" class="px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5 whitespace-nowrap transition">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          4. Fontes, Links & Cronologia
+        </button>
+      </div>
+
+      <!-- ABA 1: Conexão Bélica & Arsenais -->
+      <div id="modal-tab-conexao" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed">
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="text-xs uppercase font-mono tracking-wider text-red-400 font-bold">Natureza da Conexão com Flávio Bolsonaro (Vértice)</h4>
+            <span id="modal-grau-conexao" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/60 border border-amber-800/40 px-2 py-0.5 rounded">Conexão Direta</span>
+          </div>
+          <p id="modal-conexao-desc" class="text-white font-medium"></p>
+        </div>
+
+        <!-- Quadro de Arsenais, Armas e Cifras Mapeadas -->
+        <div class="bg-emerald-950/25 border border-emerald-800/40 p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold">Arsenais, Calibres e Dados de Armamento Rastreados</h4>
+          </div>
+          <div id="modal-cifras-list" class="space-y-1.5 text-xs text-slate-200 font-mono"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Papel na Engrenagem Armamentista</span>
+            <span id="modal-papel" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Vínculo Funcional / Pessoal com o Vértice</span>
+            <span id="modal-proximidade" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: Decretos, Inquéritos & PF -->
+      <div id="modal-tab-fatos" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Resumo das Investigações Oficiais (PF, TCU e MP)</h4>
+          <p id="modal-inquerito-desc"></p>
+        </div>
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-amber-400 font-bold mb-1.5">Modus Operandi Bélico & Regulamentação</h4>
+          <p id="modal-modus-operandi" class="text-slate-200"></p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Operações / Inquéritos Vinculados</span>
+            <span id="modal-operacoes" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+          <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-400 font-mono block">Desfecho / Status Jurídico</span>
+            <span id="modal-status-judicial" class="text-sm font-semibold text-slate-200"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 3: Sátira, Codinomes & Músicas -->
+      <div id="modal-tab-satira" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300 leading-relaxed hidden">
+        <div class="bg-amber-950/30 border border-amber-800/40 p-4 rounded-xl">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block mb-1">5 Codinomes Satíricos Registrados</span>
+          <div id="modal-codinomes-list" class="flex flex-wrap gap-1.5 mt-1.5"></div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Ideia de Cena Teatral / Ilusionismo Tático</h4>
+          <p id="modal-cena-desc" class="text-slate-200 italic"></p>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-slate-400 font-bold mb-2">Sugestão de Música & Ritmo</h4>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="modal-musica-nome" class="font-bold text-white text-base"></span>
+              <span id="modal-musica-ritmo" class="text-xs font-mono bg-red-950 text-red-300 px-2.5 py-0.5 rounded border border-red-800/50"></span>
+            </div>
+            <p id="modal-musica-refrão" class="text-xs text-slate-400"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 4: Fontes, Links & Cronologia -->
+      <div id="modal-tab-fontes" class="p-5 sm:p-6 overflow-y-auto space-y-5 text-sm leading-relaxed hidden">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-xs uppercase font-mono tracking-wider text-cyan-400 font-bold">Documentos, Notícias & Acórdãos Verificados</h4>
+            <a id="modal-tab-search-btn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 underline font-mono">
+              <span>Pesquisar este caso no Google IA &rarr;</span>
+            </a>
+          </div>
+          <div id="modal-fontes-container" class="space-y-2.5"></div>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs uppercase font-mono tracking-wider text-emerald-400 font-bold mb-3">Linha do Tempo Cronológica do Caso Bélico</h4>
+          <div class="relative pl-6 sm:pl-8 space-y-5" id="modal-timeline-container">
+            <div class="timeline-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal com Botão Google Search Prominente no Mobile -->
+      <div class="p-3.5 sm:p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between gap-2">
+        <a
+          id="modal-google-footer-btn"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow transition"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          </svg>
+          <span>Buscar no Google IA</span>
+        </a>
+        <span class="hidden sm:inline text-xs text-slate-500 font-mono">Dossiê Especial • O Vértice Armamentista (Flávio & Clã)</span>
+        <button onclick="fecharModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition">
+          Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rodapé Institucional -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500 font-mono transition-colors duration-300">
+    Template Dinâmico 360° • Vértice Armamentista • Zoom Unificado Anti-Deslocamento & Adaptação para Telas Verticais
+  </footer>
+
+
+
+  <!-- Scripts do Vértice Consolidado -->
+  <script src="../assets/js/dossies-data.js"></script>
+  <script src="../assets/js/dossie-engine.js"></script>
+</body>
+</html>
