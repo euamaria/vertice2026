@@ -47,6 +47,13 @@ const pagesData = [
     tags: ["rachadinha", "esquema"]
   },
   {
+    title: "O Vértice Armamentista",
+    url: "sites/armamentista.html",
+    description: "A Teia Bélica, os Arsenais e Decretos do Clã Bolsonaro.",
+    category: "Esquemas",
+    tags: ["armamentista", "armas", "bolsonaro", "milícia", "cacs"]
+  },
+  {
     title: "Apresentação PowerPoint",
     url: "powerpoint.html",
     description: "Confira os slides com os infográficos em detalhes ou faça o download para editar.",
