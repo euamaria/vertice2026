@@ -149,7 +149,57 @@
             </div>
           </div>
         </div>
+
+        <!-- Botão Mobile para Abrir Ações -->
+        <button onclick="toggleMobileFilters()" class="xl:hidden p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        </button>
       </div>
+
+      <!-- Barra de Ferramentas, Busca e Filtros Equidistantes -->
+      <div id="toolbar-actions" class="hidden xl:flex flex-wrap items-center gap-2 w-full xl:w-auto justify-end">
+
+        <!-- Campo de Busca em Tempo Real -->
+        <div class="relative">
+          <input
+            type="text"
+            id="search-input"
+            oninput="atualizarFiltroBusca(this.value)"
+            placeholder="Buscar..."
+            class="w-48 lg:w-56 bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500 transition font-mono"
+          />
+          <svg class="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filtros por Categoria com Cálculo Equidistante Automático -->
+        <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs font-medium overflow-x-auto no-scrollbar">
+          <select id="category-filter" onchange="selecionarCategoria(this.value)" class="bg-transparent text-white text-xs font-semibold focus:outline-none w-32 cursor-pointer appearance-none px-2 py-1">
+            <option value="todas">Todas Categorias</option>
+          </select>
+        </div>
+
+        <!-- Seletor de Intervalo de Quantidade -->
+        <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs">
+          <span class="text-[10px] font-mono text-slate-400 uppercase">Qtd:</span>
+          <input
+            type="range"
+            id="node-count"
+            min="1"
+            max="18"
+            value="18"
+            oninput="alterarLimiteQuantidade(this.value)"
+            class="w-16 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-red-600"
+          />
+          <span id="node-count-display" class="font-mono text-xs font-bold text-amber-400 min-w-[1.2rem] text-right">18</span>
+        </div>
+
+        <!-- Botão Alternar Layout -->
+        <button id="btn-toggle-layout" onclick="alternarLayoutEstilo()" title="Alternar Layout" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          <span id="label-layout">Clean</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- ÁREA DE APRESENTAÇÃO PRINCIPAL -->
@@ -437,7 +487,7 @@
 
 
   <!-- Scripts do Vértice Consolidado -->
-  <script src="../assets/js/dossies-data.js"></script>
-  <script src="../assets/js/dossie-engine.js"></script>
+  <script src="assets/js/dossies-data.js"></script>
+  <script src="assets/js/dossie-engine.js"></script>
 </body>
 </html>
