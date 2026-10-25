@@ -34,3 +34,11 @@ Durante a implementação, enfrentamos dependências estritas no JavaScript:
 - **Normalização Definitiva de Dados:** Embora a interface agora tolere variações (lendo `nome` ou `titulo`), o ideal seria executar um script de transformação definitiva em `dossies-data.js` padronizando todas as chaves.
 - **Motor de Busca Aprimorado (Fuzzy Search):** A busca por categoria atende perfeitamente ao texto exato, mas um sistema de busca mais robusto pode ser explorado.
 - **Otimização de Carregamento (Lazy Load):** Como `DossiesDB` contém grandes bases de dados carregadas em memória simultaneamente, para futuras expansões (se ultrapassar megabytes), seria recomendável carregar o JSON do dossiê específico apenas sob demanda via `fetch()`.
+
+## 5. Correções Posteriores (Menu Superior e Estrutura de Assets)
+Após a entrega da versão inicial, foram realizados ajustes de UI e arquitetura:
+- **Correção do Menu Superior:** A barra de filtros (`toolbar-actions`) havia sido omitida na migração do `armamentista.html` para `consolidado/index.html`. Foi reintroduzida, contendo o campo de busca em tempo real, filtros dinâmicos por categoria (agora através de um elemento `<select>` preenchido via JavaScript), slider de quantidade e controle do layout "Noir vs Clean".
+- **Separação de Assets:** Decidiu-se separar fisicamente os recursos:
+    - *Raiz:* Os assets gerais do site (como `assets/css/style.css`, `assets/js/data.js` e `assets/js/app.js`) permaneceram na raiz.
+    - *Consolidado:* Foi criada a pasta `consolidado/assets/js/` para abrigar especificamente o `dossie-engine.js` e `dossies-data.js`.
+    - *Justificativa de Caminho Adotado:* Essa separação faz sentido pois o "Consolidado" atua como um aplicativo SPA quase independente do restante do índice estático da raiz. Isso previne poluição de escopo global de variáveis e isola as responsabilidades dos scripts, o que é fundamental já que não utilizamos empacotadores (bundlers) no deploy do GitHub Pages.
