@@ -14,8 +14,16 @@ window.mudarDossie = function(dossieId) {
     }
 
     if(document.getElementById('search-input')) if (document.getElementById('search-input')) document.getElementById('search-input').value = '';
-    if(document.getElementById('node-count')) if (document.getElementById('node-count')) document.getElementById('node-count').value = window.currentDossie.nodes.length;
-    if(document.getElementById('node-count-display')) if (document.getElementById('node-count-display')) document.getElementById('node-count-display').textContent = window.currentDossie.nodes.length;
+
+    currentLimit = window.currentDossie.nodes.length;
+    if(document.getElementById('node-count')) {
+        let nodeCountEl = document.getElementById('node-count');
+        nodeCountEl.max = currentLimit;
+        nodeCountEl.value = currentLimit;
+    }
+    if(document.getElementById('node-count-display')) {
+        document.getElementById('node-count-display').textContent = currentLimit;
+    }
 
     currentCategory = 'todas';
     populateCategories();
