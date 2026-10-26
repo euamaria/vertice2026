@@ -22,7 +22,8 @@ window.mudarDossie = function(dossieId) {
         nodeCountEl.value = currentLimit;
     }
     if(document.getElementById('node-count-display')) {
-        document.getElementById('node-count-display').textContent = currentLimit;
+        const totalNodes = window.currentDossie.nodes.length;
+        document.getElementById('node-count-display').textContent = currentLimit + '/' + totalNodes;
     }
 
     currentCategory = 'todas';
@@ -558,7 +559,8 @@ function populateCategories() {
       currentLimit = parseInt(val, 10);
       const displayElem = document.getElementById('node-count-display');
       if (displayElem) {
-        displayElem.textContent = currentLimit;
+        const totalNodes = window.currentDossie.nodes.length;
+        displayElem.textContent = currentLimit + '/' + totalNodes;
       }
       playBeep(420 + currentLimit * 10, 'sine', 0.03);
       renderDynamicDiagram();
