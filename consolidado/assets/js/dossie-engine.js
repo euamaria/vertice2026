@@ -353,7 +353,7 @@ function populateCategories() {
             </div>
           </div>
           <h3 class="font-bold text-sm mb-1 ${isLight ? 'text-slate-900' : 'text-white'}">${(char.nome || char.titulo || '')}</h3>
-          <p class="text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'} leading-relaxed line-clamp-2">${char.subtitulo}</p>
+          <p class="text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'} leading-relaxed">${char.subtitulo}</p>
         </div>
         <div class="mt-4 pt-3 border-t ${isLight ? 'border-slate-100 text-slate-400' : 'border-slate-800/80 text-slate-500'} flex items-center justify-between text-xs font-mono">
           <a href="${googleLink}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1">
@@ -556,6 +556,10 @@ function populateCategories() {
 
     function alterarLimiteQuantidade(val) {
       currentLimit = parseInt(val, 10);
+      const displayElem = document.getElementById('node-count-display');
+      if (displayElem) {
+        displayElem.textContent = currentLimit;
+      }
       playBeep(420 + currentLimit * 10, 'sine', 0.03);
       renderDynamicDiagram();
     }
